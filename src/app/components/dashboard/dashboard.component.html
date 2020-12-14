@@ -1,0 +1,9 @@
+<h1>Dashboard</h1>
+
+<button (click)="onOpenAddDashboardModal()">Add board</button>
+
+<ng-container *ngIf="boards$ | async as boards">
+  <div *ngFor="let board of boards">
+    {{ board.title }}
+  </div>
+</ng-container>
