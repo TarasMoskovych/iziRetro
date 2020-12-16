@@ -4,7 +4,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { from, Observable} from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { AuthUserCredential, googleAuthProvider, User } from '../models';
+import { AuthUserCredential, FirebaseUser, googleAuthProvider, User } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -25,4 +25,9 @@ export class AuthService {
         return this.afs.doc(`users/${userCredential.user?.uid}`).set({ displayName, email, photoURL });
       }));
   }
+
+  getCurrentUser(): Observable<FirebaseUser> {
+    return from(this.afauth.authState) as Observable<FirebaseUser>;
+  }
+
 }
