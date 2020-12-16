@@ -1,2 +1,42 @@
-<p>register works!</p>
-<a routerLink="/login">Back to login</a>
+<mat-card class="register">
+  <mat-card-title>Register</mat-card-title>
+  <mat-card-subtitle>Register to iziRetro</mat-card-subtitle>
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+      <mat-form-field *ngIf="form.get('name') as name" class="register__field-wrapper">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Name" formControlName="name">
+        <mat-error *ngIf="name.invalid">
+          Please enter Name.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="form.get('email') as email" class="register__field-wrapper">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Email" formControlName="email">
+        <mat-error *ngIf="email.invalid">
+          <ng-container *ngIf="email.errors?.required">
+            Please enter Email.
+          </ng-container>
+          <ng-container *ngIf="email.errors?.email">
+            Please enter valid Email.
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="form.get('password') as password" class="register__field-wrapper">
+        <mat-label>Password</mat-label>
+        <input matInput placeholder="Password" formControlName="password">
+        <mat-error *ngIf="password.invalid">
+          Please enter valid Password.
+        </mat-error>
+      </mat-form-field>
+
+      <div class="login__actions">
+        <button mat-raised-button color="primary" [disabled]="form.invalid">Register</button>
+      </div>
+    </form>
+  </mat-card-content>
+  <p>Already have an account? <a routerLink="/login">Click here</a> to Sign In</p>
+</mat-card>

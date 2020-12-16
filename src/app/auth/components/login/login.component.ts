@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
@@ -10,6 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
+  form: FormGroup;
 
   constructor(
     private authService: AuthService,
@@ -17,11 +19,23 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.buildForm();
   }
 
   onSignInWithGoogle(): void {
     this.authService.signIn()
       .pipe(take(1))
       .subscribe(() => this.router.navigateByUrl('dashboard'));
+  }
+
+  onSubmit(): void {
+    console.log(this.form.value);
+  }
+
+  private buildForm(): void {
+    this.form = new FormGroup({
+      email: new FormControl(null, [Validators.required, Validators.email]),
+      password: new FormControl(null, [Validators.required, Validators.minLength(6)])
+    });
   }
 }

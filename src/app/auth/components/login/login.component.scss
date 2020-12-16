@@ -1,0 +1,12 @@
+.login {
+  text-align: center;
+
+  &__field-wrapper,
+  &__actions button {
+    width: 100%;
+  }
+
+  &__actions {
+    margin-top: 15px;
+  }
+}

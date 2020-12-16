@@ -1,0 +1,12 @@
+.auth {
+  align-items: center;
+  background-color: #F7F8FB;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+
+  &__wrapper {
+    background-color: #fff;
+    max-width: 400px;
+  }
+}

@@ -1,7 +1,40 @@
-<p>login works!</p>
+<mat-card class="login">
+  <mat-card-title>Login</mat-card-title>
+  <mat-card-subtitle>Login to iziRetro</mat-card-subtitle>
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-<button (click)="onSignInWithGoogle()">Sign in</button>
+      <mat-form-field *ngIf="form.get('email') as email" class="login__field-wrapper">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Email" formControlName="email">
+        <mat-error *ngIf="email.invalid">
+          <ng-container *ngIf="email.errors?.required">
+            Please enter Email.
+          </ng-container>
+          <ng-container *ngIf="email.errors?.email">
+            Please enter valid Email.
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
 
-<br>
+      <mat-form-field *ngIf="form.get('password') as password" class="login__field-wrapper">
+        <mat-label>Password</mat-label>
+        <input matInput placeholder="Password" formControlName="password">
+        <mat-error *ngIf="password.invalid">
+          Please enter valid Password.
+        </mat-error>
+      </mat-form-field>
 
-<a routerLink="/register">Create an account</a>
+      <div class="login__actions">
+        <button mat-raised-button color="primary" [disabled]="form.invalid">Login</button>
+        <div>
+          or
+        </div>
+        <button (click)="onSignInWithGoogle()" type="button" mat-raised-button>
+          Login with Google
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+  <p>Don't have an account? <a routerLink="/register">Click here</a> to Register</p>
+</mat-card>

@@ -10,7 +10,6 @@ import { AppComponent } from './app.component';
 import { environment } from 'src/environments/environment';
 
 import { AuthModule } from './auth/auth.module';
-import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +20,6 @@ import { SharedModule } from './shared/shared.module';
     BrowserAnimationsModule,
     FormsModule,
     AngularFireModule.initializeApp(environment.firebase),
-    SharedModule,
     AuthModule,
     AppRoutingModule,
   ],
