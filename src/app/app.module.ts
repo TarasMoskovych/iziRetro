@@ -10,15 +10,18 @@ import { AppComponent } from './app.component';
 import { environment } from 'src/environments/environment';
 
 import { AuthModule } from './auth/auth.module';
+import { HeaderComponent } from './components/header/header.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
     AppComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    FormsModule,
+    SharedModule,
     AngularFireModule.initializeApp(environment.firebase),
     AuthModule,
     AppRoutingModule,
