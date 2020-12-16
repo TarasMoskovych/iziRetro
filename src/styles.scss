@@ -8,3 +8,9 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.dashboards-list__item {
+  .mat-list-item-content {
+    justify-content: space-between;
+  }
+}

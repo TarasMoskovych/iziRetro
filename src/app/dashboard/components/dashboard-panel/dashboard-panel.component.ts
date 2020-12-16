@@ -3,17 +3,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import { Board } from '../models';
-import { DashboardService } from '../services/dashboard.service';
-import { AddDashboardModalComponent } from './components';
+import { Board } from 'src/app/models';
+import { DashboardService } from 'src/app/services/dashboard.service';
+import { AddDashboardModalComponent } from '../add-dashboard-modal/add-dashboard-modal.component';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
+  selector: 'app-dashboard-panel',
+  templateUrl: './dashboard-panel.component.html',
+  styleUrls: ['./dashboard-panel.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DashboardComponent implements OnInit {
+export class DashboardPanelComponent implements OnInit {
   boards$: Observable<Board[]> = this.dashboardService.getBoards();
 
   constructor(

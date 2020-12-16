@@ -1,0 +1,16 @@
+<mat-list class="dashboards-list" role="list" *ngIf="boards?.length">
+  <mat-list-item class="dashboards-list__item" role="listitem" *ngFor="let board of boards">
+    <div [routerLink]="['/dashboard', board.id]"  class="dashboards-list__item-title">
+      {{ board.title }}
+    </div>
+    <span class="dashboards-list__item-menu">
+      {{ board.date | date }}
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Open menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button (click)="onRemove(board)" mat-menu-item>Remove</button>
+      </mat-menu>
+    </span>
+  </mat-list-item>
+</mat-list>

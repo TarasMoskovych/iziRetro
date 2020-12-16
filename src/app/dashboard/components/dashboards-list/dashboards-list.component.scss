@@ -1,0 +1,25 @@
+.dashboards-list {
+  padding: 10px;
+
+  &__item {
+    background-color: #fff;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 10px;
+
+    &-title {
+      flex: 1;
+    }
+
+    &-menu {
+      align-items: center;
+      display: flex;
+    }
+
+    &:hover {
+      .dashboards-list__item-title {
+        color: lightblue;
+      }
+    }
+  }
+}
