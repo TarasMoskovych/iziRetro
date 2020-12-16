@@ -7,29 +7,23 @@ import { AngularFireModule } from '@angular/fire';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MaterialModule } from './material/material.module';
 import { environment } from 'src/environments/environment';
 
-import {
-  HomeComponent,
-  DashboardComponent,
-  AddDashboardModalComponent,
-} from './components';
+import { AuthModule } from './auth/auth.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    DashboardComponent,
-    AddDashboardModalComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
-    MaterialModule,
+    SharedModule,
+    AuthModule,
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

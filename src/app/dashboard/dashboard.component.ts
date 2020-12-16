@@ -1,11 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-
-import { Board } from 'src/app/models';
-import { DashboardService } from 'src/app/services/dashboard.service';
-import { AddDashboardModalComponent } from '../add-dashboard-modal/add-dashboard-modal.component';
+import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
+
+import { Board } from '../models';
+import { DashboardService } from '../services/dashboard.service';
+import { AddDashboardModalComponent } from './components';
 
 @Component({
   selector: 'app-dashboard',
@@ -34,6 +34,5 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.addBoard(board)
       .pipe(take(1))
       .subscribe();
-    ;
   }
 }
