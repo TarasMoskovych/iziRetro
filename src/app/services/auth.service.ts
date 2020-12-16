@@ -17,7 +17,13 @@ export class AuthService {
     private afs: AngularFirestore,
     private router: Router,
   ) {
-    this.afauth.authState.subscribe(user => console.log(user));
+    this.getCurrentUser()
+      .subscribe((user: FirebaseUser) => {
+        if (user && (this.router.url.includes('login') || this.router.url.includes('register'))) {
+          this.router.navigateByUrl('dashboard');
+        }
+        console.log(user);
+      });
   }
 
   signIn(): Observable<void> {

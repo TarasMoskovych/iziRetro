@@ -2,4 +2,25 @@
 
 <!-- filter -->
 <!-- sort -->
-<app-dashboards-list [boards]="boards$ | async"></app-dashboards-list>
+<br>
+
+<ng-container *ngIf="boards$ | async as boards">
+  <div *ngIf="boards.length">
+    My boards
+    <app-dashboards-list
+      [boards]="boards"
+      [creator]="true"
+      (removeBoard)="onRemoveBoard($event)"
+      (shareUrl)="onShareUrl($event)"
+    ></app-dashboards-list>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="sharedWithMe$ | async as boards">
+  <div *ngIf="boards.length">
+    Shared with Me
+    <app-dashboards-list
+      [boards]="boards"
+    ></app-dashboards-list>
+  </div>
+</ng-container>

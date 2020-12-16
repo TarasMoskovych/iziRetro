@@ -5,12 +5,15 @@
     </div>
     <span class="dashboards-list__item-menu">
       {{ board.date | date }}
-      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Open menu">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button (click)="onRemove(board)" mat-menu-item>Remove</button>
-      </mat-menu>
+      <ng-container *ngIf="creator">
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Open menu">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button (click)="onShareUrl(board)" mat-menu-item>Share URL</button>
+          <button (click)="onRemove(board)" mat-menu-item>Remove</button>
+        </mat-menu>
+      </ng-container>
     </span>
   </mat-list-item>
 </mat-list>

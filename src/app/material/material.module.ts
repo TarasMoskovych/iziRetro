@@ -9,6 +9,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 @NgModule({
   declarations: [],
@@ -24,6 +26,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatMenuModule,
     MatListModule,
     MatIconModule,
+    MatSnackBarModule,
+    ClipboardModule,
   ]
 })
 export class MaterialModule { }

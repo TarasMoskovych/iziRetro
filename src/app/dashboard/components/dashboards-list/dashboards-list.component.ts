@@ -1,8 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { take } from 'rxjs/operators';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
 import { Board } from 'src/app/models';
-import { DashboardService } from 'src/app/services/dashboard.service';
 
 @Component({
   selector: 'app-dashboards-list',
@@ -10,18 +8,17 @@ import { DashboardService } from 'src/app/services/dashboard.service';
   styleUrls: ['./dashboards-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DashBoardsListComponent implements OnInit {
+export class DashBoardsListComponent {
   @Input() boards: Board[] | null;
+  @Input() creator: boolean = false;
+  @Output() removeBoard = new EventEmitter<Board>();
+  @Output() shareUrl = new EventEmitter<Board>();
 
-  constructor(private dashboardService: DashboardService) { }
-
-  ngOnInit(): void {
+  onShareUrl(board: Board): void {
+    this.shareUrl.emit(board);
   }
 
   onRemove(board: Board): void {
-    this.dashboardService.removeBoard(board)
-      .pipe(take(1))
-      .subscribe();
+    this.removeBoard.emit(board);
   }
-
 }
