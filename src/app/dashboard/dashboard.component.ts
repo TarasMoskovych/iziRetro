@@ -27,7 +27,7 @@ export class DashboardComponent implements OnInit {
   onOpenAddDashboardModal(): void {
     this.dialog.open(AddDashboardModalComponent).afterClosed()
      .pipe(take(1))
-     .subscribe((title: string) => this.addBoard({ title }));
+     .subscribe((title: string) => title?.length && this.addBoard({ title }));
   }
 
   private addBoard(board: Board): void {
