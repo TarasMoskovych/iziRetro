@@ -7,6 +7,7 @@ import {
   BoardViewComponent,
   DashBoardsListComponent,
   DashboardPanelComponent,
+  DashboardPanelActionsComponent,
 } from './components';
 import { SharedModule } from '../shared/shared.module';
 
@@ -16,6 +17,7 @@ import { SharedModule } from '../shared/shared.module';
     BoardViewComponent,
     DashBoardsListComponent,
     DashboardPanelComponent,
+    DashboardPanelActionsComponent,
   ],
   imports: [
     CommonModule,

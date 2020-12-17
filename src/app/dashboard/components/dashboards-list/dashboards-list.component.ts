@@ -9,8 +9,10 @@ import { Board } from 'src/app/models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashBoardsListComponent {
-  @Input() boards: Board[] | null;
+  @Input() boards: Board[] = [];
   @Input() creator: boolean = false;
+  @Input() searchQuery: string | null = '';
+  @Input() sort: string | null;
   @Output() removeBoard = new EventEmitter<Board>();
   @Output() shareUrl = new EventEmitter<Board>();
 

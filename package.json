@@ -24,6 +24,7 @@
     "@angular/platform-browser-dynamic": "~11.0.0",
     "@angular/router": "~11.0.0",
     "firebase": "^8.2.0",
+    "ngx-order-pipe": "^2.1.1",
     "randomatic": "^3.1.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

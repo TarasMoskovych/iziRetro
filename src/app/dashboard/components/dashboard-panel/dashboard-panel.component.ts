@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { Board } from 'src/app/models';
@@ -19,6 +19,10 @@ import { AddDashboardModalComponent } from '../add-dashboard-modal/add-dashboard
 export class DashboardPanelComponent implements OnInit {
   boards$: Observable<Board[]> = this.dashboardService.getMyBoards();
   sharedWithMe$: Observable<Board[]> = this.dashboardService.getBoardsSharedWithMe();
+  searchBoards$ = new BehaviorSubject<string>('');
+  searchSharedWithMe$ = new BehaviorSubject<string>('');
+  sortBoards$ = new BehaviorSubject<string>('date');
+  sortSharedWithMe$ = new BehaviorSubject<string>('date');
 
   constructor(
     private router: Router,
@@ -47,6 +51,14 @@ export class DashboardPanelComponent implements OnInit {
   onShareUrl(board: Board): void {
     this.clipboard.copy(`${window.location.origin}/dashboard?redirectUrl=${board.id}`);
     this.notificationService.showMessage('Copied to clipboard');
+  }
+
+  onBoardsSearch(value: string, myBoards?: boolean): void {
+    this[myBoards ? 'searchBoards$' : 'searchSharedWithMe$'].next(value);
+  }
+
+  onBoardsSelect(value: string, myBoards?: boolean): void {
+    this[myBoards ? 'sortBoards$' : 'sortSharedWithMe$'].next(value);
   }
 
   private addBoard(board: Board): void {

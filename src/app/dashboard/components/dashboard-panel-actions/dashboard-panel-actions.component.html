@@ -1,0 +1,24 @@
+<div class="dashboard-panel-actions">
+  <button *ngIf="creator" (click)="onCreateBoard()" mat-mini-fab color="primary" aria-label="Create new Board">
+    <mat-icon>add</mat-icon>
+  </button>
+  <div class="dashboard-panel-actions__right">
+
+    <mat-form-field>
+      <mat-label>Sorted by</mat-label>
+      <mat-select (selectionChange)="onSelect($event)" value="date">
+        <mat-option value="date">Date</mat-option>
+        <mat-option value="title">Name</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Search</mat-label>
+      <input #search (keyup)="onSearch(search.value)" matInput>
+      <button mat-button *ngIf="search.value" matSuffix mat-icon-button aria-label="Clear" (click)="onSearch(''); search.value=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+  </div>
+</div>

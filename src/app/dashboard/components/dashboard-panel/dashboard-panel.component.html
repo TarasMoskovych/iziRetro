@@ -1,26 +1,44 @@
-<button (click)="onOpenAddDashboardModal()">Add board</button>
+<div class="dashboard-panel">
+  <mat-tab-group mat-align-tabs="center">
 
-<!-- filter -->
-<!-- sort -->
-<br>
+    <mat-tab label="My boards">
+      <div class="dashboard-panel__actions">
+        <app-dashboard-panel-actions
+          [creator]="true"
+          (createBoard)="onOpenAddDashboardModal()"
+          (search)="onBoardsSearch($event, true)"
+          (select)="onBoardsSelect($event, true)"
+        ></app-dashboard-panel-actions>
+      </div>
+      <ng-container *ngIf="boards$ | async as boards">
+        <app-dashboards-list
+          *ngIf="boards.length"
+          [boards]="boards"
+          [creator]="true"
+          [searchQuery]="searchBoards$ | async"
+          [sort]="sortBoards$ | async"
+          (removeBoard)="onRemoveBoard($event)"
+          (shareUrl)="onShareUrl($event)"
+        ></app-dashboards-list>
+      </ng-container>
+    </mat-tab>
 
-<ng-container *ngIf="boards$ | async as boards">
-  <div *ngIf="boards.length">
-    My boards
-    <app-dashboards-list
-      [boards]="boards"
-      [creator]="true"
-      (removeBoard)="onRemoveBoard($event)"
-      (shareUrl)="onShareUrl($event)"
-    ></app-dashboards-list>
-  </div>
-</ng-container>
+    <mat-tab label="Shared with Me">
+      <div class="dashboard-panel__actions">
+        <app-dashboard-panel-actions
+          (search)="onBoardsSearch($event)"
+          (select)="onBoardsSelect($event)"
+        ></app-dashboard-panel-actions>
+      </div>
+      <ng-container *ngIf="sharedWithMe$ | async as boards">
+        <app-dashboards-list
+          *ngIf="boards.length"
+          [boards]="boards"
+          [searchQuery]="searchSharedWithMe$ | async"
+          [sort]="sortSharedWithMe$ | async"
+        ></app-dashboards-list>
+      </ng-container>
+    </mat-tab>
 
-<ng-container *ngIf="sharedWithMe$ | async as boards">
-  <div *ngIf="boards.length">
-    Shared with Me
-    <app-dashboards-list
-      [boards]="boards"
-    ></app-dashboards-list>
-  </div>
-</ng-container>
+  </mat-tab-group>
+</div>

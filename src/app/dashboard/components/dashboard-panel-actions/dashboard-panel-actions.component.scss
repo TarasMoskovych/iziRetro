@@ -1,0 +1,12 @@
+.dashboard-panel-actions {
+  display: flex;
+  justify-content: space-between;
+
+  &__right {
+    margin-left: auto;
+
+    mat-form-field:first-child {
+      margin-right: 15px;
+    }
+  }
+}

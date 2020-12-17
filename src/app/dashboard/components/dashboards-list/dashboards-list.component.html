@@ -1,6 +1,9 @@
 <mat-list class="dashboards-list" role="list" *ngIf="boards?.length">
-  <mat-list-item class="dashboards-list__item" role="listitem" *ngFor="let board of boards">
-    <div [routerLink]="['/dashboard', board.id]"  class="dashboards-list__item-title">
+  <mat-list-item
+    *ngFor="let board of boards | filter:'title':searchQuery | orderBy:sort:sort === 'date'"
+    class="dashboards-list__item"
+    role="listitem"
+  ><div [routerLink]="['/dashboard', board.id]"  class="dashboards-list__item-title">
       {{ board.title }}
     </div>
     <span class="dashboards-list__item-menu">
