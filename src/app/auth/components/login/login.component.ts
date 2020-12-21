@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -10,7 +11,10 @@ import { AuthService } from 'src/app/services/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
+  private loading = new Subject<boolean>();
+
   form: FormGroup;
+  loading$ = this.loading.asObservable();
 
   constructor(
     private authService: AuthService,
@@ -27,7 +31,14 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.form.value);
+    this.loading.next(true);
+
+    this.authService.login(this.form.value)
+      .pipe(take(1))
+      .subscribe(
+        () => this.authService.navigateToDashboard(),
+        () => this.loading.next(false),
+      );
   }
 
   private buildForm(): void {

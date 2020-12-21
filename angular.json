@@ -37,7 +37,8 @@
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
-              "randomatic"
+              "randomatic",
+              "md5"
             ]
           },
           "configurations": {

@@ -22,10 +22,10 @@ export class AuthGuard implements CanActivate {
 
     return this.authService.getCurrentUser()
       .pipe(map((user: FirebaseUser) => {
-        !user && this.router.navigate(['login'], {
+        !user.emailVerified && this.router.navigate(['login'], {
           queryParams: route.queryParams,
         });
-        return !!user;
+        return user.emailVerified;
       }));
   }
 

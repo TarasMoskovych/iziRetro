@@ -2,10 +2,13 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
-import { from, Observable} from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { from, Observable, of} from 'rxjs';
+import { catchError, switchMap, tap } from 'rxjs/operators';
+import * as md5 from 'md5';
+import { FirebaseError } from '@firebase/util';
 
-import { AuthUserCredential, FirebaseUser, googleAuthProvider, User } from '../models';
+import { AuthUserCredential, FirebaseUser, googleAuthProvider, UserData, FirebaseUserInfo, AuthError } from '../models';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,25 +20,57 @@ export class AuthService {
     private afs: AngularFirestore,
     private route: ActivatedRoute,
     private router: Router,
+    private notificationService: NotificationService,
   ) {
     this.getCurrentUser()
       .subscribe((user: FirebaseUser) => {
         console.log(user);
 
-        if (user && (this.router.url.includes('login') || this.router.url.includes('register'))) {
-          this.router.navigate(['dashboard'], {
-            queryParams: this.route.snapshot.queryParams,
-          });
+        if (user?.emailVerified && (this.router.url.includes('login') || this.router.url.includes('register'))) {
+          this.navigateToDashboard();
         }
       });
   }
 
-  signIn(): Observable<void> {
+  login({ email, password }: UserData): Observable<FirebaseUserInfo | AuthError> {
+    return from(this.afauth.signInWithEmailAndPassword(email, password))
+      .pipe(
+        switchMap((userCredential: AuthUserCredential) => {
+          const { user } = userCredential;
+
+          if (user?.emailVerified) {
+            return of(user);
+          }
+          throw new FirebaseError('INACTIVE', 'Your Account is inactive. Please, confirm your email.');
+        }),
+        catchError((err: AuthError) => this.notificationService.handleError(err))
+      );
+  }
+
+  signIn(): Observable<FirebaseUserInfo> {
     return from(this.afauth.signInWithPopup(googleAuthProvider()))
       .pipe(switchMap((userCredential: AuthUserCredential) => {
-        const { displayName, email, photoURL } = userCredential.user as User;
-        return this.afs.doc(`users/${userCredential.user?.uid}`).set({ displayName, email, photoURL });
+        return this.updateUser(userCredential.user as FirebaseUser);
       }));
+  }
+
+  register({ email, password, displayName }: UserData): Observable<FirebaseUserInfo | AuthError> {
+    let userData: FirebaseUserInfo;
+
+    return from(this.afauth.createUserWithEmailAndPassword(email, password))
+      .pipe(
+        switchMap((userCredential: AuthUserCredential) => {
+          const { user } = userCredential;
+
+          if (!user) return of(null);
+          userData = user;
+          user.sendEmailVerification();
+          return from(user.updateProfile({ displayName, photoURL: this.generateAvatar(user.uid) }))
+        }),
+        switchMap(() => this.updateUser(userData)),
+        tap(() => this.notificationService.showMessage('Registered.')),
+        catchError((err: AuthError) => this.notificationService.handleError(err))
+      );
   }
 
   logout(): Observable<void> {
@@ -47,4 +82,20 @@ export class AuthService {
     return from(this.afauth.authState) as Observable<FirebaseUser>;
   }
 
+  navigateToDashboard(): void {
+    this.router.navigate(['dashboard'], {
+      queryParams: this.route.snapshot.queryParams,
+    });
+  }
+
+  private updateUser(user: FirebaseUserInfo): Observable<FirebaseUserInfo> {
+    const { displayName, email, photoURL, uid } = user;
+
+    return from(this.afs.doc(`users/${uid}`).set({ displayName, email, photoURL }))
+      .pipe(switchMap(() => of(user)));
+  }
+
+  private generateAvatar(id: string): string {
+    return `http://gravatar.com/avatar/${md5(id)}?d=identicon`;
+  }
 }

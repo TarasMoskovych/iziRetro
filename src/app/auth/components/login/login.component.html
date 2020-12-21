@@ -26,13 +26,18 @@
       </mat-form-field>
 
       <div class="login__actions">
-        <button mat-raised-button color="primary" [disabled]="form.invalid">Login</button>
-        <div>
-          or
-        </div>
-        <button (click)="onSignInWithGoogle()" type="button" mat-raised-button>
-          Login with Google
-        </button>
+        <ng-container *ngIf="{loading: loading$ | async} as state">
+          <mat-progress-spinner *ngIf="state.loading" diameter="30" mode="indeterminate"></mat-progress-spinner>
+          <ng-container *ngIf="!state.loading">
+            <button mat-raised-button color="primary" [disabled]="form.invalid">Login</button>
+            <div>
+              or
+            </div>
+            <button (click)="onSignInWithGoogle()" type="button" mat-raised-button>
+              Login with Google
+            </button>
+          </ng-container>
+        </ng-container>
       </div>
     </form>
   </mat-card-content>
