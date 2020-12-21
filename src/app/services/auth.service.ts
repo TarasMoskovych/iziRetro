@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { from, Observable} from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 
@@ -15,14 +15,18 @@ export class AuthService {
   constructor(
     private afauth: AngularFireAuth,
     private afs: AngularFirestore,
+    private route: ActivatedRoute,
     private router: Router,
   ) {
     this.getCurrentUser()
       .subscribe((user: FirebaseUser) => {
-        if (user && (this.router.url.includes('login') || this.router.url.includes('register'))) {
-          this.router.navigateByUrl('dashboard');
-        }
         console.log(user);
+
+        if (user && (this.router.url.includes('login') || this.router.url.includes('register'))) {
+          this.router.navigate(['dashboard'], {
+            queryParams: this.route.snapshot.queryParams,
+          });
+        }
       });
   }
 

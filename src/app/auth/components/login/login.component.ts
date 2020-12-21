@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -14,9 +13,7 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
 
   constructor(
-    private route: ActivatedRoute,
     private authService: AuthService,
-    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -26,9 +23,7 @@ export class LoginComponent implements OnInit {
   onSignInWithGoogle(): void {
     this.authService.signIn()
       .pipe(take(1))
-      .subscribe(() => this.router.navigate(['dashboard'], {
-        queryParams: this.route.snapshot.queryParams,
-      }));
+      .subscribe();
   }
 
   onSubmit(): void {
