@@ -8,5 +8,9 @@
 
   &__actions {
     margin-top: 15px;
+
+    mat-progress-spinner {
+      margin: 0 auto;
+    }
   }
 }

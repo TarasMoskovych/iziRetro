@@ -5,12 +5,14 @@
   </div>
 
   <div class="header__user" *ngIf="user$ | async as user">
-    <button mat-button [matMenuTriggerFor]="menu">
-      <img class="header__user-img" [src]="user.photoURL" alt="">
-    </button>
-    <mat-menu #menu="matMenu">
-      <button (click)="onLogout()" mat-menu-item>Logout</button>
-    </mat-menu>
+    <ng-container *ngIf="user.emailVerified">
+      <button mat-button [matMenuTriggerFor]="menu">
+        <img class="header__user-img" [src]="user.photoURL" alt="">
+      </button>
+      <mat-menu #menu="matMenu">
+        <button (click)="onLogout()" mat-menu-item>Logout</button>
+      </mat-menu>
+    </ng-container>
   </div>
 
 </div>

@@ -4,10 +4,10 @@
   <mat-card-content>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-      <mat-form-field *ngIf="form.get('name') as name" class="register__field-wrapper">
+      <mat-form-field *ngIf="form.get('displayName') as displayName" class="register__field-wrapper">
         <mat-label>Name</mat-label>
-        <input matInput placeholder="Name" formControlName="name">
-        <mat-error *ngIf="name.invalid">
+        <input matInput placeholder="Name" formControlName="displayName">
+        <mat-error *ngIf="displayName.invalid">
           Please enter Name.
         </mat-error>
       </mat-form-field>
@@ -33,8 +33,11 @@
         </mat-error>
       </mat-form-field>
 
-      <div class="login__actions">
-        <button mat-raised-button color="primary" [disabled]="form.invalid">Register</button>
+      <div class="register__actions">
+        <ng-container *ngIf="{loading: loading$ | async} as state">
+          <mat-progress-spinner *ngIf="state.loading" diameter="30" mode="indeterminate"></mat-progress-spinner>
+          <button *ngIf="!state.loading" mat-raised-button color="primary" [disabled]="form.invalid">Register</button>
+        </ng-container>
       </div>
     </form>
   </mat-card-content>

@@ -1,16 +1,19 @@
 <div class="dashboard-panel">
   <mat-tab-group mat-align-tabs="center">
 
-    <mat-tab label="My boards">
-      <div class="dashboard-panel__actions">
-        <app-dashboard-panel-actions
-          [creator]="true"
-          (createBoard)="onOpenAddDashboardModal()"
-          (search)="onBoardsSearch($event, true)"
-          (select)="onBoardsSelect($event, true)"
-        ></app-dashboard-panel-actions>
-      </div>
-      <ng-container *ngIf="boards$ | async as boards">
+    <ng-container *ngIf="boards$ | async as boards">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span [matBadge]="boards.length" matBadgeOverlap="false">My boards</span>
+        </ng-template>
+        <div class="dashboard-panel__actions">
+          <app-dashboard-panel-actions
+            [creator]="true"
+            (createBoard)="onOpenAddDashboardModal()"
+            (search)="onBoardsSearch($event, true)"
+            (select)="onBoardsSelect($event, true)"
+          ></app-dashboard-panel-actions>
+        </div>
         <app-dashboards-list
           *ngIf="boards.length"
           [boards]="boards"
@@ -20,25 +23,28 @@
           (removeBoard)="onRemoveBoard($event)"
           (shareUrl)="onShareUrl($event)"
         ></app-dashboards-list>
-      </ng-container>
-    </mat-tab>
+      </mat-tab>
+    </ng-container>
 
-    <mat-tab label="Shared with Me">
-      <div class="dashboard-panel__actions">
-        <app-dashboard-panel-actions
-          (search)="onBoardsSearch($event)"
-          (select)="onBoardsSelect($event)"
-        ></app-dashboard-panel-actions>
-      </div>
-      <ng-container *ngIf="sharedWithMe$ | async as boards">
+    <ng-container *ngIf="sharedWithMe$ | async as boards">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span [matBadge]="boards.length" matBadgeOverlap="false">Shared with Me</span>
+        </ng-template>
+        <div class="dashboard-panel__actions">
+          <app-dashboard-panel-actions
+            (search)="onBoardsSearch($event)"
+            (select)="onBoardsSelect($event)"
+          ></app-dashboard-panel-actions>
+        </div>
         <app-dashboards-list
           *ngIf="boards.length"
           [boards]="boards"
           [searchQuery]="searchSharedWithMe$ | async"
           [sort]="sortSharedWithMe$ | async"
         ></app-dashboards-list>
-      </ng-container>
-    </mat-tab>
+      </mat-tab>
+    </ng-container>
 
   </mat-tab-group>
 </div>
