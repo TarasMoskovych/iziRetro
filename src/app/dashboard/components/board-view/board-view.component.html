@@ -12,31 +12,39 @@
         </mat-button-toggle>
       </mat-button-toggle-group>
     </div>
-    <div class="board__filter">
-      <input type="text" placeholder="Filter...">
-      <span>Sort</span>
-    </div>
+
+    <app-dashboard-panel-actions
+      (search)="onSearch($event)"
+      (select)="onSort($event)"
+    ></app-dashboard-panel-actions>
+
   </div>
   <div class="board__body">
     <div class="board__body-header">
       <h1>{{board?.title}}</h1>
     </div>
 
-    <div class="board__columns-wrapper" [ngClass]="{'board__columns-wrapper--vertical': verticalLayout}">
-
-      <div *ngFor="let column of columns$ | async" class="board__column">
+    <div
+      *ngIf="posts$ | async as posts"
+      class="board__columns-wrapper"
+      [ngClass]="{'board__columns-wrapper--vertical': verticalLayout}"
+    ><div *ngFor="let column of columns$ | async | orderBy:'position'" class="board__column">
         <div class="board__column-header">
           <div class="board__column-title">
             <span>{{column.title}}</span>
           </div>
 
           <div class="board__column-new-item">
-            <button (click)="toggle(column.title, true)" mat-raised-button color="primary">+</button>
+            <button
+              (click)="toggle(column.title, true)"
+              [ngStyle]="{'background-color': column.color }"
+              mat-raised-button color="primary"
+            >+</button>
           </div>
         </div>
 
-        <div class="board__item" *ngIf="show[column.title]">
-          <textarea rows="4" #textarea></textarea>
+        <div class="board__item" *ngIf="addNewPostToggleMap[column.title]" [ngStyle]="{'border-color': column.color }">
+          <textarea appAutofocus rows="4" #textarea></textarea>
 
           <div>
             <button (click)="onSaveNewItem(textarea.value, column)">Add</button>
@@ -44,9 +52,16 @@
           </div>
         </div>
 
-        <div *ngFor="let item of column.posts" class="board__item">
-          <textarea rows="4" [value]="item.value"></textarea>
-        </div>
+        <ng-container *ngFor="let item of posts | filter:'value':(search$ | async) | orderBy:'date'">
+          <app-board-view-item
+            *ngIf="item.columnPosition === column.position"
+            [edit]="editPostToggleMap[item.id]"
+            [color]="column.color"
+            [post]="item"
+            (save)="onEditItem($event)"
+            (toggle)="onToggleItem($event)"
+          ></app-board-view-item>
+        </ng-container>
       </div>
 
     </div>

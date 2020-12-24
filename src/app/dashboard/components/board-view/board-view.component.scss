@@ -61,7 +61,7 @@
   }
 
   &__item {
-    border: 1px solid black;
+    border: 5px solid transparent;
     min-height: 50px;
     margin-top: 10px;
     border-radius: 10px;
@@ -73,7 +73,7 @@
       width: 100%;
       border: 0;
       padding: 0;
-      border-radius: 10px;
+      outline: none;
     }
 
     div {

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, QuerySnapshot } from '@angular/fire/firestore';
-import { Observable, of } from 'rxjs';
+import { AngularFirestore, DocumentReference } from '@angular/fire/firestore';
+import { from, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { Column, FirestoreCollectionReference, Post } from '../models';
+import { Column, FirestoreCollectionReference, FirestoreQuerySnapshot, Post } from '../models';
+import { GeneratorService } from './generator.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ import { Column, FirestoreCollectionReference, Post } from '../models';
 export class PostService {
 
   constructor(
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
+    private generatorService: GeneratorService,
   ) { }
 
   getColumns(boardId: string): Observable<Column[]> {
@@ -19,21 +21,30 @@ export class PostService {
       .valueChanges();
   }
 
+  getPosts(boardId: string): Observable<Post[]> {
+    return this.afs.collection<Post>('posts', (ref: FirestoreCollectionReference) => ref
+      .where('boardId', '==', boardId))
+      .valueChanges();
+  }
+
   initColumns(boardId: string): Observable<boolean> {
     const data: Column[] = [
       {
         boardId,
-        posts: [],
+        color: '#009688',
+        position: 1,
         title: 'Went Well',
       },
       {
         boardId,
-        posts: [],
+        color: '#E91E63',
+        position: 2,
         title: 'To Improve'
       },
       {
         boardId,
-        posts: [],
+        color: '#9C27B0',
+        position: 3,
         title: 'Action Item'
       }
     ];
@@ -45,17 +56,24 @@ export class PostService {
     return of(true);
   }
 
-  addPost(value: string, column: Column, boardId: string): Observable<any> {
-    return this.afs.collection<Column>('columns', (ref: FirestoreCollectionReference) => ref
-      .where('boardId', '==', boardId)
-      .where('title', '==', column.title))
+
+  addPost(post: Post): Observable<DocumentReference> {
+    return from(this.afs.collection<Post>('posts').add({
+      ...post,
+      date: Date.now(),
+      id: this.generatorService.generateId(),
+    }));
+  }
+
+  editPost(post: Post): Observable<void | null> {
+    return this.afs.collection<Post>('posts', (ref: FirestoreCollectionReference) => ref
+      .where('id', '==', post.id))
       .get()
       .pipe(
-        switchMap((snapshot: QuerySnapshot<Column> | null) => {
+        switchMap((snapshot: FirestoreQuerySnapshot) => {
           if (!snapshot) return of(null);
-          return this.afs.doc(`columns/${snapshot.docs[0].id}`).update({ posts: [...column.posts, {value}] });
+          return this.afs.doc(`posts/${snapshot.docs[0].id}`).update(post);
         })
       );
   }
-
 }

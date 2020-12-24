@@ -5,10 +5,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OrderModule } from 'ngx-order-pipe';
 
 import { FilterPipe } from './pipes';
+import { AutofocusDirective } from './directives';
 
 @NgModule({
   declarations: [
     FilterPipe,
+    AutofocusDirective,
   ],
   imports: [
     CommonModule,
@@ -23,6 +25,7 @@ import { FilterPipe } from './pipes';
     ReactiveFormsModule,
     OrderModule,
     FilterPipe,
+    AutofocusDirective,
   ],
 })
 export class SharedModule { }
