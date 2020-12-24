@@ -1,1 +1,54 @@
-{{ board | json }}
+<div class="board">
+  <div class="board__header">
+    <div class="board__layout">
+      Change layout
+
+      <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+        <mat-button-toggle (change)="onLayoutChange($event)" checked="true" value="HORIZONTAL">
+          <mat-icon>view_column</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle (change)="onLayoutChange($event)" value="VERTICAL">
+          <mat-icon>table_rows</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <div class="board__filter">
+      <input type="text" placeholder="Filter...">
+      <span>Sort</span>
+    </div>
+  </div>
+  <div class="board__body">
+    <div class="board__body-header">
+      <h1>{{board?.title}}</h1>
+    </div>
+
+    <div class="board__columns-wrapper" [ngClass]="{'board__columns-wrapper--vertical': verticalLayout}">
+
+      <div *ngFor="let column of columns$ | async" class="board__column">
+        <div class="board__column-header">
+          <div class="board__column-title">
+            <span>{{column.title}}</span>
+          </div>
+
+          <div class="board__column-new-item">
+            <button (click)="toggle(column.title, true)" mat-raised-button color="primary">+</button>
+          </div>
+        </div>
+
+        <div class="board__item" *ngIf="show[column.title]">
+          <textarea rows="4" #textarea></textarea>
+
+          <div>
+            <button (click)="onSaveNewItem(textarea.value, column)">Add</button>
+            <button (click)="toggle(column.title, false)">X</button>
+          </div>
+        </div>
+
+        <div *ngFor="let item of column.posts" class="board__item">
+          <textarea rows="4" [value]="item.value"></textarea>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

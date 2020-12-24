@@ -7,6 +7,7 @@ import { exhaustMap, map, switchMap } from 'rxjs/operators';
 import { Board, FirebaseUser, FirestoreCollectionReference, FirestoreQuerySnapshot } from '../models';
 import { AuthService } from './auth.service';
 import { GeneratorService } from './generator.service';
+import { PostService } from './post.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,14 +19,20 @@ export class DashboardService {
     private afs: AngularFirestore,
     private authService: AuthService,
     private generatorService: GeneratorService,
+    private postService: PostService
   ) { }
 
-  addBoard(board: Board): Observable<DocumentReference> {
+  addBoard(board: Board): Observable<boolean> {
+    const boardId = this.generatorService.generateId(64);
+
     return this.authService.getCurrentUser()
-      .pipe(switchMap((user: FirebaseUser) => {
-        return from(this.afs.collection<Board>('boards')
-          .add({ ...board, id: this.generatorService.generateId(64), date: Date.now(), creator: user.email as string }));
-      }));
+      .pipe(
+        switchMap((user: FirebaseUser) => {
+          return from(this.afs.collection<Board>('boards')
+            .add({ ...board, id: boardId, date: Date.now(), creator: user.email as string }));
+        }),
+        switchMap(() => this.postService.initColumns(boardId))
+    );
   }
 
   getMyBoards(): Observable<Board[]> {

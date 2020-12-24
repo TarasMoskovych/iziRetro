@@ -10,7 +10,7 @@
       {{ board.date | date }}
       <ng-container *ngIf="creator">
         <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Open menu">
-          <mat-icon>menu</mat-icon>
+          <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
           <button (click)="onShareUrl(board)" mat-menu-item>Share URL</button>
