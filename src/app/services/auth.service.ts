@@ -3,11 +3,11 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
 import { from, Observable, of} from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import * as md5 from 'md5';
 import { FirebaseError } from '@firebase/util';
 
-import { AuthUserCredential, FirebaseUser, googleAuthProvider, UserData, FirebaseUserInfo, AuthError } from '../models';
+import { AuthUserCredential, FirebaseUser, googleAuthProvider, UserData, FirebaseUserInfo, AuthError, User, FirestoreCollectionReference } from '../models';
 import { NotificationService } from './notification.service';
 
 @Injectable({
@@ -82,17 +82,29 @@ export class AuthService {
     return from(this.afauth.authState) as Observable<FirebaseUser>;
   }
 
+  getUserByEmail(email: string): Observable<User> {
+    return this.afs.collection<User>('users', (ref: FirestoreCollectionReference) => ref
+      .where('email', '==', email))
+      .valueChanges()
+      .pipe(map((users: User[]) => users[0]));
+  }
+
   navigateToDashboard(): void {
     this.router.navigate(['dashboard'], {
       queryParams: this.route.snapshot.queryParams,
     });
   }
 
-  private updateUser(user: FirebaseUserInfo): Observable<FirebaseUserInfo> {
-    const { displayName, email, photoURL, uid } = user;
+  updateUser(firebaseUser: FirebaseUserInfo, updates?: Partial<User>): Observable<FirebaseUserInfo> {
+    const { displayName, email, photoURL, uid } = firebaseUser;
+    const user: User = { displayName, email, photoURL } as User;
 
-    return from(this.afs.doc(`users/${uid}`).set({ displayName, email, photoURL }))
-      .pipe(switchMap(() => of(user)));
+    if (updates) {
+      Object.assign(user, { ...updates });
+    }
+
+    return from(this.afs.doc(`users/${uid}`).update(user))
+      .pipe(switchMap(() => of(firebaseUser)));
   }
 
   private generateAvatar(id: string): string {

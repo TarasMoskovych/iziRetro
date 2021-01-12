@@ -9,6 +9,7 @@ import { Board } from 'src/app/models';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { AddDashboardModalComponent } from '../add-dashboard-modal/add-dashboard-modal.component';
+import { ShareComponent } from '../share/share.component';
 
 @Component({
   selector: 'app-dashboard-panel',
@@ -49,8 +50,14 @@ export class DashboardPanelComponent implements OnInit {
   }
 
   onShareUrl(board: Board): void {
-    this.clipboard.copy(`${window.location.origin}/dashboard?redirectUrl=${board.id}`);
+    const url = `${window.location.origin}/dashboard?redirectUrl=${board.id}`;
+
+    this.clipboard.copy(url);
     this.notificationService.showMessage('Copied to clipboard');
+    this.dialog.open(ShareComponent, {
+      data: url,
+      panelClass: 'share-modal',
+    });
   }
 
   onBoardsSearch(value: string, myBoards?: boolean): void {

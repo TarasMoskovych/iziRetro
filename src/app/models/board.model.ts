@@ -3,5 +3,4 @@ export interface Board {
   date?: number;
   id?: string;
   creator?: string;
-  sharedWith?: string[];
 }

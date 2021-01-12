@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { QRCodeModule } from 'angularx-qrcode';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import {
@@ -9,6 +10,7 @@ import {
   DashBoardsListComponent,
   DashboardPanelComponent,
   DashboardPanelActionsComponent,
+  ShareComponent,
 } from './components';
 import { SharedModule } from '../shared/shared.module';
 
@@ -20,9 +22,11 @@ import { SharedModule } from '../shared/shared.module';
     DashBoardsListComponent,
     DashboardPanelComponent,
     DashboardPanelActionsComponent,
+    ShareComponent,
   ],
   imports: [
     CommonModule,
+    QRCodeModule,
     DashboardRoutingModule,
     SharedModule,
   ],

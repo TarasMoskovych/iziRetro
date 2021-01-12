@@ -4,3 +4,4 @@ export * from './board-view-item/board-view-item.component';
 export * from './dashboard-panel/dashboard-panel.component';
 export * from './dashboard-panel-actions/dashboard-panel-actions.component';
 export * from './dashboards-list/dashboards-list.component';
+export * from './share/share.component';

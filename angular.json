@@ -38,7 +38,8 @@
             "scripts": [],
             "allowedCommonJsDependencies": [
               "randomatic",
-              "md5"
+              "md5",
+              "qrcode"
             ]
           },
           "configurations": {
