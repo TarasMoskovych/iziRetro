@@ -1,5 +1,18 @@
 .login {
+  background: transparent;
+  border-radius: 20px;
+  box-shadow: none;
+  color: #3a517d;
   text-align: center;
+
+  .mat-card-title {
+    margin-bottom: 15px;
+  }
+
+  .mat-raised-button,
+  .mat-card-subtitle {
+    color: #3a517d;
+  }
 
   &__field-wrapper,
   &__actions button {
@@ -11,6 +24,27 @@
 
     mat-progress-spinner {
       margin: 0 auto;
+    }
+  }
+
+  &__divider {
+    margin: 10px 0;
+  }
+
+  &__login-btn,
+  &__google-btn {
+    background-color: rgba(255, 255, 255, 0.65);
+  }
+
+  &__register-link {
+    color: darken(#3a517d, 10%);
+    font-weight: 700;
+    text-decoration: none;
+
+    &:focus,
+    &:hover {
+      color: #3a517d;
+      text-decoration: underline;
     }
   }
 }

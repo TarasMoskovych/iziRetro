@@ -61,12 +61,24 @@
   }
 
   &__item {
-    border: 5px solid transparent;
+    border: 2px solid transparent;
     min-height: 50px;
     margin-top: 10px;
     border-radius: 10px;
     padding: 5px;
-    background-color: #fff;
+
+    backdrop-filter: blur(7.0px);
+    -webkit-backdrop-filter: blur(7.0px);
+    background: rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+
+    button {
+      background-color: rgba(255, 255, 255, 0.5);
+      border: 0;
+      border-radius: 10px;
+      padding: 5px 10px;
+      color: inherit;
+    }
 
     textarea {
       resize: none;
@@ -74,6 +86,7 @@
       border: 0;
       padding: 0;
       outline: none;
+      background-color: transparent;
     }
 
     div {

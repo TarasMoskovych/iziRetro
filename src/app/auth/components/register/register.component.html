@@ -1,6 +1,8 @@
 <mat-card class="register">
   <mat-card-title>Register</mat-card-title>
+
   <mat-card-subtitle>Register to iziRetro</mat-card-subtitle>
+
   <mat-card-content>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
@@ -36,10 +38,10 @@
       <div class="register__actions">
         <ng-container *ngIf="{loading: loading$ | async} as state">
           <mat-progress-spinner *ngIf="state.loading" diameter="30" mode="indeterminate"></mat-progress-spinner>
-          <button *ngIf="!state.loading" mat-raised-button color="primary" [disabled]="form.invalid">Register</button>
+          <button class="register__register-btn" *ngIf="!state.loading" mat-raised-button color="primary" [disabled]="form.invalid">Register</button>
         </ng-container>
       </div>
     </form>
   </mat-card-content>
-  <p>Already have an account? <a routerLink="/login">Click here</a> to Sign In</p>
+  <p>Already have an account? <a class="register__login-link" routerLink="/login">Click here</a> to Sign In</p>
 </mat-card>

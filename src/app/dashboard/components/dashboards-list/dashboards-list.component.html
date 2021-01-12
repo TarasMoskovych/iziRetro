@@ -2,21 +2,28 @@
   <mat-list-item
     *ngFor="let board of boards | filter:'title':searchQuery | orderBy:sort:sort === 'date'"
     class="dashboards-list__item"
-    role="listitem"
-  ><div [routerLink]="['/dashboard', board.id]"  class="dashboards-list__item-title">
-      {{ board.title }}
-    </div>
-    <span class="dashboards-list__item-menu">
-      {{ board.date | date }}
-      <ng-container *ngIf="creator">
-        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Open menu">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <button (click)="onShareUrl(board)" mat-menu-item>Share URL</button>
-          <button (click)="onRemove(board)" mat-menu-item>Remove</button>
-        </mat-menu>
-      </ng-container>
-    </span>
+    role="listitem">
+
+      <div [routerLink]="['/dashboard', board.id]"  class="dashboards-list__item-title">
+        {{ board.title }}
+      </div>
+
+      <span class="dashboards-list__item-menu">
+        <span>
+          {{ board.date | date }}
+        </span>
+
+        <ng-container *ngIf="creator">
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Open menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+
+          <mat-menu #menu="matMenu">
+            <button (click)="onShareUrl(board)" mat-menu-item>Share URL</button>
+            <button (click)="onRemove(board)" mat-menu-item>Remove</button>
+          </mat-menu>
+        </ng-container>
+      </span>
+
   </mat-list-item>
 </mat-list>

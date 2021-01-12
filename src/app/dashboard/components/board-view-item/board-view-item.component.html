@@ -1,6 +1,6 @@
 <div class="board-view-item"
   [class.board-view-item--edit]="edit" (click)="onToggle($event, true)"
-  [ngStyle]="{'background-color': edit ? 'white' : color, 'border-color': color }"
+  [ngStyle]="{'background-color': color, 'border-color': color }"
   ><div *ngIf="!edit">
     {{ post.value }}
   </div>

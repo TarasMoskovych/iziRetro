@@ -1,24 +1,35 @@
 .board-view-item {
-  border: 5px solid transparent;
-  color: #fff;
   cursor: pointer;
-  min-height: 50px;
   margin-top: 10px;
+  min-height: 50px;
   padding: 5px;
   transition: .3s;
+  border-radius: 10px;
+
+  backdrop-filter: blur(7.0px);
+  -webkit-backdrop-filter: blur(7.0px);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+
+  button {
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 0;
+    border-radius: 10px;
+    padding: 5px 10px;
+    color: inherit;
+  }
 
   &:hover {
-    border-radius: 10px;
-    background-color: white !important;
-    color: black;
+    border-radius: 20px;
+    padding: 5px 10px;
   }
 
   textarea {
+    border: 0;
+    outline: none;
+    padding: 0;
     resize: none;
     width: 100%;
-    border: 0;
-    padding: 0;
-    outline: none;
+    background-color: transparent;
   }
 
   div {

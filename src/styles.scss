@@ -1,16 +1,38 @@
 html,
 body {
+  color: #3a517d;
   height: 100%;
 }
 
+* {
+  font-family: 'Poppins', "Helvetica Neue", sans-serif;
+}
+
 body {
-  background-color: #F7F8FB;
+  background: url('assets/glass-backdrop.jpg') no-repeat center center fixed;
+  background-size: 100% 100%;
+  height: 100%;
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.glass-backdrop {
+  -webkit-backdrop-filter: blur(7.0px);
+  backdrop-filter: blur(7.0px);
+  background: rgba(255, 255, 255, 0.25);
+  height: 100%;
+  width: 100%;
 }
 
 .dashboards-list__item {
   .mat-list-item-content {
     justify-content: space-between;
   }
+}
+
+.mat-menu-panel {
+  backdrop-filter: blur(7.0px);
+  -webkit-backdrop-filter: blur(7.0px);
+  background: rgba(255, 255, 255, 0.65) !important;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }

@@ -31,19 +31,19 @@ export class PostService {
     const data: Column[] = [
       {
         boardId,
-        color: '#009688',
+        color: 'rgb(3 186 169 / 40%)',
         position: 1,
         title: 'Went Well',
       },
       {
         boardId,
-        color: '#E91E63',
+        color: 'rgb(255 0 87 / 40%)',
         position: 2,
         title: 'To Improve'
       },
       {
         boardId,
-        color: '#9C27B0',
+        color: 'rgb(156 39 176 / 40%)',
         position: 3,
         title: 'Action Item'
       }
