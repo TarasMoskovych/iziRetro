@@ -3,7 +3,9 @@ import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
+
 import { Board, Column, Post } from 'src/app/models';
+import { DashboardService } from 'src/app/services/dashboard.service';
 import { PostService } from 'src/app/services/post.service';
 
 @Component({
@@ -13,25 +15,27 @@ import { PostService } from 'src/app/services/post.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoardViewComponent implements OnInit {
+  board$: Observable<Board>;
   columns$: Observable<Column[]>;
   posts$: Observable<Post[]>;
   search$ = new BehaviorSubject<string>('');
   sort$ = new BehaviorSubject<string>('date');
 
-  board: Board;
+  boardId: string;
   verticalLayout = false;
   addNewPostToggleMap: { [key: string]: boolean } = {};
   editPostToggleMap: { [key: string]: boolean } = {};
 
   constructor(
+    private dashboardService: DashboardService,
     private route: ActivatedRoute,
     private postService: PostService,
     private router: Router,
   ) { }
 
   ngOnInit(): void {
-    this.board = this.route.snapshot.data['board'];
-    this.board ? this.getData() : this.router.navigateByUrl('dashboard');
+    this.boardId = this.route.snapshot.params['id'];
+    this.boardId ? this.getData() : this.router.navigateByUrl('dashboard');
   }
 
   onLayoutChange(e: MatButtonToggleChange): void {
@@ -43,8 +47,10 @@ export class BoardViewComponent implements OnInit {
   }
 
   onSaveNewItem(value: string, column: Column): void {
+    if (!value.length) return;
+
     this.addNewPostToggleMap[column.title] = false;
-    this.postService.addPost({ value, columnPosition: column.position, boardId: this.board.id as string })
+    this.postService.addPost({ value, columnPosition: column.position, boardId: this.boardId })
       .pipe(take(1))
       .subscribe();
   }
@@ -69,10 +75,9 @@ export class BoardViewComponent implements OnInit {
   }
 
   private getData(): void {
-    const boardId = this.board.id as string;
-
-    this.posts$ = this.postService.getPosts(boardId);
-    this.columns$ = this.postService.getColumns(boardId).pipe(
+    this.board$ = this.dashboardService.getBoard(this.boardId);
+    this.posts$ = this.postService.getPosts(this.boardId);
+    this.columns$ = this.postService.getColumns(this.boardId).pipe(
       tap((column: Column[]) => {
         column.forEach((column: Column) => {
           if (!this.addNewPostToggleMap[column.title]) {

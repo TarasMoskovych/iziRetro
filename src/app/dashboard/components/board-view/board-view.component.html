@@ -1,4 +1,4 @@
-<div class="board">
+<div *ngIf="board$ | async as board" class="board">
   <div class="board__header">
     <div class="board__layout">
       Change layout
@@ -21,7 +21,7 @@
   </div>
   <div class="board__body">
     <div class="board__body-header">
-      <h1>{{board?.title}}</h1>
+      <h1>{{board.title}}</h1>
     </div>
 
     <div
@@ -47,7 +47,7 @@
           <textarea appAutofocus rows="4" #textarea></textarea>
 
           <div>
-            <button (click)="onSaveNewItem(textarea.value, column)">Add</button>
+            <button (click)="onSaveNewItem(textarea.value.trim(), column)">Add</button>
             <button (click)="toggle(column.title, false)">X</button>
           </div>
         </div>

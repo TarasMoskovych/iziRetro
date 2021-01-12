@@ -17,7 +17,7 @@ export class BoardViewItemComponent {
   onSave(e: MouseEvent, value: string): void {
     e.stopPropagation();
 
-    if (value.trim().length) {
+    if (value.length) {
       this.edit = false;
       this.save.emit({ ...this.post, value });
     }

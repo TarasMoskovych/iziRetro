@@ -20,6 +20,7 @@
 
           <mat-menu #menu="matMenu">
             <button (click)="onShareUrl(board)" mat-menu-item>Share URL</button>
+            <button (click)="onFreeze(board)" mat-menu-item>{{ board.completed ? 'Unfreeze' : 'Freeze' }}</button>
             <button (click)="onRemove(board)" mat-menu-item>Remove</button>
           </mat-menu>
         </ng-container>

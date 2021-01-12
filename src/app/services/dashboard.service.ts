@@ -49,7 +49,7 @@ export class DashboardService {
       .pipe(
         switchMap((firebaseUser: FirebaseUser) => this.authService.getUserByEmail(firebaseUser.email as string)),
         switchMap((user: User) => {
-          if (!user.sharedBoards?.length) return of([]);
+          if (!user?.sharedBoards?.length) return of([]);
           return this.afs.collection<Board>('boards', (ref: FirestoreCollectionReference) => ref
             .where('id', 'in', user.sharedBoards))
             .valueChanges();
@@ -61,6 +61,13 @@ export class DashboardService {
     return this.getBoardByIdRef(id)
       .valueChanges()
       .pipe((map((boards: Board[]) => boards[0])));
+  }
+
+  editBoard(board: Board): Observable<void> {
+    return this.getBoardByIdRef(board.id as string).get()
+      .pipe(switchMap((snapshot: FirestoreQuerySnapshot) => {
+        return this.afs.doc(`boards/${snapshot.docs[0].id}`).update({ ...board });
+      }));
   }
 
   shareBoard(): Observable<FirebaseUserInfo> {

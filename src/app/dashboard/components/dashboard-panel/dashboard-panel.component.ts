@@ -40,7 +40,7 @@ export class DashboardPanelComponent implements OnInit {
   onOpenAddDashboardModal(): void {
     this.dialog.open(AddDashboardModalComponent).afterClosed()
      .pipe(take(1))
-     .subscribe((title: string) => title?.length && this.addBoard({ title }));
+     .subscribe((title: string) => title?.length && this.addBoard({ title, completed: false }));
   }
 
   onRemoveBoard(board: Board): void {
@@ -58,6 +58,12 @@ export class DashboardPanelComponent implements OnInit {
       data: url,
       panelClass: 'share-modal',
     });
+  }
+
+  onFreeze(board: Board): void {
+    this.dashboardService.editBoard({ ...board, completed: !board.completed })
+      .pipe(take(1))
+      .subscribe();
   }
 
   onBoardsSearch(value: string, myBoards?: boolean): void {

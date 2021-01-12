@@ -15,9 +15,14 @@ export class DashBoardsListComponent {
   @Input() sort: string | null;
   @Output() removeBoard = new EventEmitter<Board>();
   @Output() shareUrl = new EventEmitter<Board>();
+  @Output() freeze = new EventEmitter<Board>();
 
   onShareUrl(board: Board): void {
     this.shareUrl.emit(board);
+  }
+
+  onFreeze(board: Board): void {
+    this.freeze.emit(board);
   }
 
   onRemove(board: Board): void {

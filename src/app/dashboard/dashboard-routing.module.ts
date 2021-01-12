@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { BoardResolverService } from '../services/board-resolver.service';
 import { BoardViewComponent, DashboardPanelComponent } from './components';
 
 const routes: Routes = [
@@ -12,9 +11,6 @@ const routes: Routes = [
   {
     path: ':id',
     component: BoardViewComponent,
-    resolve: {
-      board: BoardResolverService,
-    },
   },
 ];
 

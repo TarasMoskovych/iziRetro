@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
-import { from, Observable, of} from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import * as md5 from 'md5';
 import { FirebaseError } from '@firebase/util';
@@ -103,8 +103,11 @@ export class AuthService {
       Object.assign(user, { ...updates });
     }
 
-    return from(this.afs.doc(`users/${uid}`).update(user))
-      .pipe(switchMap(() => of(firebaseUser)));
+    return this.afs.doc(`users/${uid}`).get()
+      .pipe(
+        switchMap(snapshot => from(this.afs.doc(`users/${uid}`)[snapshot.exists ? 'update' : 'set'](user))),
+        switchMap(() => of(firebaseUser)),
+      );
   }
 
   private generateAvatar(id: string): string {

@@ -32,7 +32,7 @@ export class RegisterComponent implements OnInit {
     this.authService.register(this.form.value)
       .pipe(take(1))
       .subscribe(
-        () => this.router.navigateByUrl('login'),
+        () => this.router.navigate(['login'], { queryParamsHandling: 'preserve' }),
         () => this.loading.next(false),
       );
   }

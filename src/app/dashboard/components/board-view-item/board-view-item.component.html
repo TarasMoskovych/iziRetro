@@ -7,7 +7,7 @@
   <ng-container *ngIf="edit">
     <textarea appAutofocus #textarea rows="4" [value]="post.value"></textarea>
     <div>
-      <button (click)="onSave($event, textarea.value)">Save</button>
+      <button (click)="onSave($event, textarea.value.trim())">Save</button>
       <button (click)="onToggle($event, false)">X</button>
     </div>
   </ng-container>

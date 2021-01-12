@@ -22,6 +22,7 @@
           [sort]="sortBoards$ | async"
           (removeBoard)="onRemoveBoard($event)"
           (shareUrl)="onShareUrl($event)"
+          (freeze)="onFreeze($event)"
         ></app-dashboards-list>
       </mat-tab>
     </ng-container>
