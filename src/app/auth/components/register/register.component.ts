@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, EventEmitter } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';

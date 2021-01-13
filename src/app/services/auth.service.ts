@@ -14,6 +14,7 @@ import { NotificationService } from './notification.service';
   providedIn: 'root'
 })
 export class AuthService {
+  userData: Partial<UserData>;
 
   constructor(
     private afauth: AngularFireAuth,
@@ -41,6 +42,7 @@ export class AuthService {
           if (user?.emailVerified) {
             return of(user);
           }
+          this.afauth.signOut();
           throw new FirebaseError('INACTIVE', 'Your Account is inactive. Please, confirm your email.');
         }),
         catchError((err: AuthError) => this.notificationService.handleError(err))
@@ -68,7 +70,10 @@ export class AuthService {
           return from(user.updateProfile({ displayName, photoURL: this.generateAvatar(user.uid) }))
         }),
         switchMap(() => this.updateUser(userData)),
-        tap(() => this.notificationService.showMessage('Registered.')),
+        tap(() => {
+          this.userData = { email, password };
+          this.notificationService.showMessage('Registered.');
+        }),
         catchError((err: AuthError) => this.notificationService.handleError(err))
       );
   }

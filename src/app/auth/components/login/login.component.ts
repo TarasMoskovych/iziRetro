@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   private loading = new Subject<boolean>();
 
   form: FormGroup;
@@ -22,6 +22,10 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildForm();
+  }
+
+  ngOnDestroy(): void {
+    this.authService.userData = {};
   }
 
   onSignInWithGoogle(): void {
@@ -42,9 +46,11 @@ export class LoginComponent implements OnInit {
   }
 
   private buildForm(): void {
+    const { email, password } = this.authService.userData || {};
+
     this.form = new FormGroup({
-      email: new FormControl(null, [Validators.required, Validators.email]),
-      password: new FormControl(null, [Validators.required, Validators.minLength(6)])
+      email: new FormControl(email, [Validators.required, Validators.email]),
+      password: new FormControl(password, [Validators.required, Validators.minLength(6)])
     });
   }
 }
