@@ -1,6 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
+
 import { FirebaseUser } from 'src/app/models';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -10,13 +11,10 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   user$: Observable<FirebaseUser> = this.authService.getCurrentUser();
 
   constructor(private authService: AuthService) { }
-
-  ngOnInit(): void {
-  }
 
   onLogout(): void {
     this.authService.logout()
