@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, DocumentReference } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
 import { from, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Column, FirestoreCollectionReference, FirestoreQuerySnapshot, Post } from '../models';
@@ -16,15 +16,11 @@ export class PostService {
   ) { }
 
   getColumns(boardId: string): Observable<Column[]> {
-    return this.afs.collection<Column>('columns', (ref: FirestoreCollectionReference) => ref
-      .where('boardId', '==', boardId))
-      .valueChanges();
+    return this.getColumnsRef(boardId).valueChanges();
   }
 
   getPosts(boardId: string): Observable<Post[]> {
-    return this.afs.collection<Post>('posts', (ref: FirestoreCollectionReference) => ref
-      .where('boardId', '==', boardId))
-      .valueChanges();
+    return this.getPostsRef(boardId).valueChanges();
   }
 
   initColumns(boardId: string): Observable<boolean> {
@@ -75,5 +71,15 @@ export class PostService {
           return this.afs.doc(`posts/${snapshot.docs[0].id}`).update(post);
         })
       );
+  }
+
+  getColumnsRef(boardId: string): AngularFirestoreCollection<Column> {
+    return this.afs.collection<Column>('columns', (ref: FirestoreCollectionReference) => ref
+      .where('boardId', '==', boardId));
+  }
+
+  getPostsRef(boardId: string): AngularFirestoreCollection<Post> {
+    return this.afs.collection<Post>('posts', (ref: FirestoreCollectionReference) => ref
+      .where('boardId', '==', boardId));
   }
 }

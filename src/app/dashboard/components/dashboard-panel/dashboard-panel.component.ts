@@ -44,7 +44,7 @@ export class DashboardPanelComponent implements OnInit {
   }
 
   onRemoveBoard(board: Board): void {
-    this.dashboardService.removeBoard(board)
+    this.dashboardService.removeBoard(board.id as string)
       .pipe(take(1))
       .subscribe();
   }
