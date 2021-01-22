@@ -4,18 +4,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { of, throwError } from 'rxjs';
 
-import { FirebaseUserInfo } from 'src/app/models';
 import { AuthService } from 'src/app/services/auth.service';
 import { LoginComponent } from './login.component';
-
-const userData: FirebaseUserInfo = {
-  displayName: 'test name',
-  email: 'abc@gmail.com',
-  phoneNumber: '1234',
-  photoURL: null,
-  providerId: '1',
-  uid: '1',
-};
+import { firebaseUserInfo } from 'src/app/mocks';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -49,7 +40,7 @@ describe('LoginComponent', () => {
   });
 
   it('should sign in with google provider', () => {
-    authServiceSpy.signIn.and.returnValue(of(userData));
+    authServiceSpy.signIn.and.returnValue(of(firebaseUserInfo));
     el.query(By.css('.login__google-btn')).triggerEventHandler('click', null);
 
     expect(authServiceSpy.signIn).toHaveBeenCalled();
@@ -79,14 +70,14 @@ describe('LoginComponent', () => {
     };
 
     it('should not sign in when form is invalid', () => {
-      authServiceSpy.login.and.returnValue(of(userData));
+      authServiceSpy.login.and.returnValue(of(firebaseUserInfo));
       btn.nativeElement.click();
 
       expect(authServiceSpy.login).not.toHaveBeenCalled();
     });
 
     it('should successfully sign in when form is valid', () => {
-      authServiceSpy.login.and.returnValue(of(userData));
+      authServiceSpy.login.and.returnValue(of(firebaseUserInfo));
 
       component.loading$.subscribe((isVisible: boolean) => loading = isVisible);
       setValuesAndSubmitForm();

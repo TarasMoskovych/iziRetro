@@ -6,18 +6,9 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of, throwError } from 'rxjs';
 
-import { FirebaseUserInfo } from 'src/app/models';
 import { AuthService } from 'src/app/services/auth.service';
 import { RegisterComponent } from './register.component';
-
-const userData: FirebaseUserInfo = {
-  displayName: 'test name',
-  email: 'abc@gmail.com',
-  phoneNumber: '1234',
-  photoURL: null,
-  providerId: '1',
-  uid: '1',
-};
+import { firebaseUserInfo } from 'src/app/mocks';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
@@ -90,7 +81,7 @@ describe('RegisterComponent', () => {
     });
 
     it('should successfully register when form is valid', () => {
-      authServiceSpy.register.and.returnValue(of(userData));
+      authServiceSpy.register.and.returnValue(of(firebaseUserInfo));
 
       component.loading$.subscribe((isVisible: boolean) => loading = isVisible);
       setValuesAndSubmitForm();

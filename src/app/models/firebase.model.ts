@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 
 export type AuthUserCredential = firebase.auth.UserCredential;
+export type AuthCredential = firebase.auth.AuthCredential;
 export type AuthError = firebase.auth.Error;
 export type FirestoreCollectionReference = firebase.firestore.CollectionReference;
 export type FirestoreFieldValue = firebase.firestore.FieldValue;
