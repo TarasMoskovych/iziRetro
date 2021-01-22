@@ -1,15 +1,21 @@
 .auth {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  height: 100%;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
 
   &__wrapper {
-    -webkit-backdrop-filter: blur(7.0px);
-    backdrop-filter: blur(7.0px);
-    background: rgba(255, 255, 255, 0.25) !important;
-    border-radius: 20px;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(2rem);
+    background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.8),  rgba(255, 255, 255, 0.2));
+    border-radius: 30px;
     max-width: 400px;
+
+    @media (max-width: 1023px) {
+      max-width: 420px;
+    }
+
+    @media (max-width: 767px) {
+      max-width: 320px;
+    }
   }
 }

@@ -1,14 +1,16 @@
 <div *ngIf="board$ | async as board" class="board">
   <div class="board__header">
     <div class="board__layout">
-      Change layout
+      <span class="board__layout-label">
+        Change layout
+      </span>
 
       <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
         <mat-button-toggle (change)="onLayoutChange($event)" checked="true" value="HORIZONTAL">
-          <mat-icon>view_column</mat-icon>
+          <mat-icon svgIcon="horizontal" aria-hidden="false" aria-label="Example thumbs up SVG icon"></mat-icon>
         </mat-button-toggle>
         <mat-button-toggle (change)="onLayoutChange($event)" value="VERTICAL">
-          <mat-icon>table_rows</mat-icon>
+          <mat-icon svgIcon="vertical" aria-hidden="false" aria-label="Example thumbs up SVG icon"></mat-icon>
         </mat-button-toggle>
       </mat-button-toggle-group>
     </div>

@@ -2,11 +2,42 @@
   display: flex;
   justify-content: space-between;
 
+  @media (max-width: 767px) {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &__add {
+    @media (max-width: 767px) {
+      margin-bottom: 20px;
+    }
+  }
+
+  button {
+    background-color: #426696;
+  }
+
+  mat-option,
+  ::ng-deep .mat-select-value,
+  mat-label {
+    color: #426696;
+  }
+
   &__right {
     margin-left: auto;
 
     mat-form-field:first-child {
       margin-right: 15px;
+    }
+
+    @media (max-width: 767px) {
+      width: 100%;
+
+      mat-form-field {
+        width: 100%;
+      }
     }
   }
 }

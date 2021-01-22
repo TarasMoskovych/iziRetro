@@ -1,4 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+
+import { MatIconRegistry } from '@angular/material/icon';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -8,6 +11,7 @@ import { Board, Column, Post } from 'src/app/models';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { PostService } from 'src/app/services/post.service';
 
+import { VERTICAL_LAYOUT, HORIZONTAL_LAYOUT } from '../../../../assets/icons';
 @Component({
   selector: 'app-board-view',
   templateUrl: './board-view.component.html',
@@ -27,11 +31,16 @@ export class BoardViewComponent implements OnInit {
   editPostToggleMap: { [key: string]: boolean } = {};
 
   constructor(
+    iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer,
     private dashboardService: DashboardService,
     private route: ActivatedRoute,
     private postService: PostService,
     private router: Router,
-  ) { }
+  ) {
+    iconRegistry.addSvgIconLiteral('vertical', sanitizer.bypassSecurityTrustHtml(VERTICAL_LAYOUT));
+    iconRegistry.addSvgIconLiteral('horizontal', sanitizer.bypassSecurityTrustHtml(HORIZONTAL_LAYOUT));
+  }
 
   ngOnInit(): void {
     this.boardId = this.route.snapshot.params['id'];

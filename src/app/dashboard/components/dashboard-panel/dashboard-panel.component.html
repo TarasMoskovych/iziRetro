@@ -4,7 +4,7 @@
     <ng-container *ngIf="boards$ | async as boards">
       <mat-tab>
         <ng-template mat-tab-label>
-          <span [matBadge]="boards.length" matBadgeOverlap="false">My boards</span>
+          <span class="dashboard-panel__tab" [matBadge]="boards.length" matBadgeOverlap="false">My boards</span>
         </ng-template>
         <div class="dashboard-panel__actions">
           <app-dashboard-panel-actions
@@ -30,7 +30,7 @@
     <ng-container *ngIf="sharedWithMe$ | async as boards">
       <mat-tab>
         <ng-template mat-tab-label>
-          <span [matBadge]="boards.length" matBadgeOverlap="false">Shared with Me</span>
+          <span class="dashboard-panel__tab" [matBadge]="boards.length" matBadgeOverlap="false">Shared with Me</span>
         </ng-template>
         <div class="dashboard-panel__actions">
           <app-dashboard-panel-actions
@@ -49,5 +49,3 @@
 
   </mat-tab-group>
 </div>
-
-<app-fortune></app-fortune>

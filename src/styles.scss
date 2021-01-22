@@ -1,26 +1,68 @@
 html,
 body {
-  color: #3a517d;
-  height: 100%;
+  color: #426696;
+  overflow: hidden;
 }
+
+// tablet
+// @media (max-width: 1023px) {}
+// mobile
+// @media (max-width: 767px) {}
 
 * {
   font-family: 'Poppins', "Helvetica Neue", sans-serif;
-}
-
-body {
-  background: url('assets/glass-backdrop.jpg') no-repeat center center fixed;
-  background-size: 100% 100%;
-  height: 100%;
   margin: 0;
+  padding: 0;
 }
 
-.glass-backdrop {
-  -webkit-backdrop-filter: blur(7.0px);
-  backdrop-filter: blur(7.0px);
-  background: rgba(255, 255, 255, 0.25);
-  height: 100%;
-  width: 100%;
+main {
+  align-items: center;
+  background: linear-gradient(to right top, #65dfc9, #6cdbeb);
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.glass {
+  backdrop-filter: blur(2rem);
+  background: #fff;
+  background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.7),  rgba(255, 255, 255, 0.3));
+  border-radius: 30px;
+  box-shadow: -1px -1px 1px 1px rgb(255, 255, 255), 0px 0px 1px 1px rgb(255, 255, 255, 0.5);
+  height: 90vh;
+  height: 90vh;
+  overflow: auto;
+  width: 80%;
+  z-index: 2;
+
+  @media (max-width: 1023px) {
+    width: 90%;
+  }
+
+  @media (max-width: 767px) {
+    width: 95%;
+  }
+}
+
+.circle1,
+.circle2 {
+  background: #fff;
+  background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.7),  rgba(255, 255, 255, 0.3));
+  border-radius: 50%;
+  box-shadow: -1px -1px 1px 1px rgb(255, 255, 255), 0px 0px 1px 1px rgb(255, 255, 255);
+  height: 20rem;
+  position: absolute;
+  width: 20rem;
+}
+
+.circle1 {
+  right: 2%;
+  top: 1%;
+}
+
+.circle2 {
+  bottom: 1%;
+  left: 2%;
 }
 
 .dashboards-list__item {
@@ -30,8 +72,8 @@ body {
 }
 
 .mat-menu-panel {
-  backdrop-filter: blur(7.0px);
   -webkit-backdrop-filter: blur(7.0px);
+  backdrop-filter: blur(7.0px);
   background: rgba(255, 255, 255, 0.65) !important;
   border-radius: 10px;
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
