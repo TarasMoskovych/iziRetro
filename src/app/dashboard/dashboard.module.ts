@@ -13,7 +13,6 @@ import {
   ShareComponent,
 } from './components';
 import { SharedModule } from '../shared/shared.module';
-import { FortuneComponent } from './components/fortune/fortune.component';
 
 @NgModule({
   declarations: [
