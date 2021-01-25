@@ -1,0 +1,36 @@
+.board-edit-item {
+
+  &__field {
+    background-color: transparent;
+    border: 0;
+    outline: none;
+    padding: 0;
+    resize: none;
+    width: 100%;
+
+    &-wrapper {
+      align-items: flex-start;
+      display: flex;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__btn {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 0;
+    border-radius: 10px;
+    padding: 5px 10px;
+    color: inherit;
+  }
+
+  &__icon {
+    height: auto;
+    line-height: initial;
+    width: auto;
+  }
+}

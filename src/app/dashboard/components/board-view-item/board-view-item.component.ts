@@ -12,20 +12,21 @@ export class BoardViewItemComponent {
   @Input() color: string;
   @Input() edit = false
   @Output() save = new EventEmitter<Post>();
+  @Output() remove = new EventEmitter<Post>();
   @Output() toggle = new EventEmitter<{ post: Post, edit: boolean }>();
 
-  onSave(e: MouseEvent, value: string): void {
-    e.stopPropagation();
-
+  onSave(value: string): void {
     if (value.length) {
       this.edit = false;
       this.save.emit({ ...this.post, value });
     }
   }
 
-  onToggle(e: MouseEvent, edit: boolean): void {
-    e.stopPropagation();
+  onToggle(edit: boolean): void {
     this.toggle.emit({ post: this.post, edit });
   }
 
+  onRemove(): void {
+    this.remove.emit(this.post);
+  }
 }

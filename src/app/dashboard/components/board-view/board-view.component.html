@@ -46,12 +46,10 @@
         </div>
 
         <div class="board__item" *ngIf="addNewPostToggleMap[column.title]" [ngStyle]="{'border-color': column.color }">
-          <textarea appAutofocus rows="4" #textarea></textarea>
-
-          <div>
-            <button (click)="onSaveNewItem(textarea.value.trim(), column)">Add</button>
-            <button (click)="toggle(column.title, false)">X</button>
-          </div>
+          <app-board-edit-item
+            (close)="toggle(column.title, false)"
+            (save)="onSaveNewItem($event, column)"
+          ></app-board-edit-item>
         </div>
 
         <ng-container *ngFor="let item of posts | filter:'value':(search$ | async) | orderBy:'date'">
@@ -61,6 +59,7 @@
             [color]="column.color"
             [post]="item"
             (save)="onEditItem($event)"
+            (remove)="onEditItem($event, true)"
             (toggle)="onToggleItem($event)"
           ></app-board-view-item>
         </ng-container>

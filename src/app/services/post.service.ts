@@ -61,14 +61,14 @@ export class PostService {
     }));
   }
 
-  editPost(post: Post): Observable<void | null> {
+  editPost(post: Post, remove: boolean): Observable<void | null> {
     return this.afs.collection<Post>('posts', (ref: FirestoreCollectionReference) => ref
       .where('id', '==', post.id))
       .get()
       .pipe(
         switchMap((snapshot: FirestoreQuerySnapshot) => {
           if (!snapshot) return of(null);
-          return this.afs.doc(`posts/${snapshot.docs[0].id}`).update(post);
+          return this.afs.doc(`posts/${snapshot.docs[0].id}`)[remove ? 'delete': 'update'](post);
         })
       );
   }

@@ -6,6 +6,7 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import {
   AddDashboardModalComponent,
   BoardViewComponent,
+  BoardEditItemComponent,
   BoardViewItemComponent,
   DashBoardsListComponent,
   DashboardPanelComponent,
@@ -18,6 +19,7 @@ import { SharedModule } from '../shared/shared.module';
   declarations: [
     AddDashboardModalComponent,
     BoardViewComponent,
+    BoardEditItemComponent,
     BoardViewItemComponent,
     DashBoardsListComponent,
     DashboardPanelComponent,

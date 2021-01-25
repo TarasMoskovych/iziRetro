@@ -10,30 +10,8 @@
   -webkit-backdrop-filter: blur(7.0px);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 
-  button {
-    background-color: rgba(255, 255, 255, 0.5);
-    border: 0;
-    border-radius: 10px;
-    padding: 5px 10px;
-    color: inherit;
-  }
-
   &:hover {
     border-radius: 20px;
     padding: 5px 10px;
-  }
-
-  textarea {
-    border: 0;
-    outline: none;
-    padding: 0;
-    resize: none;
-    width: 100%;
-    background-color: transparent;
-  }
-
-  div {
-    display: flex;
-    justify-content: space-between;
   }
 }

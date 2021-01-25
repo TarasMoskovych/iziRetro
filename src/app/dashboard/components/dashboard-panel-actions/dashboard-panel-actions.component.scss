@@ -10,13 +10,11 @@
   }
 
   &__add {
+    background-color: #426696;
+
     @media (max-width: 767px) {
       margin-bottom: 20px;
     }
-  }
-
-  button {
-    background-color: #426696;
   }
 
   mat-option,

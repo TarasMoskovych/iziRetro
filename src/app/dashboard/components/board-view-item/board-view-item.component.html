@@ -1,14 +1,15 @@
 <div class="board-view-item"
-  [class.board-view-item--edit]="edit" (click)="onToggle($event, true)"
+  [class.board-view-item--edit]="edit" (click)="onToggle(true)"
   [ngStyle]="{'background-color': color, 'border-color': color }"
   ><div *ngIf="!edit">
     {{ post.value }}
   </div>
   <ng-container *ngIf="edit">
-    <textarea appAutofocus #textarea rows="4" [value]="post.value"></textarea>
-    <div>
-      <button (click)="onSave($event, textarea.value.trim())">Save</button>
-      <button (click)="onToggle($event, false)">X</button>
-    </div>
+    <app-board-edit-item
+      [value]="post.value"
+      (close)="onToggle(false)"
+      (remove)="onRemove()"
+      (save)="onSave($event)"
+    ></app-board-edit-item>
   </ng-container>
 </div>

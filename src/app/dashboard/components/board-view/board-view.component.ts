@@ -68,9 +68,9 @@ export class BoardViewComponent implements OnInit {
     this.editPostToggleMap[e.post.id as string] = e.edit;
   }
 
-  onEditItem(post: Post): void {
+  onEditItem(post: Post, remove: boolean = false): void {
     this.editPostToggleMap[post.id as string] = false;
-    this.postService.editPost(post)
+    this.postService.editPost(post, remove)
       .pipe(take(1))
       .subscribe();
   }
