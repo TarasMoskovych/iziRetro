@@ -70,12 +70,12 @@ export class DashboardService {
       }));
   }
 
-  shareBoard(): Observable<FirebaseUserInfo> {
+  shareBoard(): Observable<FirebaseUserInfo | null> {
     const boardId = this.route.snapshot.queryParams['redirectUrl'];
     let firebaseUser: FirebaseUser;
     let board: Board;
 
-    if (!boardId) return of();
+    if (!boardId) return of(null);
     return this.authService.getCurrentUser()
       .pipe(
         exhaustMap((u: FirebaseUser) => {
@@ -89,7 +89,10 @@ export class DashboardService {
           return this.authService.getUserByEmail(firebaseUser.email as string);
         }),
         exhaustMap((user: User | null) => {
-          return this.authService.updateUser(firebaseUser, { sharedBoards: [ ...new Set([ ...user?.sharedBoards || [], boardId ]) ]});
+          if (user) {
+            return this.authService.updateUser(firebaseUser, { sharedBoards: [ ...new Set([ ...user.sharedBoards || [], boardId ]) ]});
+          }
+          return of(null);
         }),
       );
   }

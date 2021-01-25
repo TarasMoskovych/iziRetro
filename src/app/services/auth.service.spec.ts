@@ -191,7 +191,12 @@ describe('AuthService', () => {
 
   describe('getUserByEmail', () => {
     it('should return a user by email', () => {
-      spyOn(firestore, 'collection').and.returnValue({ valueChanges: () => of([user]) } as any);
+      spyOn(firestore, 'collection').and.callFake((path: any, queryFn: any) => {
+        expect(path).toBe('users');
+        queryFn({ where: () => null });
+
+        return { valueChanges: () => of([user]) } as any;
+      });
       recreateService();
 
       service.getUserByEmail(user.email).subscribe((u: User) => {

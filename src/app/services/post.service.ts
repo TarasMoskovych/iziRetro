@@ -52,7 +52,6 @@ export class PostService {
     return of(true);
   }
 
-
   addPost(post: Post): Observable<DocumentReference> {
     return from(this.afs.collection<Post>('posts').add({
       ...post,
