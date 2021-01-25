@@ -1,14 +1,18 @@
 <div class="header">
 
-  <div class="header__logo">
-    <img routerLink="/dashboard" src="assets/iziRetro_logo.png" alt="">
+  <div routerLink="/dashboard" class="header__logo">
+    <h1>iziRetro</h1>
   </div>
 
   <div class="header__user" *ngIf="user$ | async as user">
     <ng-container *ngIf="user.emailVerified">
+
+      <span class="header__user-name">{{user.displayName}}</span>
+
       <button mat-button [matMenuTriggerFor]="menu">
         <img class="header__user-img" [src]="user.photoURL" alt="">
       </button>
+
       <mat-menu #menu="matMenu">
         <button (click)="onLogout()" mat-menu-item>Logout</button>
       </mat-menu>

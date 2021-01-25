@@ -2,7 +2,9 @@
   background: transparent;
   border-radius: 20px;
   box-shadow: none;
-  color: #3a517d;
+  color: #426696;
+  font-size: 14px;
+  opacity: 0.8;
   text-align: center;
 
   .mat-card-title {
@@ -11,7 +13,7 @@
 
   .mat-raised-button,
   .mat-card-subtitle {
-    color: #3a517d;
+    color: #426696;
   }
 
   &__field-wrapper,
@@ -37,13 +39,13 @@
   }
 
   &__register-link {
-    color: darken(#3a517d, 10%);
+    color: darken(#426696, 10%);
     font-weight: 700;
     text-decoration: none;
 
     &:focus,
     &:hover {
-      color: #3a517d;
+      color: #426696;
       text-decoration: underline;
     }
   }

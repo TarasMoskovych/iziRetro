@@ -1,14 +1,74 @@
 .board {
   padding: 30px;
 
+  mat-button-toggle-group {
+    background: linear-gradient(to right bottom, rgb(255 255 255 / 0%), rgb(255 255 255 / 0%));
+    border-radius: 10px;
+    border: 1px solid rgb(255 255 255);
+    box-shadow: inset -1px -1px 8px 2px rgb(255 255 255 / 50%), inset 0px 0px 20px 0px rgb(255 255 255 / 50%);
+
+    mat-icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    ::ng-deep .mat-button-toggle .mat-button-toggle-ripple, .mat-button-toggle-focus-overlay {
+      border-radius: 9px;
+    }
+
+    ::ng-deep mat-button-toggle {
+      border-left: none !important;
+    }
+
+    .mat-button-toggle-appearance-standard {
+      background: transparent;
+
+      mat-icon {
+        opacity: 0.5;
+      }
+    }
+
+    .mat-button-toggle-checked {
+      background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.7));
+      border-radius: 9px;
+
+      mat-icon {
+        opacity: 1;
+      }
+    }
+
+    ::ng-deep .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+      line-height: 26px !important;
+    }
+
+    ::ng-deep .mat-button-toggle-label-content {
+      padding: 0 20px !important;
+    }
+  }
+
   &__header {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+
+    @media (max-width: 767px) {
+      align-items: flex-start;
+      flex-direction: column;
+    }
   }
 
   &__layout {
-    margin-right: 10px;
+    margin-right: 15px;
+
+    @media (max-width: 767px) {
+      margin-bottom: 15px;
+      margin-right: 0;
+    }
+  }
+
+  &__layout-label {
+    margin-right: 5px;
+    opacity: 0.5;
   }
 
   &__body-header {
