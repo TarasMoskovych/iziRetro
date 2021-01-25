@@ -23,7 +23,6 @@ import { SharedModule } from '../shared/shared.module';
     DashboardPanelComponent,
     DashboardPanelActionsComponent,
     ShareComponent,
-    FortuneComponent,
   ],
   imports: [
     CommonModule,
