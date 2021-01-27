@@ -5,7 +5,11 @@
     role="listitem">
 
     <div class="dashboards-list__item">
-      <div [routerLink]="['/dashboard', board.id]"  class="dashboards-list__item-title">
+      <div
+        [routerLink]="['/dashboard', board.id]"
+        class="dashboards-list__item-title"
+        [class.dashboards-list__item-title--completed]="board.completed"
+      >
         <span>
           {{ board.title }}
         </span>
@@ -22,7 +26,7 @@
           </button>
 
           <mat-menu #menu="matMenu">
-            <button (click)="onShareUrl(board)" mat-menu-item>Share URL</button>
+            <button *ngIf="!board.completed" (click)="onShareUrl(board)" mat-menu-item>Share URL</button>
             <button (click)="onFreeze(board)" mat-menu-item>{{ board.completed ? 'Unfreeze' : 'Freeze' }}</button>
             <button (click)="onRemove(board)" mat-menu-item>Remove</button>
           </mat-menu>

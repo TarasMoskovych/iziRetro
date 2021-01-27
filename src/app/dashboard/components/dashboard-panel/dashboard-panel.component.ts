@@ -1,15 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Clipboard } from '@angular/cdk/clipboard';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { Board } from 'src/app/models';
 import { DashboardService } from 'src/app/services/dashboard.service';
-import { NotificationService } from 'src/app/services/notification.service';
 import { AddDashboardModalComponent } from '../add-dashboard-modal/add-dashboard-modal.component';
-import { ShareComponent } from '../share/share.component';
 
 @Component({
   selector: 'app-dashboard-panel',
@@ -29,8 +26,6 @@ export class DashboardPanelComponent implements OnInit {
     private router: Router,
     private dashboardService: DashboardService,
     private dialog: MatDialog,
-    private notificationService: NotificationService,
-    private clipboard: Clipboard,
   ) { }
 
   ngOnInit(): void {
@@ -50,14 +45,7 @@ export class DashboardPanelComponent implements OnInit {
   }
 
   onShareUrl(board: Board): void {
-    const url = `${window.location.origin}/dashboard?redirectUrl=${board.id}`;
-
-    this.clipboard.copy(url);
-    this.notificationService.showMessage('Copied to clipboard');
-    this.dialog.open(ShareComponent, {
-      data: url,
-      panelClass: 'share-modal',
-    });
+    this.dashboardService.shareUrl(board);
   }
 
   onFreeze(board: Board): void {

@@ -64,8 +64,10 @@ export class BoardViewComponent implements OnInit {
       .subscribe();
   }
 
-  onToggleItem(e: { post: Post, edit: boolean }): void {
-    this.editPostToggleMap[e.post.id as string] = e.edit;
+  onToggleItem(e: { post: Post, edit: boolean }, completed: boolean): void {
+    if (!completed) {
+      this.editPostToggleMap[e.post.id as string] = e.edit;
+    }
   }
 
   onEditItem(post: Post, remove: boolean = false): void {
@@ -83,8 +85,19 @@ export class BoardViewComponent implements OnInit {
     this.sort$.next(value);
   }
 
+  onShareUrl(board: Board): void {
+    this.dashboardService.shareUrl(board);
+  }
+
   private getData(): void {
-    this.board$ = this.dashboardService.getBoard(this.boardId);
+    this.board$ = this.dashboardService.getBoard(this.boardId)
+      .pipe(tap((board: Board) => {
+        if (board.completed) {
+          Object.keys(this.addNewPostToggleMap).forEach((key: string) => this.addNewPostToggleMap[key] = false);
+          Object.keys(this.editPostToggleMap).forEach((key: string) => this.editPostToggleMap[key] = false);
+        }
+      }));
+
     this.posts$ = this.postService.getPosts(this.boardId);
     this.columns$ = this.postService.getColumns(this.boardId).pipe(
       tap((column: Column[]) => {

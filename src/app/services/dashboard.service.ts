@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
+import { Clipboard } from '@angular/cdk/clipboard';
 import { from, Observable, of } from 'rxjs';
 import { exhaustMap, map, switchMap } from 'rxjs/operators';
 
@@ -8,6 +9,9 @@ import { Board, FirebaseUser, FirebaseUserInfo, FirestoreCollectionReference, Fi
 import { AuthService } from './auth.service';
 import { GeneratorService } from './generator.service';
 import { PostService } from './post.service';
+import { NotificationService } from './notification.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ShareComponent } from '../dashboard/components/share/share.component';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +22,10 @@ export class DashboardService {
     private route: ActivatedRoute,
     private afs: AngularFirestore,
     private authService: AuthService,
+    private clipboard: Clipboard,
     private generatorService: GeneratorService,
+    private dialog: MatDialog,
+    private notificationService: NotificationService,
     private postService: PostService
   ) { }
 
@@ -95,6 +102,17 @@ export class DashboardService {
           return of(null);
         }),
       );
+  }
+
+  shareUrl(board: Board): void {
+    const url = `${window.location.origin}/dashboard?redirectUrl=${board.id}`;
+
+    this.clipboard.copy(url);
+    this.notificationService.showMessage('Copied to clipboard');
+    this.dialog.open(ShareComponent, {
+      data: url,
+      panelClass: 'share-modal',
+    });
   }
 
   removeBoard(boardId: string): Observable<void> {

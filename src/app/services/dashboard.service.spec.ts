@@ -1,14 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 
+import { ShareComponent } from '../dashboard/components';
 import { FirestoreMock, firebaseUser, board, user, firebaseUserInfo } from '../mocks';
 import { Board } from '../models';
 import { AuthService } from './auth.service';
 import { DashboardService } from './dashboard.service';
 import { GeneratorService } from './generator.service';
+import { NotificationService } from './notification.service';
 import { PostService } from './post.service';
 
 describe('DashboardService', () => {
@@ -16,22 +19,34 @@ describe('DashboardService', () => {
   let firestore: AngularFirestore;
   let authServiceSpy: jasmine.SpyObj<AuthService>;
   let generatorServiceSpy: jasmine.SpyObj<GeneratorService>;
-  let postServiceServiceSpy: jasmine.SpyObj<PostService>;
+  let postServiceSpy: jasmine.SpyObj<PostService>;
+  let matDialogSpy: jasmine.SpyObj<MatDialog>;
+  let notificationServiceSpy: jasmine.SpyObj<NotificationService>;
+
+  const getProviders = () => {
+    return [
+      DashboardService,
+      { provide: AngularFirestore, useClass: FirestoreMock },
+      { provide: AuthService, useValue: authServiceSpy },
+      { provide: GeneratorService, useValue: generatorServiceSpy },
+      { provide: PostService, useValue: postServiceSpy },
+      { provide: MatDialog, useValue: matDialogSpy },
+      { provide: NotificationService, useValue: notificationServiceSpy },
+    ];
+  };
 
   beforeEach(() => {
     authServiceSpy = jasmine.createSpyObj('AuthService', ['getCurrentUser', 'getUserByEmail', 'updateUser']);
     generatorServiceSpy = jasmine.createSpyObj('GeneratorService', { generateId: '12345' });
-    postServiceServiceSpy = jasmine.createSpyObj('PostService', ['initColumns', 'getColumnsRef', 'getPostsRef']);
+    postServiceSpy = jasmine.createSpyObj('PostService', ['initColumns', 'getColumnsRef', 'getPostsRef']);
+    matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+    notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['showMessage']);
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       providers: [
-        DashboardService,
-        { provide: AngularFirestore, useClass: FirestoreMock },
-        { provide: AuthService, useValue: authServiceSpy },
-        { provide: GeneratorService, useValue: generatorServiceSpy },
-        { provide: PostService, useValue: postServiceServiceSpy },
         { provide: ActivatedRoute, useValue: { snapshot: { queryParams: { redirectUrl: board.id } } } },
+        ...getProviders(),
       ],
     });
 
@@ -46,7 +61,7 @@ describe('DashboardService', () => {
   });
 
   it('should add board', (done: DoneFn) => {
-    postServiceServiceSpy.initColumns.and.returnValue(of(true));
+    postServiceSpy.initColumns.and.returnValue(of(true));
 
     spyOn(firestore, 'collection').and.callFake(() => {
       return {
@@ -148,12 +163,8 @@ describe('DashboardService', () => {
       TestBed.configureTestingModule({
         imports: [RouterTestingModule],
         providers: [
-          DashboardService,
-          { provide: AngularFirestore, useClass: FirestoreMock },
-          { provide: AuthService, useValue: authServiceSpy },
-          { provide: GeneratorService, useValue: jasmine.createSpy() },
-          { provide: PostService, useValue: jasmine.createSpy() },
           { provide: ActivatedRoute, useValue: { snapshot: { queryParams: {} } } },
+          ...getProviders(),
         ],
       });
 
@@ -188,14 +199,22 @@ describe('DashboardService', () => {
         done();
       });
     });
+
+    it('should share board url', () => {
+      const url = `${window.location.origin}/dashboard?redirectUrl=${board.id}`;
+      service.shareUrl(board);
+
+      expect(notificationServiceSpy.showMessage).toHaveBeenCalledOnceWith('Copied to clipboard');
+      expect(matDialogSpy.open).toHaveBeenCalledOnceWith(ShareComponent, { data: url, panelClass: 'share-modal' });
+    });
   });
 
   it('should remove board', (done: DoneFn) => {
     spyOn(firestore, 'collection').and.returnValue({ get: () => of({ docs: [{ id: 1 }] }) } as any);
     spyOn(firestore, 'doc').and.returnValue({ delete: () => Promise.resolve() } as any);
 
-    postServiceServiceSpy.getColumnsRef.and.returnValue({ get: () => of([{ id: 1, ref: { delete: () => Promise.resolve() } }]) } as any);
-    postServiceServiceSpy.getPostsRef.and.returnValue(  { get: () => of([{ id: 1, ref: { delete: () => Promise.resolve() } }]) } as any);
+    postServiceSpy.getColumnsRef.and.returnValue({ get: () => of([{ id: 1, ref: { delete: () => Promise.resolve() } }]) } as any);
+    postServiceSpy.getPostsRef.and.returnValue(  { get: () => of([{ id: 1, ref: { delete: () => Promise.resolve() } }]) } as any);
 
     service.removeBoard(board.id as string).subscribe(() => {
       expect(firestore.collection).toHaveBeenCalledTimes(1);

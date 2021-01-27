@@ -20,8 +20,11 @@
       (select)="onSort($event)"
     ></app-dashboard-panel-actions>
 
+    <button *ngIf="!board.completed" (click)="onShareUrl(board)" mat-icon-button color="primary" aria-label="Share">
+      <mat-icon>share</mat-icon>
+    </button>
   </div>
-  <div class="board__body">
+  <div class="board__body" *ngIf="sort$ | async as sort">
     <div class="board__body-header">
       <h1>{{board.title}}</h1>
     </div>
@@ -36,7 +39,7 @@
             <span>{{column.title}}</span>
           </div>
 
-          <div class="board__column-new-item">
+          <div *ngIf="!board.completed" class="board__column-new-item">
             <button
               (click)="toggle(column.title, true)"
               [ngStyle]="{'background-color': column.color }"
@@ -52,7 +55,7 @@
           ></app-board-edit-item>
         </div>
 
-        <ng-container *ngFor="let item of posts | filter:'value':(search$ | async) | orderBy:'date'">
+        <ng-container *ngFor="let item of posts | filter:'value':(search$ | async) | orderBy:sort:sort === 'date'">
           <app-board-view-item
             *ngIf="item.columnPosition === column.position"
             [edit]="editPostToggleMap[item.id]"
@@ -60,7 +63,7 @@
             [post]="item"
             (save)="onEditItem($event)"
             (remove)="onEditItem($event, true)"
-            (toggle)="onToggleItem($event)"
+            (toggle)="onToggleItem($event, board.completed)"
           ></app-board-view-item>
         </ng-container>
       </div>
