@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BoardViewComponent } from './board-view.component';
 
-describe('BoardViewComponent', () => {
+xdescribe('BoardViewComponent', () => {
   let component: BoardViewComponent;
   let fixture: ComponentFixture<BoardViewComponent>;
 

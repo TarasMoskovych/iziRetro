@@ -61,7 +61,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -90,6 +90,12 @@
           }
         },
         "test": {
+          "configurations": {
+            "production": {
+              "sourceMap": false,
+              "watch": false
+            }
+          },
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "codeCoverage": true,

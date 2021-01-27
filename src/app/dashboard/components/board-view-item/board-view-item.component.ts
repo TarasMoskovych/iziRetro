@@ -8,7 +8,7 @@ import { Post } from 'src/app/models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoardViewItemComponent {
-  @Input() post: Post;
+  @Input() post: Post = {} as Post;
   @Input() color: string;
   @Input() edit = false
   @Output() save = new EventEmitter<Post>();
