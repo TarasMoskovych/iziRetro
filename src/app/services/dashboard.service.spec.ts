@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 
 import { ShareComponent } from '../dashboard/components';
-import { FirestoreMock, firebaseUser, board, user, firebaseUserInfo } from '../mocks';
+import { FirestoreMock, firebaseUser, board, user, firebaseUserInfo, spyOnCollection, spyOnDoc } from '../mocks';
 import { Board } from '../models';
 import { AuthService } from './auth.service';
 import { DashboardService } from './dashboard.service';
@@ -38,7 +38,7 @@ describe('DashboardService', () => {
   beforeEach(() => {
     authServiceSpy = jasmine.createSpyObj('AuthService', ['getCurrentUser', 'getUserByEmail', 'updateUser']);
     generatorServiceSpy = jasmine.createSpyObj('GeneratorService', { generateId: '12345' });
-    postServiceSpy = jasmine.createSpyObj('PostService', ['initColumns', 'getColumnsRef', 'getPostsRef']);
+    postServiceSpy = jasmine.createSpyObj('PostService', ['initColumns', 'getColumnsRef', 'getPostsRef', 'getLikesRef']);
     matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['showMessage']);
 
@@ -62,16 +62,7 @@ describe('DashboardService', () => {
 
   it('should add board', (done: DoneFn) => {
     postServiceSpy.initColumns.and.returnValue(of(true));
-
-    spyOn(firestore, 'collection').and.callFake(() => {
-      return {
-        add: (b: Board) => {
-          expect(b.creator).toBe(firebaseUser.email as string);
-          expect(b.id).toBe(board.id);
-          return Promise.resolve(board);
-        }
-      } as any;
-    });
+    spyOnCollection(firestore);
 
     service.addBoard(board).subscribe((response: boolean) => {
       expect(response).toBeTrue();
@@ -80,12 +71,7 @@ describe('DashboardService', () => {
   });
 
   it('should return my boards', () => {
-    spyOn(firestore, 'collection').and.callFake((path: any, queryFn: any) => {
-      expect(path).toBe('boards');
-      queryFn({ where: () => null });
-
-      return { valueChanges: () => of([board]) } as any;
-    });
+    spyOnCollection(firestore, [board], 'boards');
 
     service.getMyBoards().subscribe((response: Board[]) => {
       expect(response).toEqual([board]);
@@ -95,12 +81,7 @@ describe('DashboardService', () => {
   describe('getBoardsSharedWithMe', () => {
     it('should return boards', () => {
       authServiceSpy.getUserByEmail.and.returnValue(of({ ...user, sharedBoards: ['1'] }));
-      spyOn(firestore, 'collection').and.callFake((path: any, queryFn: any) => {
-        expect(path).toBe('boards');
-        queryFn({ where: () => null });
-
-        return { valueChanges: () => of([board]) } as any;
-      });
+      spyOnCollection(firestore, [board], 'boards');
 
       service.getBoardsSharedWithMe().subscribe((response: Board[]) => {
         expect(response).toEqual([board]);
@@ -109,7 +90,7 @@ describe('DashboardService', () => {
 
     it('should return empty array when user does not have boards', () => {
       authServiceSpy.getUserByEmail.and.returnValue(of(user));
-      spyOn(firestore, 'collection').and.returnValue({ valueChanges: () => of([]) } as any);
+      spyOnCollection(firestore, []);
 
       service.getBoardsSharedWithMe().subscribe((response: Board[]) => {
         expect(response).toEqual([]);
@@ -118,7 +99,7 @@ describe('DashboardService', () => {
 
     it('should return empty array when user is not defined', () => {
       authServiceSpy.getUserByEmail.and.returnValue(of(null as any));
-      spyOn(firestore, 'collection').and.returnValue({ valueChanges: () => of([]) } as any);
+      spyOnCollection(firestore, []);
 
       service.getBoardsSharedWithMe().subscribe((response: Board[]) => {
         expect(response).toEqual([]);
@@ -127,12 +108,7 @@ describe('DashboardService', () => {
   });
 
   it('should return board by id', () => {
-    spyOn(firestore, 'collection').and.callFake((path: any, queryFn: any) => {
-      expect(path).toBe('boards');
-      queryFn({ where: () => null });
-
-      return { valueChanges: () => of([board]) } as any;
-    });
+    spyOnCollection(firestore, [board], 'boards');
 
     service.getBoard('1').subscribe((response: Board) => {
       expect(response).toEqual(board);
@@ -140,15 +116,8 @@ describe('DashboardService', () => {
   });
 
   it('should edit current board', (done: DoneFn) => {
-    spyOn(firestore, 'collection').and.returnValue({ get: () => of({ docs: [{ id: 1 }] }) } as any);
-    spyOn(firestore, 'doc').and.callFake(() => {
-      return {
-        update: (b: Board) => {
-          expect(b).toEqual(board);
-          return Promise.resolve();
-        },
-      } as any;
-    });
+    spyOnCollection(firestore);
+    spyOnDoc(firestore);
 
     service.editBoard(board).subscribe(() => {
       expect(firestore.collection).toHaveBeenCalledTimes(1);
@@ -210,11 +179,13 @@ describe('DashboardService', () => {
   });
 
   it('should remove board', (done: DoneFn) => {
-    spyOn(firestore, 'collection').and.returnValue({ get: () => of({ docs: [{ id: 1 }] }) } as any);
-    spyOn(firestore, 'doc').and.returnValue({ delete: () => Promise.resolve() } as any);
+    const ref = { get: () => of([{ id: 1, ref: { delete: () => Promise.resolve() } }]) } as any;
+    spyOnCollection(firestore);
+    spyOnDoc(firestore);
 
-    postServiceSpy.getColumnsRef.and.returnValue({ get: () => of([{ id: 1, ref: { delete: () => Promise.resolve() } }]) } as any);
-    postServiceSpy.getPostsRef.and.returnValue(  { get: () => of([{ id: 1, ref: { delete: () => Promise.resolve() } }]) } as any);
+    postServiceSpy.getColumnsRef.and.returnValue(ref);
+    postServiceSpy.getPostsRef.and.returnValue(ref);
+    postServiceSpy.getLikesRef.and.returnValue(ref);
 
     service.removeBoard(board.id as string).subscribe(() => {
       expect(firestore.collection).toHaveBeenCalledTimes(1);

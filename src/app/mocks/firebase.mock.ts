@@ -1,5 +1,17 @@
+import { AngularFirestore } from '@angular/fire/firestore';
 import { of } from 'rxjs';
-import { AuthCredential, AuthUserCredential, Board, Column, FirebaseUser, FirebaseUserInfo, Post, User, UserData } from '../models';
+import {
+  AuthCredential,
+  AuthUserCredential,
+  Board,
+  Column,
+  FirebaseUser,
+  FirebaseUserInfo,
+  Like,
+  Post,
+  User,
+  UserData
+} from '../models';
 
 export class GoogleAuthProviderMock {}
 
@@ -97,4 +109,52 @@ export const board: Board = {
   title: 'Test board',
   completed: false,
   id: '12345',
+};
+
+export const likes: Like[] = [
+  {
+    boardId: '1',
+    postId: '1',
+    user,
+  },
+  {
+    boardId: '1',
+    postId: '2',
+    user,
+  },
+  {
+    boardId: '1',
+    postId: '3',
+    user,
+  },
+];
+
+// test utilities
+export const spyOnCollection = (firestoreRef: AngularFirestore, value?: any, key?: string) => {
+  spyOn(firestoreRef, 'collection').and.callFake((path: any, queryFn: any) => {
+    if (key) {
+      expect(path).toBe(key);
+    }
+
+    if (typeof queryFn === 'function') {
+      queryFn({ where: () => null });
+    }
+
+    return {
+      add: (value: any) => Promise.resolve(value),
+      get: () => of(value === null ? null : { docs: [{ id: 1 }] }),
+      valueChanges: () => of(value),
+    } as any;
+  });
+};
+
+export const spyOnDoc = (firestoreRef: AngularFirestore, exists: boolean = false) => {
+  spyOn(firestoreRef, 'doc').and.callFake(() => {
+    return {
+      get: () => of({ exists }),
+      set: () => Promise.resolve(),
+      delete: (value: any) => Promise.resolve(value),
+      update: (value: any) => Promise.resolve(value),
+    } as any;
+  });
 };

@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { of } from 'rxjs';
 
-import { columns, FirestoreMock, posts } from '../mocks';
-import { Column, Post } from '../models';
+import { columns, FirestoreMock, likes, posts, spyOnCollection, spyOnDoc } from '../mocks';
+import { Column, Like, Post } from '../models';
 import { GeneratorService } from './generator.service';
 import { PostService } from './post.service';
 
@@ -32,12 +32,7 @@ describe('PostService', () => {
   });
 
   it('should return columns', () => {
-    spyOn(firestore, 'collection').and.callFake((path: any, queryFn: any) => {
-      expect(path).toBe('columns');
-      queryFn({ where: () => null });
-
-      return { valueChanges: () => of(columns) } as any;
-    });
+    spyOnCollection(firestore, columns, 'columns');
 
     service.getColumns('1').subscribe((response: Column[]) => {
       expect(response).toEqual(columns);
@@ -45,20 +40,23 @@ describe('PostService', () => {
   });
 
   it('should return posts', () => {
-    spyOn(firestore, 'collection').and.callFake((path: any, queryFn: any) => {
-      expect(path).toBe('posts');
-      queryFn({ where: () => null });
-
-      return { valueChanges: () => of(posts) } as any;
-    });
+    spyOnCollection(firestore, posts, 'posts');
 
     service.getPosts('1').subscribe((response: Post[]) => {
       expect(response).toEqual(posts);
     });
   });
 
+  it('should return likes', () => {
+    spyOnCollection(firestore, likes, 'likes');
+
+    service.getLikes('1').subscribe((response: Like[]) => {
+      expect(response).toEqual(likes);
+    });
+  });
+
   it('should init default columns', () => {
-    spyOn(firestore, 'collection').and.returnValue({ add: (post: Post) => Promise.resolve(post) } as any);
+    spyOnCollection(firestore);
 
     service.initColumns('1').subscribe((response: boolean) => {
       expect(firestore.collection).toHaveBeenCalledTimes(3);
@@ -67,7 +65,7 @@ describe('PostService', () => {
   });
 
   it('should add new post', (done: DoneFn) => {
-    spyOn(firestore, 'collection').and.returnValue({ add: (post: Post) => Promise.resolve(post) } as any);
+    spyOnCollection(firestore);
 
     service.addPost(posts[0]).subscribe((response: any) => {
       expect(response.value).toEqual(posts[0].value);
@@ -78,13 +76,9 @@ describe('PostService', () => {
 
   describe('edit', () => {
     beforeEach(() => {
-      spyOn(firestore, 'collection').and.callFake((path: any, queryFn: any) => {
-        expect(path).toBe('posts');
-        queryFn({ where: () => null });
-
-        return { get: () => of({ docs: [{ id: 1 }] }) } as any;
-      });
-      spyOn(firestore, 'doc').and.returnValue({ delete: (post: Post) => Promise.resolve(post), update: (post: Post) => Promise.resolve(post) } as any);
+      spyOnCollection(firestore);
+      spyOnDoc(firestore);
+      spyOn(service, 'getLikesRef').and.returnValue({ get: () => of([{ id: 1, ref: { delete: () => Promise.resolve() } }]) } as any);
     });
 
     it('should update current post', (done: DoneFn) => {
@@ -107,11 +101,45 @@ describe('PostService', () => {
   });
 
   it('should not edit when not found', (done: DoneFn) => {
-    spyOn(firestore, 'collection').and.returnValue({ get: () => of(null) } as any);
+    spyOnCollection(firestore, null);
+
     service.editPost(posts[0], false).subscribe(response => {
-      expect(response).toBeNull();
+      expect(response).toBeUndefined();
       expect(firestore.collection).toHaveBeenCalled();
       done();
+    });
+  });
+
+  it('should add like', (done: DoneFn) => {
+    spyOnCollection(firestore);
+
+    service.addLike(likes[0]).subscribe(() => {
+      expect(firestore.collection).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  describe('removeLike', () => {
+    beforeEach(() => {
+      spyOnDoc(firestore);
+    });
+
+    it('should not remove when snapshot is empty', (done: DoneFn) => {
+      spyOnCollection(firestore, null);
+
+      service.removeLike(likes[0]).subscribe(() => {
+        expect(firestore.doc).not.toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it('should remove', (done: DoneFn) => {
+      spyOnCollection(firestore);
+
+      service.removeLike(likes[0]).subscribe(() => {
+        expect(firestore.doc).toHaveBeenCalled();
+        done();
+      });
     });
   });
 });

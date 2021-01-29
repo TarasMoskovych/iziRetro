@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
 import { from, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+
 import { Column, FirestoreCollectionReference, FirestoreQuerySnapshot, Post, Like } from '../models';
 import { GeneratorService } from './generator.service';
 
@@ -20,11 +21,11 @@ export class PostService {
   }
 
   getPosts(boardId: string): Observable<Post[]> {
-    return this.getPostsRef(boardId).valueChanges();
+    return this.getPostsRef(boardId, 'boardId').valueChanges();
   }
 
   getLikes(boardId: string): Observable<Like[]>  {
-    return this.getLikesRef(boardId).valueChanges();
+    return this.getLikesRef(boardId, 'boardId').valueChanges();
   }
 
   initColumns(boardId: string): Observable<boolean> {
@@ -60,35 +61,26 @@ export class PostService {
     return from(this.afs.collection<Post>('posts').add({
       ...post,
       date: Date.now(),
-      id: this.generatorService.generateId(),
+      id: this.generatorService.generateId(64),
     }));
   }
 
-  editPost(post: Post, remove: boolean): Observable<void | null> {
-    return this.afs.collection<Post>('posts', (ref: FirestoreCollectionReference) => ref
-      .where('id', '==', post.id))
+  editPost(post: Post, remove: boolean): Observable<void> {
+    const postId = post.id as string;
+
+    return this.getPostsRef(postId)
       .get()
       .pipe(
-        switchMap((snapshot: FirestoreQuerySnapshot) => {
-          if (!snapshot) return of(null);
+        switchMap(async(snapshot: FirestoreQuerySnapshot) => {
+          if (!snapshot) return;
+          if (remove) {
+            const likesSnapshot: FirestoreQuerySnapshot = await this.getLikesRef(postId, 'postId').get().toPromise();
+            likesSnapshot.forEach(doc => doc.ref.delete());
+          }
+
           return this.afs.doc(`posts/${snapshot.docs[0].id}`)[remove ? 'delete': 'update'](post);
         })
       );
-  }
-
-  getColumnsRef(boardId: string): AngularFirestoreCollection<Column> {
-    return this.afs.collection<Column>('columns', (ref: FirestoreCollectionReference) => ref
-      .where('boardId', '==', boardId));
-  }
-
-  getPostsRef(boardId: string): AngularFirestoreCollection<Post> {
-    return this.afs.collection<Post>('posts', (ref: FirestoreCollectionReference) => ref
-      .where('boardId', '==', boardId));
-  }
-
-  getLikesRef(boardId: string): AngularFirestoreCollection<Like> {
-    return this.afs.collection<Like>('likes', (ref: FirestoreCollectionReference) => ref
-      .where('boardId', '==', boardId));
   }
 
   addLike(like: Like): Observable<DocumentReference> {
@@ -99,8 +91,7 @@ export class PostService {
   }
 
   removeLike(like: Like): Observable<void | null> {
-    return this.afs.collection<Like>('likes', (ref: FirestoreCollectionReference) => ref
-      .where('id', '==', like.id))
+    return this.getLikesRef(like.id as string)
       .get()
       .pipe(
         switchMap((snapshot: FirestoreQuerySnapshot) => {
@@ -108,5 +99,20 @@ export class PostService {
           return this.afs.doc(`likes/${snapshot.docs[0].id}`).delete();
         })
       );
+  }
+
+  getColumnsRef(boardId: string): AngularFirestoreCollection<Column> {
+    return this.afs.collection<Column>('columns', (ref: FirestoreCollectionReference) => ref
+      .where('boardId', '==', boardId));
+  }
+
+  getPostsRef(value: string, key: string = 'id'): AngularFirestoreCollection<Post> {
+    return this.afs.collection<Post>('posts', (ref: FirestoreCollectionReference) => ref
+      .where(key, '==', value));
+  }
+
+  getLikesRef(value: string, key: string = 'id'): AngularFirestoreCollection<Like> {
+    return this.afs.collection<Like>('likes', (ref: FirestoreCollectionReference) => ref
+      .where(key, '==', value));
   }
 }

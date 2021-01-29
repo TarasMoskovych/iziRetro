@@ -10,7 +10,7 @@ import firebase from 'firebase/app';
 import { AuthError, AuthUserCredential, FirebaseUser, FirebaseUserInfo, User } from '../models';
 import { AuthService } from './auth.service';
 import { NotificationService } from './notification.service';
-import { FireAuthMock, FirestoreMock, userCredential, userData, firebaseUser, firebaseUserInfo, user, GoogleAuthProviderMock } from '../mocks';
+import { FireAuthMock, FirestoreMock, userCredential, userData, firebaseUser, firebaseUserInfo, user, GoogleAuthProviderMock, spyOnCollection, spyOnDoc } from '../mocks';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -191,12 +191,7 @@ describe('AuthService', () => {
 
   describe('getUserByEmail', () => {
     it('should return a user by email', () => {
-      spyOn(firestore, 'collection').and.callFake((path: any, queryFn: any) => {
-        expect(path).toBe('users');
-        queryFn({ where: () => null });
-
-        return { valueChanges: () => of([user]) } as any;
-      });
+      spyOnCollection(firestore, [user], 'users');
       recreateService();
 
       service.getUserByEmail(user.email).subscribe((u: User) => {
@@ -207,7 +202,7 @@ describe('AuthService', () => {
 
   describe('updateUser', () => {
     it('should set user', (done: DoneFn) => {
-      spyOn(firestore, 'doc').and.returnValue({ get: () => of({ exists: false }), set: () => Promise.resolve() } as any);
+      spyOnDoc(firestore);
       recreateService();
 
       service.updateUser(firebaseUserInfo).subscribe((fui: FirebaseUserInfo) => {
@@ -217,7 +212,7 @@ describe('AuthService', () => {
     });
 
     it('should update user', (done: DoneFn) => {
-      spyOn(firestore, 'doc').and.returnValue({ get: () => of({ exists: true }), update: () => Promise.resolve() } as any);
+      spyOnDoc(firestore, true);
       recreateService();
 
       service.updateUser(firebaseUserInfo, { displayName: 'new name' }).subscribe((fui: FirebaseUserInfo) => {

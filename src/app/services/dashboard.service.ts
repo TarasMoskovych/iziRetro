@@ -5,7 +5,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { from, Observable, of } from 'rxjs';
 import { exhaustMap, map, switchMap } from 'rxjs/operators';
 
-import { Board, FirebaseUser, FirebaseUserInfo, FirestoreCollectionReference, FirestoreQuerySnapshot, User } from '../models';
+import { Board, FirebaseUser, FirebaseUserInfo, FirebaseWhereFilterOp, FirestoreCollectionReference, FirestoreQuerySnapshot, User } from '../models';
 import { AuthService } from './auth.service';
 import { GeneratorService } from './generator.service';
 import { PostService } from './post.service';
@@ -45,9 +45,7 @@ export class DashboardService {
   getMyBoards(): Observable<Board[]> {
     return this.authService.getCurrentUser()
       .pipe(switchMap((user: FirebaseUser) => {
-        return this.afs.collection<Board>('boards', (ref: FirestoreCollectionReference) => ref
-          .where('creator', '==', user.email))
-          .valueChanges();
+        return this.getBoardRef(user.email as string, 'creator').valueChanges();
       }));
   }
 
@@ -57,21 +55,19 @@ export class DashboardService {
         switchMap((firebaseUser: FirebaseUser) => this.authService.getUserByEmail(firebaseUser.email as string)),
         switchMap((user: User) => {
           if (!user?.sharedBoards?.length) return of([]);
-          return this.afs.collection<Board>('boards', (ref: FirestoreCollectionReference) => ref
-            .where('id', 'in', user.sharedBoards))
-            .valueChanges();
+          return this.getBoardRef(user.sharedBoards, 'id', 'in').valueChanges();
         })
       );
   }
 
   getBoard(id: string): Observable<Board> {
-    return this.getBoardByIdRef(id)
+    return this.getBoardRef(id)
       .valueChanges()
       .pipe((map((boards: Board[]) => boards[0])));
   }
 
   editBoard(board: Board): Observable<void> {
-    return this.getBoardByIdRef(board.id as string).get()
+    return this.getBoardRef(board.id as string).get()
       .pipe(switchMap((snapshot: FirestoreQuerySnapshot) => {
         return this.afs.doc(`boards/${snapshot.docs[0].id}`).update({ ...board });
       }));
@@ -116,21 +112,27 @@ export class DashboardService {
   }
 
   removeBoard(boardId: string): Observable<void> {
-    return this.getBoardByIdRef(boardId).get()
+    return this.getBoardRef(boardId).get()
       .pipe(
         switchMap((snapshot: FirestoreQuerySnapshot) => this.afs.doc(`boards/${snapshot.docs[0].id}`).delete()),
         switchMap(async() => {
           const columnsSnapshot: FirestoreQuerySnapshot = await this.postService.getColumnsRef(boardId).get().toPromise();
           columnsSnapshot.forEach(doc => doc.ref.delete());
 
-          const postsSnapshot: FirestoreQuerySnapshot = await this.postService.getPostsRef(boardId).get().toPromise();
+          const postsSnapshot: FirestoreQuerySnapshot = await this.postService.getPostsRef(boardId, 'boardId').get().toPromise();
           postsSnapshot.forEach(doc => doc.ref.delete());
+
+          const likesSnapshot: FirestoreQuerySnapshot = await this.postService.getLikesRef(boardId, 'boardId').get().toPromise();
+          likesSnapshot.forEach(doc => doc.ref.delete());
         }),
       );
   }
 
-  private getBoardByIdRef(id: string): AngularFirestoreCollection<Board> {
-    return this.afs.collection<Board>('boards', (ref: FirestoreCollectionReference) => ref
-      .where('id', '==', id));
+  private getBoardRef(
+    value: string | string[],
+    key: string = 'id',
+    operator: FirebaseWhereFilterOp = '==',
+  ): AngularFirestoreCollection<Board> {
+    return this.afs.collection<Board>('boards', (ref: FirestoreCollectionReference) => ref.where(key, operator, value));
   }
 }

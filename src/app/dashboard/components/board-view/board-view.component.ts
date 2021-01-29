@@ -10,9 +10,9 @@ import { take, tap } from 'rxjs/operators';
 import { Board, Column, Post, Like, FirebaseUser } from 'src/app/models';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { PostService } from 'src/app/services/post.service';
-
 import { VERTICAL_LAYOUT, HORIZONTAL_LAYOUT } from '../../../../assets/icons';
 import { AuthService } from 'src/app/services/auth.service';
+
 @Component({
   selector: 'app-board-view',
   templateUrl: './board-view.component.html',
@@ -26,13 +26,13 @@ export class BoardViewComponent implements OnInit {
   likes$: Observable<Like[]>;
   search$ = new BehaviorSubject<string>('');
   sort$ = new BehaviorSubject<string>('date');
-  user: FirebaseUser;
 
   boardId: string;
   verticalLayout = false;
   addNewPostToggleMap: { [key: string]: boolean } = {};
   editPostToggleMap: { [key: string]: boolean } = {};
   likesMap: { [key: string]: Like[] } = {};
+  user: FirebaseUser;
 
   constructor(
     iconRegistry: MatIconRegistry,
