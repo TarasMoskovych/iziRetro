@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
 import { from, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { Column, FirestoreCollectionReference, FirestoreQuerySnapshot, Post } from '../models';
+import { Column, FirestoreCollectionReference, FirestoreQuerySnapshot, Post, Like } from '../models';
 import { GeneratorService } from './generator.service';
 
 @Injectable({
@@ -21,6 +21,10 @@ export class PostService {
 
   getPosts(boardId: string): Observable<Post[]> {
     return this.getPostsRef(boardId).valueChanges();
+  }
+
+  getLikes(boardId: string): Observable<Like[]>  {
+    return this.getLikesRef(boardId).valueChanges();
   }
 
   initColumns(boardId: string): Observable<boolean> {
@@ -80,5 +84,29 @@ export class PostService {
   getPostsRef(boardId: string): AngularFirestoreCollection<Post> {
     return this.afs.collection<Post>('posts', (ref: FirestoreCollectionReference) => ref
       .where('boardId', '==', boardId));
+  }
+
+  getLikesRef(boardId: string): AngularFirestoreCollection<Like> {
+    return this.afs.collection<Like>('likes', (ref: FirestoreCollectionReference) => ref
+      .where('boardId', '==', boardId));
+  }
+
+  addLike(like: Like): Observable<DocumentReference> {
+    return from(this.afs.collection<Like>('likes').add({
+      ...like,
+      id: this.generatorService.generateId(),
+    }));
+  }
+
+  removeLike(like: Like): Observable<void | null> {
+    return this.afs.collection<Like>('likes', (ref: FirestoreCollectionReference) => ref
+      .where('id', '==', like.id))
+      .get()
+      .pipe(
+        switchMap((snapshot: FirestoreQuerySnapshot) => {
+          if (!snapshot) return of(null);
+          return this.afs.doc(`likes/${snapshot.docs[0].id}`).delete();
+        })
+      );
   }
 }

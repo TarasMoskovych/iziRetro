@@ -7,11 +7,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 
-import { Board, Column, Post } from 'src/app/models';
+import { Board, Column, Post, Like, FirebaseUser } from 'src/app/models';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { PostService } from 'src/app/services/post.service';
 
 import { VERTICAL_LAYOUT, HORIZONTAL_LAYOUT } from '../../../../assets/icons';
+import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-board-view',
   templateUrl: './board-view.component.html',
@@ -22,13 +23,16 @@ export class BoardViewComponent implements OnInit {
   board$: Observable<Board>;
   columns$: Observable<Column[]>;
   posts$: Observable<Post[]>;
+  likes$: Observable<Like[]>;
   search$ = new BehaviorSubject<string>('');
   sort$ = new BehaviorSubject<string>('date');
+  user: FirebaseUser;
 
   boardId: string;
   verticalLayout = false;
   addNewPostToggleMap: { [key: string]: boolean } = {};
   editPostToggleMap: { [key: string]: boolean } = {};
+  likesMap: { [key: string]: Like[] } = {};
 
   constructor(
     iconRegistry: MatIconRegistry,
@@ -36,6 +40,7 @@ export class BoardViewComponent implements OnInit {
     private dashboardService: DashboardService,
     private route: ActivatedRoute,
     private postService: PostService,
+    private authService: AuthService,
     private router: Router,
   ) {
     iconRegistry.addSvgIconLiteral('vertical', sanitizer.bypassSecurityTrustHtml(VERTICAL_LAYOUT));
@@ -89,6 +94,29 @@ export class BoardViewComponent implements OnInit {
     this.dashboardService.shareUrl(board);
   }
 
+  onAddRemoveLike(post: Post): void {
+    const { displayName, photoURL, email } = this.user;
+    const like = this.likesMap[post.id as string]?.find(like => like.user.email === email);
+
+    if (like) {
+      this.postService.removeLike(like)
+        .pipe(take(1))
+        .subscribe();
+    } else {
+      this.postService.addLike({
+        boardId: post.boardId,
+        postId: post.id as string,
+        user: {
+          displayName: displayName as string,
+          email: email as string,
+          photoURL: photoURL as string
+        }
+      })
+      .pipe(take(1))
+      .subscribe();
+    }
+  }
+
   private getData(): void {
     this.board$ = this.dashboardService.getBoard(this.boardId)
       .pipe(tap((board: Board) => {
@@ -108,5 +136,21 @@ export class BoardViewComponent implements OnInit {
         });
       })
     );
+    this.likes$ = this.postService.getLikes(this.boardId).pipe(
+      tap((likes: Like[]) => {
+        this.likesMap = likes.reduce((acc: any, curr: Like) => {
+          if (!acc[curr.postId]) {
+            acc[curr.postId] = [curr];
+          } else {
+            acc[curr.postId].push(curr);
+          }
+          return acc;
+        }, {});
+      })
+    );
+
+    this.authService.getCurrentUser()
+      .pipe(take(1))
+      .subscribe((user: FirebaseUser) => this.user = user);
   }
 }

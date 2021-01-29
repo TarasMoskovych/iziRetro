@@ -1,17 +1,34 @@
 .board-view-item {
-  cursor: pointer;
   margin-top: 10px;
-  min-height: 50px;
-  padding: 5px;
+  min-height: 100px;
+  padding: 10px;
   transition: .3s;
   border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+
+  div {
+    width: 100%;
+    cursor: pointer;
+  }
+
+  &__likes-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    mat-icon {
+      opacity: 0.5;
+      margin-right: 5px;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
 
   backdrop-filter: blur(7.0px);
   -webkit-backdrop-filter: blur(7.0px);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-
-  &:hover {
-    border-radius: 20px;
-    padding: 5px 10px;
-  }
 }

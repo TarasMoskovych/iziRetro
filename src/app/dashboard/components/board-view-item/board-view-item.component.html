@@ -4,6 +4,12 @@
   ><div *ngIf="!edit">
     {{ post.value }}
   </div>
+
+  <div *ngIf="!edit" class="board-view-item__likes-wrapper">
+    <mat-icon svgIcon="heart" aria-hidden="false" (click)="onAddRemoveLike($event)"></mat-icon>
+    <span>{{ likes?.length }}</span>
+  </div>
+
   <ng-container *ngIf="edit">
     <app-board-edit-item
       [value]="post.value"
