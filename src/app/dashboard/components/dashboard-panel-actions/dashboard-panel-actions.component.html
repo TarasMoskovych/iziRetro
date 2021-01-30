@@ -3,11 +3,12 @@
     <mat-icon>add</mat-icon>
   </button>
   <div class="dashboard-panel-actions__right">
-    <mat-form-field>
-      <mat-label>Sorted by</mat-label>
-      <mat-select (selectionChange)="onSelect($event)" value="date">
-        <mat-option value="date">Date</mat-option>
-        <mat-option value="title">Name</mat-option>
+    <mat-form-field *ngIf="sorts.length">
+      <mat-label>Sort by</mat-label>
+      <mat-select (selectionChange)="onSelect($event)" >
+        <ng-container *ngFor="let sort of sorts">
+          <mat-option [value]="sort">{{ sort.title || sort.value | titlecase }} {{ sort.asc ? '(Asc)' : '(Desc)' }}</mat-option>
+        </ng-container>
       </mat-select>
     </mat-form-field>
 

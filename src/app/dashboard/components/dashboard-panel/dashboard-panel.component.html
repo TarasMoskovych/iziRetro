@@ -9,6 +9,7 @@
         <div class="dashboard-panel__actions">
           <app-dashboard-panel-actions
             [creator]="true"
+            [sorts]="sorts"
             (createBoard)="onOpenAddDashboardModal()"
             (search)="onBoardsSearch($event, true)"
             (select)="onBoardsSelect($event, true)"
@@ -34,6 +35,7 @@
         </ng-template>
         <div class="dashboard-panel__actions">
           <app-dashboard-panel-actions
+            [sorts]="sorts"
             (search)="onBoardsSearch($event)"
             (select)="onBoardsSelect($event)"
           ></app-dashboard-panel-actions>

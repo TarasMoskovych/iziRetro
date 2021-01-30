@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { Board } from 'src/app/models';
+import { Board, Sort } from 'src/app/models';
 
 @Component({
   selector: 'app-dashboards-list',
@@ -12,7 +12,7 @@ export class DashBoardsListComponent {
   @Input() boards: Board[] = [];
   @Input() creator: boolean = false;
   @Input() searchQuery: string | null = '';
-  @Input() sort: string | null;
+  @Input() sort: Sort | null;
   @Output() removeBoard = new EventEmitter<Board>();
   @Output() shareUrl = new EventEmitter<Board>();
   @Output() freeze = new EventEmitter<Board>();

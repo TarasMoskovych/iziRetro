@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import { Board } from 'src/app/models';
+import { Board, boardSorts, Sort } from 'src/app/models';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { AddDashboardModalComponent } from '../add-dashboard-modal/add-dashboard-modal.component';
 
@@ -19,8 +19,9 @@ export class DashboardPanelComponent implements OnInit {
   sharedWithMe$: Observable<Board[]> = this.dashboardService.getBoardsSharedWithMe();
   searchBoards$ = new BehaviorSubject<string>('');
   searchSharedWithMe$ = new BehaviorSubject<string>('');
-  sortBoards$ = new BehaviorSubject<string>('date');
-  sortSharedWithMe$ = new BehaviorSubject<string>('date');
+  sortBoards$ = new BehaviorSubject<Sort>(boardSorts[1]);
+  sortSharedWithMe$ = new BehaviorSubject<Sort>(boardSorts[1]);
+  sorts: Sort[] = boardSorts;
 
   constructor(
     private router: Router,
@@ -58,7 +59,7 @@ export class DashboardPanelComponent implements OnInit {
     this[myBoards ? 'searchBoards$' : 'searchSharedWithMe$'].next(value);
   }
 
-  onBoardsSelect(value: string, myBoards?: boolean): void {
+  onBoardsSelect(value: Sort, myBoards?: boolean): void {
     this[myBoards ? 'sortBoards$' : 'sortSharedWithMe$'].next(value);
   }
 

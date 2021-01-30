@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 
-import { Board, Column, Post, Like, FirebaseUser } from 'src/app/models';
+import { Board, Column, Post, Like, FirebaseUser, Sort, dashBoardSorts } from 'src/app/models';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { PostService } from 'src/app/services/post.service';
 import { VERTICAL_LAYOUT, HORIZONTAL_LAYOUT } from '../../../../assets/icons';
@@ -25,13 +25,14 @@ export class BoardViewComponent implements OnInit {
   posts$: Observable<Post[]>;
   likes$: Observable<Like[]>;
   search$ = new BehaviorSubject<string>('');
-  sort$ = new BehaviorSubject<string>('date');
+  sort$ = new BehaviorSubject<Sort>(dashBoardSorts[1]);
 
   boardId: string;
   verticalLayout = false;
   addNewPostToggleMap: { [key: string]: boolean } = {};
   editPostToggleMap: { [key: string]: boolean } = {};
   likesMap: { [key: string]: Like[] } = {};
+  sorts: Sort[] = dashBoardSorts;
   user: FirebaseUser;
 
   constructor(
@@ -86,7 +87,7 @@ export class BoardViewComponent implements OnInit {
     this.search$.next(value);
   }
 
-  onSort(value: string): void {
+  onSort(value: Sort): void {
     this.sort$.next(value);
   }
 

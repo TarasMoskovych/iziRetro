@@ -5,11 +5,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FilterPipe implements PipeTransform {
 
-  transform(items: any[], prop: string, inputString: any): any[] {
+  transform(items: any, prop: string, inputString: any): any[] {
     if (inputString === '' || !items) {
       return items;
     }
-    return items.filter(item => item[prop].search(new RegExp(inputString, 'i')) !== -1);
+    return items.filter((item: any) => item[prop].search(new RegExp(inputString, 'i')) !== -1);
   }
 
 }

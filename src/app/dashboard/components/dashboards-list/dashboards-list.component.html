@@ -1,6 +1,6 @@
 <mat-list class="dashboards-list" role="list" *ngIf="boards?.length">
   <mat-list-item
-    *ngFor="let board of boards | filter:'title':searchQuery | orderBy:sort:sort === 'date'"
+    *ngFor="let board of boards | filter:'title':searchQuery | orderBy:sort?.value:!sort?.asc"
     class="dashboards-list__item-wrapper"
     role="listitem">
 

@@ -16,6 +16,7 @@
     </div>
 
     <app-dashboard-panel-actions
+      [sorts]="sorts"
       (search)="onSearch($event)"
       (select)="onSort($event)"
     ></app-dashboard-panel-actions>
@@ -24,17 +25,15 @@
       <mat-icon>share</mat-icon>
     </button>
   </div>
-  <div class="board__body" *ngIf="sort$ | async as sort">
+  <div class="board__body">
     <div class="board__body-header">
       <h1>{{board.title}}</h1>
     </div>
 
-    <ng-container *ngIf="likes$ | async as likes">
-      <div
-        *ngIf="posts$ | async as posts"
-        class="board__columns-wrapper"
-        [ngClass]="{'board__columns-wrapper--vertical': verticalLayout}"
-      ><div *ngFor="let column of columns$ | async | orderBy:'position'" class="board__column">
+    <ng-container *ngIf="{columns: columns$ | async, likes: likes$ | async, posts: posts$ | async, search: search$ | async, sort: sort$ | async } as data">
+      <div class="board__columns-wrapper" [ngClass]="{'board__columns-wrapper--vertical': verticalLayout}">
+        <div *ngFor="let column of data.columns | orderBy:'position'" class="board__column">
+
           <div class="board__column-header">
             <div class="board__column-title">
               <span>{{column.title}}</span>
@@ -56,7 +55,7 @@
             ></app-board-edit-item>
           </div>
 
-          <ng-container *ngFor="let item of posts | filter:'value':(search$ | async) | orderBy:sort:sort === 'date'">
+          <ng-container *ngFor="let item of data.posts | filter:'value':data.search | orderBy:data.sort?.value:!data.sort?.asc">
             <app-board-view-item
               *ngIf="item.columnPosition === column.position"
               [edit]="editPostToggleMap[item.id]"
@@ -69,8 +68,8 @@
               (toggle)="onToggleItem($event, board.completed)"
             ></app-board-view-item>
           </ng-container>
-        </div>
 
+        </div>
       </div>
     </ng-container>
   </div>

@@ -2,4 +2,5 @@ export * from './board.model';
 export * from './firebase.model';
 export * from './user.model';
 export * from './post.model';
+export * from './sort.model';
 export * from './like.model';
