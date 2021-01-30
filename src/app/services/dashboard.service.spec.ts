@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 
 import { ShareComponent } from '../dashboard/components';
-import { FirestoreMock, firebaseUser, board, user, firebaseUserInfo, spyOnCollection, spyOnDoc } from '../mocks';
+import { FirestoreMock, firebaseUser, boards, user, firebaseUserInfo, spyOnCollection, spyOnDoc } from '../mocks';
 import { Board } from '../models';
 import { AuthService } from './auth.service';
 import { DashboardService } from './dashboard.service';
@@ -45,7 +45,7 @@ describe('DashboardService', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       providers: [
-        { provide: ActivatedRoute, useValue: { snapshot: { queryParams: { redirectUrl: board.id } } } },
+        { provide: ActivatedRoute, useValue: { snapshot: { queryParams: { redirectUrl: boards[0].id } } } },
         ...getProviders(),
       ],
     });
@@ -64,27 +64,27 @@ describe('DashboardService', () => {
     postServiceSpy.initColumns.and.returnValue(of(true));
     spyOnCollection(firestore);
 
-    service.addBoard(board).subscribe((response: boolean) => {
+    service.addBoard(boards[0]).subscribe((response: boolean) => {
       expect(response).toBeTrue();
       done();
     });
   });
 
   it('should return my boards', () => {
-    spyOnCollection(firestore, [board], 'boards');
+    spyOnCollection(firestore, [boards[0]], 'boards');
 
     service.getMyBoards().subscribe((response: Board[]) => {
-      expect(response).toEqual([board]);
+      expect(response).toEqual([boards[0]]);
     });
   });
 
   describe('getBoardsSharedWithMe', () => {
     it('should return boards', () => {
       authServiceSpy.getUserByEmail.and.returnValue(of({ ...user, sharedBoards: ['1'] }));
-      spyOnCollection(firestore, [board], 'boards');
+      spyOnCollection(firestore, [boards[0]], 'boards');
 
       service.getBoardsSharedWithMe().subscribe((response: Board[]) => {
-        expect(response).toEqual([board]);
+        expect(response).toEqual([boards[0]]);
       });
     });
 
@@ -108,10 +108,10 @@ describe('DashboardService', () => {
   });
 
   it('should return board by id', () => {
-    spyOnCollection(firestore, [board], 'boards');
+    spyOnCollection(firestore, [boards[0]], 'boards');
 
     service.getBoard('1').subscribe((response: Board) => {
-      expect(response).toEqual(board);
+      expect(response).toEqual(boards[0]);
     });
   });
 
@@ -119,7 +119,7 @@ describe('DashboardService', () => {
     spyOnCollection(firestore);
     spyOnDoc(firestore);
 
-    service.editBoard(board).subscribe(() => {
+    service.editBoard(boards[0]).subscribe(() => {
       expect(firestore.collection).toHaveBeenCalledTimes(1);
       expect(firestore.doc).toHaveBeenCalledTimes(1);
       done();
@@ -147,7 +147,7 @@ describe('DashboardService', () => {
     });
 
     it('should not update profile when current user is creator', (done: DoneFn) => {
-      spyOn(service, 'getBoard').and.returnValue(of({ ...board, creator: user.email }));
+      spyOn(service, 'getBoard').and.returnValue(of({ ...boards[0], creator: user.email }));
 
       service.shareBoard().subscribe(response => {
         expect(response).toBeNull();
@@ -158,20 +158,20 @@ describe('DashboardService', () => {
     });
 
     it('should update profile and set shared board', (done: DoneFn) => {
-      spyOn(service, 'getBoard').and.returnValue(of(board));
+      spyOn(service, 'getBoard').and.returnValue(of(boards[0]));
       authServiceSpy.updateUser.and.returnValue(of(firebaseUserInfo));
       authServiceSpy.getUserByEmail.and.returnValue(of(user));
 
       service.shareBoard().subscribe(() => {
         expect(authServiceSpy.getUserByEmail).toHaveBeenCalledOnceWith(firebaseUser.email);
-        expect(authServiceSpy.updateUser).toHaveBeenCalledOnceWith(firebaseUser, { sharedBoards: [board.id] });
+        expect(authServiceSpy.updateUser).toHaveBeenCalledOnceWith(firebaseUser, { sharedBoards: [boards[0].id] });
         done();
       });
     });
 
     it('should share board url', () => {
-      const url = `${window.location.origin}/dashboard?redirectUrl=${board.id}`;
-      service.shareUrl(board);
+      const url = `${window.location.origin}/dashboard?redirectUrl=${boards[0].id}`;
+      service.shareUrl(boards[0]);
 
       expect(notificationServiceSpy.showMessage).toHaveBeenCalledOnceWith('Copied to clipboard');
       expect(matDialogSpy.open).toHaveBeenCalledOnceWith(ShareComponent, { data: url, panelClass: 'share-modal' });
@@ -187,7 +187,7 @@ describe('DashboardService', () => {
     postServiceSpy.getPostsRef.and.returnValue(ref);
     postServiceSpy.getLikesRef.and.returnValue(ref);
 
-    service.removeBoard(board.id as string).subscribe(() => {
+    service.removeBoard(boards[0].id as string).subscribe(() => {
       expect(firestore.collection).toHaveBeenCalledTimes(1);
       expect(firestore.doc).toHaveBeenCalledTimes(1);
       done();

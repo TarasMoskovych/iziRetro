@@ -105,11 +105,26 @@ export const posts: Post[] = [
   },
 ];
 
-export const board: Board = {
-  title: 'Test board',
-  completed: false,
-  id: '12345',
-};
+export const boards: Board[] = [
+  {
+    completed: false,
+    title: 'abc',
+    date: 1611754310900,
+    id: '1',
+  },
+  {
+    completed: true,
+    title: 'test',
+    date: 1612015397936,
+    id: '2',
+  },
+  {
+    completed: false,
+    title: 'board',
+    date: 1611926913026,
+    id: '3',
+  },
+];
 
 export const likes: Like[] = [
   {

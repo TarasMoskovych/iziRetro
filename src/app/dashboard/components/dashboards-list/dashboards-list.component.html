@@ -19,18 +19,16 @@
         </span>
       </div>
 
-      <span class="dashboards-list__item-menu">
-        <ng-container *ngIf="creator">
-          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Open menu">
-            <mat-icon>more_vert</mat-icon>
-          </button>
+      <span *ngIf="creator" class="dashboards-list__item-menu">
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Open menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
 
-          <mat-menu #menu="matMenu">
-            <button *ngIf="!board.completed" (click)="onShareUrl(board)" mat-menu-item>Share URL</button>
-            <button (click)="onFreeze(board)" mat-menu-item>{{ board.completed ? 'Unfreeze' : 'Freeze' }}</button>
-            <button (click)="onRemove(board)" mat-menu-item>Remove</button>
-          </mat-menu>
-        </ng-container>
+        <mat-menu #menu="matMenu">
+          <button *ngIf="!board.completed" (click)="onShareUrl(board)" mat-menu-item>Share URL</button>
+          <button (click)="onFreeze(board)" mat-menu-item>{{ board.completed ? 'Unfreeze' : 'Freeze' }}</button>
+          <button (click)="onRemove(board)" mat-menu-item>Remove</button>
+        </mat-menu>
       </span>
     </div>
     <div class="circle"></div>
