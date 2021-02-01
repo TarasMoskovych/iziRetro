@@ -117,6 +117,7 @@
 
     button {
       width: 100%;
+      border-radius: 10px;
     }
   }
 
@@ -126,9 +127,6 @@
     margin-top: 10px;
     border-radius: 10px;
     padding: 5px;
-
-    backdrop-filter: blur(7.0px);
-    -webkit-backdrop-filter: blur(7.0px);
     background: rgba(255, 255, 255, 0.25) !important;
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 

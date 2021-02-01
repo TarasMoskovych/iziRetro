@@ -32,5 +32,13 @@
     height: auto;
     line-height: initial;
     width: auto;
+
+    mat-icon {
+      color: rgba(255, 255, 255, 0.5);
+
+      &:hover {
+        color: rgba(66, 102, 150, 0.5);
+      }
+    }
   }
 }
