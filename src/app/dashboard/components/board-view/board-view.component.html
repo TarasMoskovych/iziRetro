@@ -58,8 +58,8 @@
           <ng-container *ngFor="let item of data.posts | filter:'value':data.search | orderBy:data.sort?.value:!data.sort?.asc">
             <app-board-view-item
               *ngIf="item.columnPosition === column.position"
-              [edit]="editPostToggleMap[item.id] && user.email === item.creator"
-              [editable]="user.email === item.creator"
+              [edit]="editPostToggleMap[item.id] && (user.email === item.creator || user.email === board.creator)"
+              [editable]="user.email === item.creator || user.email === board.creator"
               [color]="column.color"
               [likes]="likesMap[item.id]"
               [post]="item"
