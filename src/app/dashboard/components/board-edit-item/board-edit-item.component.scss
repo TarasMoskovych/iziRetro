@@ -7,16 +7,6 @@
     padding: 0;
     resize: none;
     width: 100%;
-
-    &-wrapper {
-      align-items: flex-start;
-      display: flex;
-    }
-  }
-
-  &__actions {
-    display: flex;
-    justify-content: space-between;
   }
 
   &__btn {
@@ -26,6 +16,11 @@
     border-radius: 10px;
     padding: 5px 10px;
     color: inherit;
+
+    &:hover {
+      background-color: rgba(66, 102, 150, 0.5);
+      color: rgba(255, 255, 255, 0.8);
+    }
   }
 
   &__icon {

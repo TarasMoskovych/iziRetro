@@ -10,5 +10,6 @@ export interface Post {
   date?: number;
   boardId: string;
   columnPosition: number;
+  creator: string;
   value: string;
 }

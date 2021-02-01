@@ -1,13 +1,11 @@
+@import 'assets/scss/grid';
+@import '~bootstrap-4-grid/scss/grid';
+
 html,
 body {
   color: #426696;
   overflow: hidden;
 }
-
-// tablet
-// @media (max-width: 1023px) {}
-// mobile
-// @media (max-width: 767px) {}
 
 * {
   font-family: 'Poppins', "Helvetica Neue", sans-serif;

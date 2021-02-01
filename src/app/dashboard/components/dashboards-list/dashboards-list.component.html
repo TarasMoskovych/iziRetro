@@ -1,13 +1,13 @@
-<mat-list class="dashboards-list" role="list" *ngIf="boards?.length">
+<mat-list class="dashboards-list d-flex flex-row justify-content-start flex-wrap align-items-start" role="list" *ngIf="boards?.length">
   <mat-list-item
     *ngFor="let board of boards | filter:'title':searchQuery | orderBy:sort?.value:!sort?.asc"
     class="dashboards-list__item-wrapper"
     role="listitem">
 
-    <div class="dashboards-list__item">
+    <div class="dashboards-list__item d-flex flex-row justify-content-between align-items-baseline">
       <div
         [routerLink]="['/dashboard', board.id]"
-        class="dashboards-list__item-title"
+        class="dashboards-list__item-title d-flex justify-content-between h-100 w-100"
         [class.dashboards-list__item-title--completed]="board.completed"
       >
         <span>
@@ -19,7 +19,7 @@
         </span>
       </div>
 
-      <span *ngIf="creator" class="dashboards-list__item-menu">
+      <span *ngIf="creator" class="d-flex align-items-center">
         <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Open menu">
           <mat-icon>more_vert</mat-icon>
         </button>

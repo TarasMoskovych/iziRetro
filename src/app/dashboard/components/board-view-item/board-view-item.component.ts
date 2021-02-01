@@ -13,7 +13,8 @@ import { HEART, HEART_OUTLINED } from '../../../../assets/icons';
 export class BoardViewItemComponent implements OnChanges{
   @Input() post: Post = {} as Post;
   @Input() color: string;
-  @Input() edit = false;
+  @Input() edit = false; // toggle edit/view
+  @Input() editable: boolean; // only for styling
   @Input() likes: Like[];
   @Input() user: FirebaseUser;
   isLiked: boolean;

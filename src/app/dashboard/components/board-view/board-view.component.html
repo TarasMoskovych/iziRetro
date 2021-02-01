@@ -1,5 +1,5 @@
 <div *ngIf="board$ | async as board" class="board">
-  <div class="board__header">
+  <div class="d-flex flex-column align-items-start flex-md-row justify-content-md-end align-items-md-center">
     <div class="board__layout">
       <span class="board__layout-label">
         Change layout
@@ -26,16 +26,16 @@
     </button>
   </div>
   <div class="board__body">
-    <div class="board__body-header">
+    <div class="board__body-header d-flex">
       <h1>{{board.title}}</h1>
     </div>
 
     <ng-container *ngIf="{columns: columns$ | async, likes: likes$ | async, posts: posts$ | async, search: search$ | async, sort: sort$ | async } as data">
-      <div class="board__columns-wrapper" [ngClass]="{'board__columns-wrapper--vertical': verticalLayout}">
+      <div class="d-flex justify-content-between" [ngClass]="{'flex-column': verticalLayout}">
         <div *ngFor="let column of data.columns | orderBy:'position'" class="board__column">
 
-          <div class="board__column-header">
-            <div class="board__column-title">
+          <div class="d-flex flex-column align-items-center">
+            <div class="d-flex justify-content-between w-100">
               <span>{{column.title}}</span>
             </div>
 
@@ -58,7 +58,8 @@
           <ng-container *ngFor="let item of data.posts | filter:'value':data.search | orderBy:data.sort?.value:!data.sort?.asc">
             <app-board-view-item
               *ngIf="item.columnPosition === column.position"
-              [edit]="editPostToggleMap[item.id]"
+              [edit]="editPostToggleMap[item.id] && user.email === item.creator"
+              [editable]="user.email === item.creator"
               [color]="column.color"
               [likes]="likesMap[item.id]"
               [post]="item"
