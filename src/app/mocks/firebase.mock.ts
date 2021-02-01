@@ -92,16 +92,19 @@ export const posts: Post[] = [
     boardId: '1',
     columnPosition: 1,
     value: 'Post 1',
+    creator: user.email,
   },
   {
     boardId: '2',
     columnPosition: 2,
     value: 'Post 2',
+    creator: 'test@gmail.com'
   },
   {
     boardId: '2',
     columnPosition: 2,
     value: 'Post 3',
+    creator: user.email,
   },
 ];
 
