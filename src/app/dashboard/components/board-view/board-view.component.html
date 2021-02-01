@@ -62,6 +62,7 @@
               [color]="column.color"
               [likes]="likesMap[item.id]"
               [post]="item"
+              [user]="user"
               (addRemoveLike)="onAddRemoveLike($event)"
               (save)="onEditItem($event)"
               (remove)="onEditItem($event, true)"

@@ -8,7 +8,7 @@
   flex-wrap: wrap;
   align-content: space-between;
 
-  div {
+  > div {
     width: 100%;
     cursor: pointer;
   }
@@ -20,10 +20,46 @@
 
     mat-icon {
       opacity: 0.5;
-      margin-right: 5px;
+      margin-right: 3px;
+      width: 16px;
+      height: 16px;
+      margin-bottom: 4px;
 
       &:hover {
         opacity: 1;
+      }
+    }
+  }
+
+  &__likes {
+    display: flex;
+    margin-right: 10px;
+    max-width: 132px;
+    border-radius: 50px;
+    overflow-x: hidden;
+    justify-content: flex-end;
+
+    div {
+      display: flex;
+      justify-content: flex-end;
+
+      img {
+        width: 20px;
+        margin: 0 -3px;
+        height: 20px;
+        border-radius: 50%;
+      }
+
+      &:first-child {
+        img {
+          margin-left: 0px;
+        }
+      }
+
+      &:last-child {
+        img {
+          margin-right: 0px;
+        }
       }
     }
   }

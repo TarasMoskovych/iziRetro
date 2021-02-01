@@ -6,7 +6,12 @@
   </div>
 
   <div *ngIf="!edit" class="board-view-item__likes-wrapper">
-    <mat-icon svgIcon="heart" aria-hidden="false" (click)="onAddRemoveLike($event)"></mat-icon>
+    <div class="board-view-item__likes">
+      <div *ngFor="let like of likes" [matTooltip]="like.user.displayName">
+        <img [src]="like.user.photoURL">
+      </div>
+    </div>
+    <mat-icon [svgIcon]="isLiked ? 'heart' : 'heart-outlined'" aria-hidden="false" (click)="onAddRemoveLike($event)"></mat-icon>
     <span>{{ likes?.length }}</span>
   </div>
 
