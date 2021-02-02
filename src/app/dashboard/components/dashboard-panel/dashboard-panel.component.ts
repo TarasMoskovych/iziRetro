@@ -6,7 +6,7 @@ import { take } from 'rxjs/operators';
 
 import { Board, boardSorts, Sort } from 'src/app/models';
 import { DashboardService } from 'src/app/services/dashboard.service';
-import { AddDashboardModalComponent } from '../add-dashboard-modal/add-dashboard-modal.component';
+import { DashboardModalComponent } from '../dashboard-modal/dashboard-modal.component';
 
 @Component({
   selector: 'app-dashboard-panel',
@@ -33,10 +33,14 @@ export class DashboardPanelComponent implements OnInit {
     this.shareBoard();
   }
 
-  onOpenAddDashboardModal(): void {
-    this.dialog.open(AddDashboardModalComponent).afterClosed()
+  openDashboardModal(board?: Board): void {
+    this.dialog.open(DashboardModalComponent, { data: board?.title }).afterClosed()
      .pipe(take(1))
-     .subscribe((title: string) => title?.length && this.addBoard({ title, completed: false }));
+     .subscribe((title: string) => {
+        if (title?.length) {
+          this.addEditBoard(board ? { ...board, title } : { title, completed: false }, !!board);
+        }
+     });
   }
 
   onRemoveBoard(board: Board): void {
@@ -63,8 +67,8 @@ export class DashboardPanelComponent implements OnInit {
     this[myBoards ? 'sortBoards$' : 'sortSharedWithMe$'].next(value);
   }
 
-  private addBoard(board: Board): void {
-    this.dashboardService.addBoard(board)
+  private addEditBoard(board: Board, edit: boolean = false): void {
+    (this.dashboardService[edit ? 'editBoard' : 'addBoard'](board) as Observable<void>)
       .pipe(take(1))
       .subscribe();
   }

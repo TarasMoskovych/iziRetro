@@ -69,6 +69,13 @@ describe('DashBoardsListComponent', () => {
       expect(component.freeze.emit).toHaveBeenCalledOnceWith(boards[0]);
     });
 
+    it('should emit editBoard', () => {
+      spyOn(component.editBoard, 'emit');
+
+      component.onEdit(boards[0]);
+      expect(component.editBoard.emit).toHaveBeenCalledOnceWith(boards[0]);
+    });
+
     it('should emit removeBoard', () => {
       spyOn(component.removeBoard, 'emit');
 
