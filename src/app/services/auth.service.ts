@@ -25,8 +25,6 @@ export class AuthService {
   ) {
     this.getCurrentUser()
       .subscribe((user: FirebaseUser) => {
-        console.log(user);
-
         if (user?.emailVerified && (this.router.url.includes('login') || this.router.url.includes('register'))) {
           this.navigateToDashboard();
         }
