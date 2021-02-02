@@ -65,7 +65,7 @@ export class BoardViewComponent implements OnInit {
     if (!value.length) return;
 
     this.addNewPostToggleMap[column.title] = false;
-    this.postService.addPost({ value, columnPosition: column.position, boardId: this.boardId })
+    this.postService.addPost({ value, columnPosition: column.position, boardId: this.boardId, creator: this.user.email as string })
       .pipe(take(1))
       .subscribe();
   }

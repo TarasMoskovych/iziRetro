@@ -43,7 +43,7 @@ describe('BoardEditItemComponent', () => {
     it('should close edit view', () => {
       spyOn(component.close, 'emit');
 
-      el.query(By.css('.board-edit-item__field-wrapper button')).nativeElement.click();
+      el.query(By.css('.board-edit-item__icon')).nativeElement.click();
       expect(component.close.emit).toHaveBeenCalledTimes(1);
     });
   });

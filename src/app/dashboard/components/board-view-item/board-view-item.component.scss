@@ -4,21 +4,23 @@
   padding: 10px;
   transition: .3s;
   border-radius: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  align-content: space-between;
+  box-shadow: -1px -1px 0px 0 rgb(255 255 255 / 80%), 1px 1px 0px 0 rgb(255 255 255 / 20%);
+
+  &--editable {
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.03);
+    }
+  }
 
   > div {
     width: 100%;
-    cursor: pointer;
   }
 
   &__likes-wrapper {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-
     mat-icon {
+      cursor: pointer;
       opacity: 0.5;
       margin-right: 3px;
       width: 16px;
@@ -32,17 +34,12 @@
   }
 
   &__likes {
-    display: flex;
     margin-right: 10px;
     max-width: 132px;
     border-radius: 50px;
     overflow-x: hidden;
-    justify-content: flex-end;
 
     div {
-      display: flex;
-      justify-content: flex-end;
-
       img {
         width: 20px;
         margin: 0 -3px;
@@ -67,6 +64,4 @@
   app-board-edit-item {
     width: 100%;
   }
-
-  box-shadow: -1px -1px 0px 0 rgb(255 255 255 / 80%), 1px 1px 0px 0 rgb(255 255 255 / 20%);
 }

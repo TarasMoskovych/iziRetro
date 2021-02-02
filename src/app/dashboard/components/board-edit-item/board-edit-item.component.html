@@ -1,5 +1,5 @@
 <div class="board-edit-item">
-  <div class="board-edit-item__field-wrapper">
+  <div class="d-flex align-items-start">
     <textarea class="board-edit-item__field" appAutofocus #textarea rows="4" [value]="value"></textarea>
     <button
       (click)="onClose($event)"
@@ -9,7 +9,7 @@
     ><mat-icon>cancel</mat-icon>
     </button>
   </div>
-  <div class="board-edit-item__actions">
+  <div class="d-flex justify-content-between">
     <button
       class="board-edit-item__btn"
       (click)="onSave($event, textarea.value.trim())"

@@ -1,18 +1,22 @@
-<div class="board-view-item"
-  [class.board-view-item--edit]="edit" (click)="onToggle(true)"
+<div
+  class="board-view-item d-flex flex-wrap align-content-between"
+  [class.board-view-item--editable]="editable"
+  (click)="onToggle(true)"
   [ngStyle]="{'background-color': color, 'border-color': color }"
-  ><div *ngIf="!edit">
+><div *ngIf="!edit">
     {{ post.value }}
   </div>
 
-  <div *ngIf="!edit" class="board-view-item__likes-wrapper">
-    <div class="board-view-item__likes">
-      <div *ngFor="let like of likes" [matTooltip]="like.user.displayName">
+  <div *ngIf="!edit" class="board-view-item__likes-wrapper d-flex justify-content-end align-items-center">
+    <div class="board-view-item__likes d-flex justify-content-end">
+      <div *ngFor="let like of likes" [matTooltip]="like.user.displayName" class="d-flex justify-content-end">
         <img [src]="like.user.photoURL">
       </div>
     </div>
-    <mat-icon [svgIcon]="isLiked ? 'heart' : 'heart-outlined'" aria-hidden="false" (click)="onAddRemoveLike($event)"></mat-icon>
-    <span>{{ likes?.length }}</span>
+    <div class="d-flex align-items-center" (click)="onAddRemoveLike($event)">
+      <mat-icon [svgIcon]="isLiked ? 'heart' : 'heart-outlined'" aria-hidden="false"></mat-icon>
+      <span>{{ likes?.length }}</span>
+    </div>
   </div>
 
   <ng-container *ngIf="edit">

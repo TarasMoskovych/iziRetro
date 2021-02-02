@@ -1,14 +1,4 @@
 .dashboard-panel-actions {
-  display: flex;
-  justify-content: space-between;
-
-  @media (max-width: 767px) {
-    align-items: flex-start;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
   &__add {
     background-color: #426696;
 

@@ -41,13 +41,13 @@ describe('DashBoardsListComponent', () => {
     component.creator = false;
     fixture.detectChanges();
 
-    expect(el.queryAll(By.css('.dashboards-list__item-menu')).length).toBe(0);
+    expect(el.queryAll(By.css('.dashboards-list__item > span')).length).toBe(0);
   });
 
   it('should render menu when user is creator', () => {
     fixture.detectChanges();
 
-    expect(el.queryAll(By.css('.dashboards-list__item-menu')).length).toBe(boards.length);
+    expect(el.queryAll(By.css('.dashboards-list__item > span')).length).toBe(boards.length);
   });
 
   describe('emitters', () => {
