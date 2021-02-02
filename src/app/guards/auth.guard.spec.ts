@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 
 import { firebaseUser } from '../mocks';
 import { AuthGuard } from './auth.guard';
-import { AuthService } from './auth.service';
+import { AuthService } from '../services/auth.service';
 
 describe('AuthGuard', () => {
   let guard: AuthGuard;
