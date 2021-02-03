@@ -2,6 +2,7 @@ import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { OrderModule } from 'ngx-order-pipe';
 
 import { boards } from 'src/app/mocks';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -15,6 +16,7 @@ describe('DashBoardsListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        OrderModule,
         RouterTestingModule,
         SharedModule
       ],

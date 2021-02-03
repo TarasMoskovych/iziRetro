@@ -21,5 +21,4 @@ export class HeaderComponent {
       .pipe(take(1))
       .subscribe();
   }
-
 }

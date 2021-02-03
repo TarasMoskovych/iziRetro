@@ -8,7 +8,8 @@
     "deploy": "firebase login && ng test --prod && ng build --prod && firebase deploy",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "pwa": "ng build --prod && http-server -p 8080 -c-1 dist/iziRetro"
   },
   "husky": {
     "hooks": {
@@ -28,6 +29,7 @@
     "@angular/platform-browser": "~11.0.0",
     "@angular/platform-browser-dynamic": "~11.0.0",
     "@angular/router": "~11.0.0",
+    "@angular/service-worker": "~11.0.0",
     "angularx-qrcode": "^10.0.11",
     "bootstrap-4-grid": "^3.4.0",
     "firebase": "^8.2.0",

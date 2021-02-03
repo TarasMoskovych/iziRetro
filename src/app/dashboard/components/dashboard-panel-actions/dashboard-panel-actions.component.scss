@@ -1,8 +1,10 @@
+@import 'variables';
+
 .dashboard-panel-actions {
   &__add {
-    background-color: #426696;
+    background-color: $color-alpha;
 
-    @media (max-width: 767px) {
+    @media (max-width: $screen-xs-max) {
       margin-bottom: 20px;
     }
   }
@@ -10,7 +12,7 @@
   mat-option,
   ::ng-deep .mat-select-value,
   mat-label {
-    color: #426696;
+    color: $color-alpha;
   }
 
   &__right {
@@ -20,7 +22,7 @@
       margin-right: 15px;
     }
 
-    @media (max-width: 767px) {
+    @media (max-width: $screen-xs-max) {
       width: 100%;
 
       mat-form-field {

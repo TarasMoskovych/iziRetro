@@ -6,7 +6,7 @@
   <mat-card-content>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-      <mat-form-field *ngIf="form.get('email') as email" class="login__field-wrapper">
+      <mat-form-field *ngIf="form.get('email') as email" class="w-100">
         <mat-label>Email</mat-label>
         <input matInput placeholder="Email" formControlName="email">
         <mat-error *ngIf="email.invalid">
@@ -19,7 +19,7 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field *ngIf="form.get('password') as password" class="login__field-wrapper">
+      <mat-form-field *ngIf="form.get('password') as password" class="w-100">
         <mat-label>Password</mat-label>
         <input matInput placeholder="Password" formControlName="password">
         <mat-error *ngIf="password.invalid">
@@ -29,13 +29,13 @@
 
       <div class="login__actions">
         <ng-container *ngIf="{loading: loading$ | async} as state">
-          <mat-progress-spinner *ngIf="state.loading" diameter="30" mode="indeterminate"></mat-progress-spinner>
+          <mat-progress-spinner class="m-auto" *ngIf="state.loading" diameter="30" mode="indeterminate"></mat-progress-spinner>
           <ng-container *ngIf="!state.loading">
-            <button class="login__login-btn" mat-raised-button color="primary" [disabled]="form.invalid">Login</button>
+            <button class="login__login-btn w-100" mat-raised-button color="primary" [disabled]="form.invalid">Login</button>
             <div class="login__divider">
               or
             </div>
-            <button class="login__google-btn" (click)="onSignInWithGoogle()" type="button" mat-raised-button>
+            <button class="login__google-btn w-100" (click)="onSignInWithGoogle()" type="button" mat-raised-button>
               Login with Google
             </button>
           </ng-container>
@@ -44,5 +44,5 @@
     </form>
   </mat-card-content>
 
-  <p>Don't have an account? <a class="login__register-link" routerLink="/register" queryParamsHandling="preserve">Click here</a> to Register</p>
+  <p>Don't have an account? <a class="login__register-link" routerLink="/register" queryParamsHandling="preserve">Register</a></p>
 </mat-card>

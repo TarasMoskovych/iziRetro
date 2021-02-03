@@ -1,8 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from '../material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { OrderModule } from 'ngx-order-pipe';
+
+// Material
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { FilterPipe } from './pipes';
 import { AutofocusDirective } from './directives';
@@ -16,16 +22,18 @@ import { AutofocusDirective } from './directives';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule,
-    OrderModule,
   ],
   exports: [
-    MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    OrderModule,
     FilterPipe,
     AutofocusDirective,
+    MatDialogModule,
+    MatButtonModule,
+    MatSnackBarModule,
+    MatMenuModule,
+    MatInputModule,
+    MatFormFieldModule
   ],
 })
 export class SharedModule { }

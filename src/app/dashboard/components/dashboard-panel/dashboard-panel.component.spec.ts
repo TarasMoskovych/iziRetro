@@ -1,12 +1,13 @@
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatBadgeModule } from '@angular/material/badge';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 
-import { MaterialModule } from 'src/app/material/material.module';
 import { boards } from 'src/app/mocks';
 import { Sort } from 'src/app/models';
 import { DashboardService } from 'src/app/services/dashboard.service';
@@ -37,7 +38,8 @@ describe('DashboardPanelComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        MaterialModule,
+        MatTabsModule,
+        MatBadgeModule,
         NoopAnimationsModule,
       ],
       declarations: [ DashboardPanelComponent ],

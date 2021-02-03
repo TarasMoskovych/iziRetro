@@ -1,8 +1,10 @@
+@import 'variables';
+
 .board {
   padding: 30px;
 
   mat-button-toggle-group {
-    background: linear-gradient(to right bottom, rgb(255 255 255 / 0%), rgb(255 255 255 / 0%));
+    background: $glass-background;
     border-radius: 10px;
     border: 1px solid rgb(255 255 255);
     box-shadow: inset -1px -1px 8px 2px rgb(255 255 255 / 50%), inset 0px 0px 20px 0px rgb(255 255 255 / 50%);
@@ -10,14 +12,6 @@
     mat-icon {
       width: 16px;
       height: 16px;
-    }
-
-    ::ng-deep .mat-button-toggle .mat-button-toggle-ripple, .mat-button-toggle-focus-overlay {
-      border-radius: 9px;
-    }
-
-    ::ng-deep mat-button-toggle {
-      border-left: none !important;
     }
 
     .mat-button-toggle-appearance-standard {
@@ -29,27 +23,19 @@
     }
 
     .mat-button-toggle-checked {
-      background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.7));
+      background: $glass-background;
       border-radius: 9px;
 
       mat-icon {
         opacity: 1;
       }
     }
-
-    ::ng-deep .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
-      line-height: 26px !important;
-    }
-
-    ::ng-deep .mat-button-toggle-label-content {
-      padding: 0 20px !important;
-    }
   }
 
   &__layout {
     margin-right: 15px;
 
-    @media (max-width: 767px) {
+    @media (max-width: $screen-xs-max) {
       margin-bottom: 15px;
       margin-right: 0;
     }
@@ -60,19 +46,23 @@
     opacity: 0.5;
   }
 
+  &__columns-wrapper {
+    @media (max-width: $screen-xs-max) {
+      flex-direction: column;
+    }
+  }
+
   &__body-header {
     h1 {
       margin-right: 10px;
     }
 
     h2 {
-      color: #b7b7b7;
+      color: $color-gamma;
     }
   }
 
   &__column {
-    width: 100%;
-
     &:not(:last-child) {
       margin-right: 20px;
     }
@@ -80,14 +70,12 @@
 
   &__column-new-item {
     transition: .3s;
-    width: 100%;
 
     &:hover {
       transform: scale(1.03);
     }
 
     button {
-      width: 100%;
       border-radius: 10px;
       box-shadow: -1px -1px 0px 0 rgb(255 255 255 / 80%), 1px 1px 0px 0 rgb(255 255 255 / 20%);
     }

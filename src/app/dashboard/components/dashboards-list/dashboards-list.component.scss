@@ -1,3 +1,5 @@
+@import 'variables';
+
 .dashboards-list {
   padding: 10px 20px;
   height: 100%;
@@ -10,9 +12,9 @@
 
   &__item-wrapper {
     border-radius: 20px;
-    box-shadow: -1px -1px 1px 1px rgba(255, 255, 255, 0.5), 0px 0px 1px 1px rgba(255, 255, 255, 0);
+    box-shadow: $border-wrapper;
     box-sizing: border-box;
-    color: #426696;
+    color: $color-alpha;
     cursor: pointer;
     margin: 10px;
     max-width: 340px;
@@ -21,7 +23,7 @@
     position: relative;
     z-index: 2;
 
-    @media (max-width: 767px) {
+    @media (max-width: $screen-xs-max) {
       max-width: 100%;
       min-height: 150px;
     }
@@ -32,7 +34,7 @@
 
     &:hover {
       .dashboards-list__item-title {
-        color: darken(#426696, 50);
+        color: darken($color-alpha, 50);
       }
     }
   }
@@ -42,7 +44,6 @@
     background: linear-gradient(345deg, rgb(255 255 255 / 50%) 0%, rgb(101 150 246 / 30%), rgb(101 223 201 / 50%));;
     height: 100%;
     padding: 16px;
-    width: 100%;
     z-index: 2;
   }
 
