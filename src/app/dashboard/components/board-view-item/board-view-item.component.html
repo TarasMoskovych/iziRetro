@@ -10,7 +10,7 @@
   <div *ngIf="!edit" class="board-view-item__likes-wrapper d-flex justify-content-end align-items-center">
     <div class="board-view-item__likes d-flex justify-content-end">
       <div *ngFor="let like of likes" [matTooltip]="like.user.displayName" class="d-flex justify-content-end">
-        <img [src]="like.user.photoURL">
+        <img [src]="like.user.photoURL" alt="">
       </div>
     </div>
     <div class="d-flex align-items-center" (click)="onAddRemoveLike($event)">

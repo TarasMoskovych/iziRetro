@@ -67,7 +67,7 @@ export class DashboardPanelComponent implements OnInit {
     this[myBoards ? 'sortBoards$' : 'sortSharedWithMe$'].next(value);
   }
 
-  private addEditBoard(board: Board, edit: boolean = false): void {
+  private addEditBoard(board: Board, edit: boolean): void {
     (this.dashboardService[edit ? 'editBoard' : 'addBoard'](board) as Observable<void>)
       .pipe(take(1))
       .subscribe();
