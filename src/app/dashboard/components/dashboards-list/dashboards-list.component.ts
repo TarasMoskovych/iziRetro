@@ -13,6 +13,7 @@ export class DashBoardsListComponent {
   @Input() creator: boolean = false;
   @Input() searchQuery: string | null = '';
   @Input() sort: Sort | null;
+  @Output() editBoard = new EventEmitter<Board>();
   @Output() removeBoard = new EventEmitter<Board>();
   @Output() shareUrl = new EventEmitter<Board>();
   @Output() freeze = new EventEmitter<Board>();
@@ -23,6 +24,10 @@ export class DashBoardsListComponent {
 
   onFreeze(board: Board): void {
     this.freeze.emit(board);
+  }
+
+  onEdit(board: Board): void {
+    this.editBoard.emit(board);
   }
 
   onRemove(board: Board): void {

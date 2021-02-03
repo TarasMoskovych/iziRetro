@@ -88,7 +88,7 @@ export class DashboardService {
         exhaustMap((b: Board) => {
           board = b;
 
-          if (board.creator === firebaseUser.email) return of(null);
+          if (board.creator === firebaseUser.email || board.completed) return of(null);
           return this.authService.getUserByEmail(firebaseUser.email as string);
         }),
         exhaustMap((user: User | null) => {

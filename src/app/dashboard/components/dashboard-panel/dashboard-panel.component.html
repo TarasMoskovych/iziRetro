@@ -9,7 +9,7 @@
           <app-dashboard-panel-actions
             [creator]="true"
             [sorts]="sorts"
-            (createBoard)="onOpenAddDashboardModal()"
+            (createBoard)="openDashboardModal()"
             (search)="onBoardsSearch($event, true)"
             (select)="onBoardsSelect($event, true)"
           ></app-dashboard-panel-actions>
@@ -20,6 +20,7 @@
           [creator]="true"
           [searchQuery]="searchBoards$ | async"
           [sort]="sortBoards$ | async"
+          (editBoard)="openDashboardModal($event)"
           (removeBoard)="onRemoveBoard($event)"
           (shareUrl)="onShareUrl($event)"
           (freeze)="onFreeze($event)"

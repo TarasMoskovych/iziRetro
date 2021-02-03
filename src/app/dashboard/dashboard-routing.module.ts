@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { BoardAccessGuard } from '../guards/board-access.guard';
 import { BoardViewComponent, DashboardPanelComponent } from './components';
 
 const routes: Routes = [
@@ -11,6 +12,7 @@ const routes: Routes = [
   {
     path: ':id',
     component: BoardViewComponent,
+    canActivate: [BoardAccessGuard],
   },
 ];
 
