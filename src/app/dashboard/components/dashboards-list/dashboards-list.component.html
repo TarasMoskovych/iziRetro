@@ -4,7 +4,7 @@
     class="dashboards-list__item-wrapper"
     role="listitem">
 
-    <div class="dashboards-list__item d-flex flex-row justify-content-between align-items-baseline">
+    <div class="dashboards-list__item w-100 d-flex flex-row justify-content-between align-items-baseline">
       <div
         [routerLink]="['/dashboard', board.id]"
         class="dashboards-list__item-title d-flex justify-content-between h-100 w-100"
@@ -21,7 +21,7 @@
 
       <span *ngIf="creator" class="d-flex align-items-center">
         <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Open menu">
-          <mat-icon>more_vert</mat-icon>
+          <mat-icon aria-hidden="true">more_vert</mat-icon>
         </button>
 
         <mat-menu #menu="matMenu">

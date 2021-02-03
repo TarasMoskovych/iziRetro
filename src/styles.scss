@@ -1,99 +1,83 @@
-@import 'assets/scss/grid';
+@import 'grid';
+@import 'variables';
 @import '~bootstrap-4-grid/scss/grid';
 
-html,
-body {
-  color: #426696;
-  overflow: hidden;
-}
-
 * {
-  font-family: 'Poppins', "Helvetica Neue", sans-serif;
+  font-family: 'Poppins', 'Helvetica Neue', sans-serif;
   margin: 0;
   padding: 0;
 }
 
+html,
+body {
+  background-color: $color-alpha2;
+  color: $color-alpha;
+  overflow: hidden;
+}
+
 main {
-  align-items: center;
-  background: linear-gradient(to right top, #6596F6, #65DFC9);
-  display: flex;
-  justify-content: center;
+  background: linear-gradient(180deg, $color-alpha2, $color-beta);
   min-height: 100vh;
 }
 
 .glass {
-  backdrop-filter: blur(2rem);
-  background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.7),  rgba(255, 255, 255, 0.3));
+  animation: glassAnimation 5s ease-in;
+  backdrop-filter: $blur;
+  background: $glass-background;
   border-radius: 30px;
-  box-shadow: -1px -1px 1px 1px rgb(255, 255, 255), 0px 0px 1px 1px rgb(255, 255, 255, 0.5);
+  box-shadow: $border-wrapper;
   height: 90vh;
   height: 90vh;
   overflow: auto;
+  transition: ease all .5s;
   width: 80%;
   z-index: 2;
-  animation: glassAnimation 5s ease-in;
 
-  @media (max-width: 1023px) {
-    width: 90%;
-  }
-
-  @media (max-width: 767px) {
+  @include media-breakpoint-down(md) {
     width: 95%;
   }
-}
 
-@keyframes glassAnimation {
-  0% {
-    backdrop-filter: unset;
-  }
-  100% {
-    backdrop-filter: blur(2rem);
+  @include media-breakpoint-down(xs) {
+    width: 90%;
   }
 }
 
 .circle1,
 .circle2 {
-  background: #fff;
-  background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3));
+  background: $glass-background;
   border-radius: 50%;
-  box-shadow: -1px -1px 1px 1px rgb(255, 255, 255), 0px 0px 1px 1px rgb(255, 255, 255);
+  box-shadow: $border-wrapper;
   height: 20rem;
   position: absolute;
+  transition: ease all .5s;
   width: 20rem;
-}
 
-@keyframes circle1Animation {
-  0% {
-    right: -20%;
-    top: -10%
-  }
-  100% {
-    right: 2%;
-    top: 1%;
-  }
-}
-
-@keyframes circle2Animation {
-  0% {
-    left: -20%;
-    bottom: -10%
-  }
-  100% {
-    bottom: 1%;
-    left: 2%;
+  @include media-breakpoint-down(xs) {
+    height: 10rem;
+    width: 10rem;
   }
 }
 
 .circle1 {
+  animation: circle1Animation 2s ease-in;
   right: 2%;
   top: 1%;
-  animation: circle1Animation 2s ease-in;
+  transition: ease all .5s;
+
+  @include media-breakpoint-down(xs) {
+    right: -10%;
+  }
 }
 
 .circle2 {
+  animation: circle2Animation 2s ease-in;
   bottom: 1%;
   left: 2%;
-  animation: circle2Animation 2s ease-in;
+  transition: ease all .5s;
+
+  @include media-breakpoint-down(xs) {
+    left: -10%;
+  }
 }
 
 .dashboards-list__item {
@@ -101,10 +85,11 @@ main {
     justify-content: space-between;
   }
 }
+
 .mat-select-panel,
 .mat-menu-panel {
-  -webkit-backdrop-filter: blur(7.0px);
-  backdrop-filter: blur(7.0px);
+  -webkit-backdrop-filter: $blur;
+  backdrop-filter: $blur;
   background: rgba(255, 255, 255, 0.65) !important;
   border-radius: 10px;
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
@@ -125,5 +110,59 @@ main {
 .dashboard-panel {
   mat-tab-body {
     height: 100%;
+  }
+}
+
+mat-button-toggle-group {
+  .mat-button-toggle .mat-button-toggle-ripple, .mat-button-toggle-focus-overlay {
+    border-radius: 9px;
+  }
+
+  mat-button-toggle {
+    border-left: none !important;
+  }
+
+  .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+    line-height: 26px !important;
+  }
+
+  .mat-button-toggle-label-content {
+    padding: 0 20px !important;
+  }
+}
+
+app-dashboard-panel-actions {
+  @include media-breakpoint-down(xs) {
+    width: 100%;
+  }
+}
+
+// Animations
+@keyframes glassAnimation {
+  0% {
+    backdrop-filter: unset;
+  }
+  100% {
+    backdrop-filter: $blur;
+  }
+}
+
+@keyframes circle1Animation {
+  0% {
+    right: -20%;
+  }
+  100% {
+    right: 2%;
+  }
+}
+
+@keyframes circle2Animation {
+  0% {
+    left: -20%;
+    bottom: -10%
+  }
+  100% {
+    bottom: 1%;
+    left: 2%;
   }
 }

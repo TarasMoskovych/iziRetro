@@ -1,8 +1,10 @@
+@import 'variables';
+
 .register {
   background: transparent;
   border-radius: 20px;
   box-shadow: none;
-  color: #426696;
+  color: $color-alpha;
   font-size: 14px;
   opacity: 0.8;
   text-align: center;
@@ -13,12 +15,7 @@
 
   .mat-raised-button,
   .mat-card-subtitle {
-    color: #426696;
-  }
-
-  &__field-wrapper,
-  &__actions button {
-    width: 100%;
+    color: $color-alpha;
   }
 
   &__register-btn {
@@ -27,20 +24,16 @@
 
   &__actions {
     margin-top: 15px;
-
-    mat-progress-spinner {
-      margin: 0 auto;
-    }
   }
 
   &__login-link {
-    color: darken(#426696, 10%);
+    color: darken($color-alpha, 10%);
     font-weight: 700;
     text-decoration: none;
 
     &:focus,
     &:hover {
-      color: #426696;
+      color: $color-alpha;
       text-decoration: underline;
     }
   }

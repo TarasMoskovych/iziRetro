@@ -1,7 +1,7 @@
 {
   "name": "iziRetro",
   "short_name": "iziRetro",
-  "theme_color": "#1976d2",
+  "theme_color": "#6596f6",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",

@@ -4,10 +4,6 @@
   &__user-name {
     margin-right: 15px;
     opacity: 0.5;
-
-    @media (max-width: 767px) {
-      display: none;
-    }
   }
 
   &__user {
@@ -15,7 +11,6 @@
       border-radius: 50%;
       height: 50px;
       min-width: 50px !important;
-      padding: 0;
     }
 
     &-img {

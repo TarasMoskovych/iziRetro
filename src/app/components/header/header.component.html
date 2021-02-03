@@ -1,16 +1,14 @@
 <div class="header d-flex align-items-center justify-content-between">
-
   <div routerLink="/dashboard" class="header__logo">
     <h1>iziRetro</h1>
   </div>
 
   <div class="header__user" *ngIf="user$ | async as user">
     <ng-container *ngIf="user.emailVerified">
+      <span class="header__user-name d-none d-md-inline-block">{{user.displayName}}</span>
 
-      <span class="header__user-name">{{user.displayName}}</span>
-
-      <button mat-button [matMenuTriggerFor]="menu">
-        <img class="header__user-img" [src]="user.photoURL" alt="">
+      <button class="p-0" mat-button [matMenuTriggerFor]="menu">
+        <img class="header__user-img" [src]="user.photoURL" alt="User image">
       </button>
 
       <mat-menu #menu="matMenu">
@@ -18,5 +16,4 @@
       </mat-menu>
     </ng-container>
   </div>
-
 </div>

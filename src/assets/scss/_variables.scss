@@ -1,0 +1,19 @@
+// Colors
+$color-alpha: #426696;
+$color-alpha2:#6596f6;
+$color-beta:  #65DFC9;
+$color-gamma: #b7b7b7;
+$glass-background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3));
+
+// Borders
+$border-wrapper: -1px -1px 1px 1px rgba(255, 255, 255, 0.9), 0px 0px 1px 1px rgba(255, 255, 255, 0.1);
+
+// Filters
+$blur: blur(2rem);
+
+// Screens
+$screen-xs: 0;
+$screen-md: 768px;
+$screen-lg: 1024px;
+$screen-xs-max: 767px;
+$screen-md-max: 1023px;

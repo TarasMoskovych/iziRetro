@@ -1,6 +1,6 @@
 <div *ngIf="board$ | async as board" class="board">
   <div class="d-flex flex-column align-items-start flex-md-row justify-content-md-end align-items-md-center">
-    <div class="board__layout">
+    <div class="board__layout d-none d-md-block">
       <span class="board__layout-label">
         Change layout
       </span>
@@ -31,16 +31,17 @@
     </div>
 
     <ng-container *ngIf="{columns: columns$ | async, likes: likes$ | async, posts: posts$ | async, search: search$ | async, sort: sort$ | async } as data">
-      <div class="d-flex justify-content-between" [ngClass]="{'flex-column': verticalLayout}">
-        <div *ngFor="let column of data.columns | orderBy:'position'" class="board__column">
+      <div class="board__columns-wrapper d-flex justify-content-between" [ngClass]="{'flex-column': verticalLayout}">
+        <div *ngFor="let column of data.columns | orderBy:'position'" class="board__column w-100">
 
           <div class="d-flex flex-column align-items-center">
             <div class="d-flex justify-content-between w-100">
               <span>{{column.title}}</span>
             </div>
 
-            <div *ngIf="!board.completed" class="board__column-new-item">
+            <div *ngIf="!board.completed" class="board__column-new-item w-100">
               <button
+                class="w-100"
                 (click)="toggle(column.title, true)"
                 [ngStyle]="{'background-color': column.color }"
                 mat-raised-button color="primary"

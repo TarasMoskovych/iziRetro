@@ -1,5 +1,7 @@
+@import 'variables';
+
 $grid-breakpoints: (
-  xs: 0,
-  md: 768px,
-  lg: 1024px,
+  xs: $screen-xs,
+  md: $screen-md,
+  lg: $screen-lg,
 );

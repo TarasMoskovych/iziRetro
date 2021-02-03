@@ -21,6 +21,7 @@
 
   <ng-container *ngIf="edit">
     <app-board-edit-item
+      class="w-100"
       [value]="post.value"
       (close)="onToggle(false)"
       (remove)="onRemove()"

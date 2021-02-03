@@ -1,3 +1,5 @@
+@import 'variables';
+
 .auth {
   left: 50%;
   position: absolute;
@@ -5,17 +7,18 @@
   transform: translate(-50%, -50%);
 
   &__wrapper {
-    backdrop-filter: blur(2rem);
-    background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.8),  rgba(255, 255, 255, 0.2));
+    backdrop-filter: $blur;
+    background: $glass-background;
     border-radius: 30px;
     max-width: 400px;
+    transition: ease all .5s;
 
-    @media (max-width: 1023px) {
+    @media (max-width: $screen-md-max) {
       max-width: 420px;
     }
 
-    @media (max-width: 767px) {
-      max-width: 320px;
+    @media (max-width: $screen-xs-max) {
+      max-width: 95%;
     }
   }
 }
