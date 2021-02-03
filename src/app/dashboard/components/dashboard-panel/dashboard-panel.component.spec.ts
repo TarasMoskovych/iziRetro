@@ -6,7 +6,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 
-import { MaterialModule } from 'src/app/material/material.module';
+import { DashboardModule } from 'src/app/dashboard/dashboard.module';
 import { boards } from 'src/app/mocks';
 import { Sort } from 'src/app/models';
 import { DashboardService } from 'src/app/services/dashboard.service';
@@ -37,7 +37,7 @@ describe('DashboardPanelComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        MaterialModule,
+        DashboardModule,
         NoopAnimationsModule,
       ],
       declarations: [ DashboardPanelComponent ],
