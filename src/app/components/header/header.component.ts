@@ -12,7 +12,7 @@ import { AuthService } from 'src/app/services/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent {
-  user$: Observable<FirebaseUser> = this.authService.getCurrentUser();
+  user$: Observable<FirebaseUser> = this.authService.getFirebaseUser();
 
   constructor(private authService: AuthService) { }
 

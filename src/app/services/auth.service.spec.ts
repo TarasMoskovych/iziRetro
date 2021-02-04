@@ -49,7 +49,7 @@ describe('AuthService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('getCurrentUser', () => {
+  describe('getFirebaseUser', () => {
     it('should be created when user is guest', () => {
       spyOnProperty(fireAuth, 'authState').and.returnValue(of(null));
       recreateService();
@@ -185,6 +185,18 @@ describe('AuthService', () => {
       service.logout().subscribe(() => {
         expect(router.navigateByUrl).toHaveBeenCalledOnceWith('login');
         done();
+      });
+    });
+  });
+
+  describe('getCurrentUser', () => {
+    it('should return a user from users collection', () => {
+      spyOnProperty(fireAuth, 'authState').and.returnValue(of(firebaseUser));
+      spyOnCollection(firestore, [user], 'users');
+      recreateService();
+
+      service.getCurrentUser().subscribe((u: User) => {
+        expect(u).toEqual(user);
       });
     });
   });

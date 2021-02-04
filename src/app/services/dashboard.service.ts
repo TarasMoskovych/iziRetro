@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { from, Observable, of } from 'rxjs';
+import { combineLatest, from, Observable, of } from 'rxjs';
 import { exhaustMap, map, switchMap } from 'rxjs/operators';
 
 import { Board, FirebaseUser, FirebaseUserInfo, FirebaseWhereFilterOp, FirestoreCollectionReference, FirestoreQuerySnapshot, User } from '../models';
@@ -32,7 +32,7 @@ export class DashboardService {
   addBoard(board: Board): Observable<boolean> {
     const boardId = this.generatorService.generateId(64);
 
-    return this.authService.getCurrentUser()
+    return this.authService.getFirebaseUser()
       .pipe(
         switchMap((user: FirebaseUser) => {
           return from(this.afs.collection<Board>('boards')
@@ -43,7 +43,7 @@ export class DashboardService {
   }
 
   getMyBoards(): Observable<Board[]> {
-    return this.authService.getCurrentUser()
+    return this.authService.getFirebaseUser()
       .pipe(switchMap((user: FirebaseUser) => {
         return this.getBoardRef(user.email as string, 'creator').valueChanges();
       }));
@@ -52,7 +52,6 @@ export class DashboardService {
   getBoardsSharedWithMe(): Observable<Board[]> {
     return this.authService.getCurrentUser()
       .pipe(
-        switchMap((firebaseUser: FirebaseUser) => this.authService.getUserByEmail(firebaseUser.email as string)),
         switchMap((user: User) => {
           if (!user?.sharedBoards?.length) return of([]);
           return this.getBoardRef(user.sharedBoards, 'id', 'in').valueChanges();
@@ -76,28 +75,25 @@ export class DashboardService {
   shareBoard(): Observable<FirebaseUserInfo | null> {
     const boardId = this.route.snapshot.queryParams['redirectUrl'];
     let firebaseUser: FirebaseUser;
-    let board: Board;
 
     if (!boardId) return of(null);
-    return this.authService.getCurrentUser()
-      .pipe(
-        exhaustMap((u: FirebaseUser) => {
-          firebaseUser = u;
-          return this.getBoard(boardId);
-        }),
-        exhaustMap((b: Board) => {
-          board = b;
+    return combineLatest([
+      this.authService.getFirebaseUser(),
+      this.getBoard(boardId),
+    ]).pipe(
+      exhaustMap(([user, board]) => {
+        firebaseUser = user;
 
-          if (board.creator === firebaseUser.email || board.completed) return of(null);
-          return this.authService.getUserByEmail(firebaseUser.email as string);
-        }),
-        exhaustMap((user: User | null) => {
-          if (user) {
-            return this.authService.updateUser(firebaseUser, { sharedBoards: [ ...new Set([ ...user.sharedBoards || [], boardId ]) ]});
-          }
-          return of(null);
-        }),
-      );
+        if (board.creator === firebaseUser.email || board.completed) return of(null);
+        return this.authService.getUserByEmail(firebaseUser.email as string);
+      }),
+      exhaustMap((user: User | null) => {
+        if (user) {
+          return this.authService.updateUser(firebaseUser, { sharedBoards: [ ...new Set([ ...user.sharedBoards || [], boardId ]) ]});
+        }
+        return of(null);
+      }),
+    );
   }
 
   shareUrl(board: Board): void {

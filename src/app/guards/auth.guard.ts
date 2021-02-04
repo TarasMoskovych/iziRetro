@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    return this.authService.getCurrentUser()
+    return this.authService.getFirebaseUser()
       .pipe(map((user: FirebaseUser) => {
         !user?.emailVerified && this.router.navigate(['login'], {
           queryParams: route.queryParams,

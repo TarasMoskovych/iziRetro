@@ -36,7 +36,7 @@ describe('DashboardService', () => {
   };
 
   beforeEach(() => {
-    authServiceSpy = jasmine.createSpyObj('AuthService', ['getCurrentUser', 'getUserByEmail', 'updateUser']);
+    authServiceSpy = jasmine.createSpyObj('AuthService', ['getFirebaseUser', 'getUserByEmail', 'getCurrentUser', 'updateUser']);
     generatorServiceSpy = jasmine.createSpyObj('GeneratorService', { generateId: '12345' });
     postServiceSpy = jasmine.createSpyObj('PostService', ['initColumns', 'getColumnsRef', 'getPostsRef', 'getLikesRef']);
     matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
@@ -53,7 +53,7 @@ describe('DashboardService', () => {
     service = TestBed.inject(DashboardService);
     firestore = TestBed.inject(AngularFirestore);
 
-    authServiceSpy.getCurrentUser.and.returnValue(of(firebaseUser));
+    authServiceSpy.getFirebaseUser.and.returnValue(of(firebaseUser));
   });
 
   it('should be created', () => {
@@ -80,7 +80,7 @@ describe('DashboardService', () => {
 
   describe('getBoardsSharedWithMe', () => {
     it('should return boards', () => {
-      authServiceSpy.getUserByEmail.and.returnValue(of({ ...user, sharedBoards: ['1'] }));
+      authServiceSpy.getCurrentUser.and.returnValue(of({ ...user, sharedBoards: ['1'] }));
       spyOnCollection(firestore, [boards[0]], 'boards');
 
       service.getBoardsSharedWithMe().subscribe((response: Board[]) => {
@@ -89,7 +89,7 @@ describe('DashboardService', () => {
     });
 
     it('should return empty array when user does not have boards', () => {
-      authServiceSpy.getUserByEmail.and.returnValue(of(user));
+      authServiceSpy.getCurrentUser.and.returnValue(of(user));
       spyOnCollection(firestore, []);
 
       service.getBoardsSharedWithMe().subscribe((response: Board[]) => {
@@ -98,7 +98,7 @@ describe('DashboardService', () => {
     });
 
     it('should return empty array when user is not defined', () => {
-      authServiceSpy.getUserByEmail.and.returnValue(of(null as any));
+      authServiceSpy.getCurrentUser.and.returnValue(of(null as any));
       spyOnCollection(firestore, []);
 
       service.getBoardsSharedWithMe().subscribe((response: Board[]) => {
@@ -139,7 +139,7 @@ describe('DashboardService', () => {
 
       TestBed.inject(DashboardService).shareBoard().subscribe(response => {
         expect(response).toBeNull();
-        expect(authServiceSpy.getCurrentUser).not.toHaveBeenCalled();
+        expect(authServiceSpy.getFirebaseUser).not.toHaveBeenCalled();
         expect(authServiceSpy.updateUser).not.toHaveBeenCalled();
         expect(authServiceSpy.getUserByEmail).not.toHaveBeenCalled();
         done();

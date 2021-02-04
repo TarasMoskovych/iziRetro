@@ -156,7 +156,7 @@ export class BoardViewComponent implements OnInit {
       })
     );
 
-    this.authService.getCurrentUser()
+    this.authService.getFirebaseUser()
       .pipe(take(1))
       .subscribe((user: FirebaseUser) => this.user = user);
   }

@@ -14,7 +14,7 @@ describe('BoardAccessGuard', () => {
   let route: ActivatedRouteSnapshot;
 
   beforeEach(() => {
-    authServiceSpy = jasmine.createSpyObj('AuthService', ['getCurrentUser', 'getUserByEmail', 'navigateToDashboard']);
+    authServiceSpy = jasmine.createSpyObj('AuthService', ['getCurrentUser', 'navigateToDashboard']);
     dashboardServiceSpy = jasmine.createSpyObj('DashboardService', ['getBoard']);
 
     TestBed.configureTestingModule({
@@ -28,8 +28,6 @@ describe('BoardAccessGuard', () => {
 
     guard = TestBed.inject(BoardAccessGuard);
     route = TestBed.inject(ActivatedRouteSnapshot);
-
-    authServiceSpy.getCurrentUser.and.returnValue(of(firebaseUser));
   });
 
   it('should be created', () => {
@@ -38,12 +36,12 @@ describe('BoardAccessGuard', () => {
 
   describe('resolve', () => {
     it('should resolve when current user is a creator', () => {
-      authServiceSpy.getUserByEmail.and.returnValue(of(user));
+      authServiceSpy.getCurrentUser.and.returnValue(of(user));
       dashboardServiceSpy.getBoard.and.returnValue(of({ ...boards[0], creator: user.email }));
     });
 
     it('should resolve when current user has already shared the board', () => {
-      authServiceSpy.getUserByEmail.and.returnValue(of({ ...user, sharedBoards: ['1'] }));
+      authServiceSpy.getCurrentUser.and.returnValue(of({ ...user, sharedBoards: ['1'] }));
       dashboardServiceSpy.getBoard.and.returnValue(of(boards[0]));
     });
 
@@ -56,12 +54,12 @@ describe('BoardAccessGuard', () => {
 
   describe('reject', () => {
     it('should reject when the board is invalid', () => {
-      authServiceSpy.getUserByEmail.and.returnValue(of(user));
+      authServiceSpy.getCurrentUser.and.returnValue(of(user));
       dashboardServiceSpy.getBoard.and.returnValue(of(undefined as any));
     });
 
     it('should reject when current user has not shared the board', () => {
-      authServiceSpy.getUserByEmail.and.returnValue(of({ ...user, sharedBoards: ['2', '3'] }));
+      authServiceSpy.getCurrentUser.and.returnValue(of({ ...user, sharedBoards: ['2', '3'] }));
       dashboardServiceSpy.getBoard.and.returnValue(of(boards[0]));
     });
 

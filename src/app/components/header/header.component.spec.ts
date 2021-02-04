@@ -21,7 +21,7 @@ describe('HeaderComponent', () => {
   let authServiceSpy: jasmine.SpyObj<AuthService>;
 
   beforeEach(async () => {
-    authServiceSpy = jasmine.createSpyObj('AuthService', ['getCurrentUser', 'logout']);
+    authServiceSpy = jasmine.createSpyObj('AuthService', ['getFirebaseUser', 'logout']);
 
     await TestBed.configureTestingModule({
       imports: [SharedModule],
@@ -46,14 +46,14 @@ describe('HeaderComponent', () => {
   });
 
   it('should not display user image when guest', () => {
-    authServiceSpy.getCurrentUser.and.returnValue(of());
+    authServiceSpy.getFirebaseUser.and.returnValue(of());
     createComponent();
 
     expect(el.queryAll(By.css('.header__user-img')).length).toBe(0);
   });
 
   it('should display user image when authorized', () => {
-    authServiceSpy.getCurrentUser.and.returnValue(of(user as FirebaseUser));
+    authServiceSpy.getFirebaseUser.and.returnValue(of(user as FirebaseUser));
     createComponent();
 
     expect(el.queryAll(By.css('.header__user-img')).length).toBe(1);

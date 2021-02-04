@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
 import { from, Observable, of } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, exhaustMap, map, switchMap, take, tap } from 'rxjs/operators';
 import * as md5 from 'md5';
 import { FirebaseError } from '@firebase/util';
 
@@ -23,7 +23,7 @@ export class AuthService {
     private router: Router,
     private notificationService: NotificationService,
   ) {
-    this.getCurrentUser()
+    this.getFirebaseUser()
       .subscribe((user: FirebaseUser) => {
         if (user?.emailVerified && (this.router.url.includes('login') || this.router.url.includes('register'))) {
           this.navigateToDashboard();
@@ -81,8 +81,20 @@ export class AuthService {
       .pipe((tap(() => this.router.navigateByUrl('login'))));
   }
 
-  getCurrentUser(): Observable<FirebaseUser> {
+  getFirebaseUser(): Observable<FirebaseUser> {
     return from(this.afauth.authState) as Observable<FirebaseUser>;
+  }
+
+  getCurrentUser(): Observable<User> {
+    return this.getFirebaseUser()
+      .pipe(
+        exhaustMap((firebaseUser: FirebaseUser) => {
+          return this.afs.collection<User>('users', (ref: FirestoreCollectionReference) => ref
+            .where('email', '==', firebaseUser.email))
+            .valueChanges()
+            .pipe(map((users: User[]) => users[0]));
+        }),
+      );
   }
 
   getUserByEmail(email: string): Observable<User> {

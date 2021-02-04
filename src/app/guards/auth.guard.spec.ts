@@ -13,7 +13,7 @@ describe('AuthGuard', () => {
   let route: ActivatedRouteSnapshot;
 
   beforeEach(() => {
-    authServiceSpy = jasmine.createSpyObj('AuthService', ['getCurrentUser']);
+    authServiceSpy = jasmine.createSpyObj('AuthService', ['getFirebaseUser']);
     routerServiceSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
@@ -34,7 +34,7 @@ describe('AuthGuard', () => {
 
   describe('redirect', () => {
     it('should redirect to login when user is guest', () => {
-      authServiceSpy.getCurrentUser.and.returnValue(of(null as any));
+      authServiceSpy.getFirebaseUser.and.returnValue(of(null as any));
 
       (guard.canActivate(route) as Observable<boolean>).subscribe((isLoggedIn: boolean) => {
         expect(isLoggedIn).toBeFalse();
@@ -43,7 +43,7 @@ describe('AuthGuard', () => {
     });
 
     it('should redirect to login when user is not confirmed', () => {
-      authServiceSpy.getCurrentUser.and.returnValue(of(firebaseUser));
+      authServiceSpy.getFirebaseUser.and.returnValue(of(firebaseUser));
 
       (guard.canActivate(route) as Observable<boolean>).subscribe((isLoggedIn: boolean) => {
         expect(isLoggedIn).toBeFalse();
@@ -53,7 +53,7 @@ describe('AuthGuard', () => {
   });
 
   it('should resolve', () => {
-    authServiceSpy.getCurrentUser.and.returnValue(of({ ...firebaseUser, emailVerified: true }));
+    authServiceSpy.getFirebaseUser.and.returnValue(of({ ...firebaseUser, emailVerified: true }));
 
     (guard.canActivate(route) as Observable<boolean>).subscribe((isLoggedIn: boolean) => {
       expect(isLoggedIn).toBeTrue();
