@@ -8,6 +8,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 
 import { Board, Column, Post, Like, FirebaseUser, Sort, dashBoardSorts } from 'src/app/models';
+import { DataExportService } from 'src/app/services/data-export.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { PostService } from 'src/app/services/post.service';
 import { VERTICAL_LAYOUT, HORIZONTAL_LAYOUT } from '../../../../assets/icons';
@@ -39,6 +40,7 @@ export class BoardViewComponent implements OnInit {
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer,
     private dashboardService: DashboardService,
+    private dataExportService: DataExportService,
     private route: ActivatedRoute,
     private postService: PostService,
     private authService: AuthService,
@@ -93,6 +95,10 @@ export class BoardViewComponent implements OnInit {
 
   onShareUrl(board: Board): void {
     this.dashboardService.shareUrl(board);
+  }
+
+  onExport(board: Board): void {
+    this.dataExportService.export(board);
   }
 
   onAddRemoveLike(post: Post): void {

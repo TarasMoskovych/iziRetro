@@ -21,8 +21,12 @@
       (select)="onSort($event)"
     ></app-dashboard-panel-actions>
 
-    <button *ngIf="!board.completed" (click)="onShareUrl(board)" mat-icon-button color="primary" aria-label="Share">
+    <button *ngIf="!board.completed" (click)="onShareUrl(board)" mat-icon-button color="primary" aria-label="Share" matTooltip="Share board URL">
       <mat-icon>share</mat-icon>
+    </button>
+
+    <button (click)="onExport(board)" mat-icon-button color="primary" aria-label="Export" matTooltip="Export to Excel">
+      <mat-icon>file_download</mat-icon>
     </button>
   </div>
   <div class="board__body">

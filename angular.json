@@ -45,7 +45,8 @@
             "allowedCommonJsDependencies": [
               "randomatic",
               "md5",
-              "qrcode"
+              "qrcode",
+              "xlsx"
             ]
           },
           "configurations": {
