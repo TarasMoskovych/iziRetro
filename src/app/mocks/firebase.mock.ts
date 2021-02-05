@@ -89,12 +89,14 @@ export const columns: Column[] = [
 
 export const posts: Post[] = [
   {
+    id: '1',
     boardId: '1',
     columnPosition: 1,
     value: 'Post 1',
     creator: user.email,
   },
   {
+    id: '2',
     boardId: '2',
     columnPosition: 2,
     value: 'Post 2',
@@ -137,8 +139,13 @@ export const likes: Like[] = [
   },
   {
     boardId: '1',
+    postId: '1',
+    user: { ...user, email: 'test@gmail.com' },
+  },
+  {
+    boardId: '1',
     postId: '2',
-    user,
+    user: { ...user, email: 'test2@gmail.com' },
   },
   {
     boardId: '1',
