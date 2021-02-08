@@ -7,7 +7,7 @@ import { OrderModule } from 'ngx-order-pipe';
 import { of } from 'rxjs';
 
 import { boards, columns, firebaseUser, likes, posts } from 'src/app/mocks';
-import { boardSorts, Column, Sort } from 'src/app/models';
+import { boardSorts, Column, Post, Sort } from 'src/app/models';
 import { AuthService } from 'src/app/services/auth.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { DataExportService } from 'src/app/services/data-export.service';
@@ -154,10 +154,39 @@ describe('BoardViewComponent', () => {
 
   describe('onEditItem', () => {
     it('should call editPost', () => {
-      postServiceSpy.editPost.and.returnValue(of());
+      postServiceSpy.editPost.and.returnValue(of(undefined));
       component.onEditItem(posts[0]);
 
       expect(postServiceSpy.editPost).toHaveBeenCalledOnceWith(posts[0], false);
+    });
+  });
+
+  describe('onDrop', () => {
+    let data: Post;
+
+    beforeEach(() => {
+      data = { ...posts[0] };
+    });
+
+    it('should call editPost', () => {
+      postServiceSpy.editPost.and.returnValue(of(undefined));
+      component.onDrop({
+        item: { data },
+        container: { data: { position: 2 } },
+        previousContainer: { data: { position: 1 } },
+      } as any);
+
+      expect(postServiceSpy.editPost).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not call editPost when same positions', () => {
+      component.onDrop({
+        item: { data },
+        container: { data: { position: 2 } },
+        previousContainer: { data: { position: 2 } },
+      } as any);
+
+      expect(postServiceSpy.editPost).not.toHaveBeenCalled();
     });
   });
 
@@ -204,7 +233,7 @@ describe('BoardViewComponent', () => {
   describe('onAddRemoveLike', () => {
     beforeEach(() => {
       postServiceSpy.addLike.and.returnValue(of({} as DocumentReference));
-      postServiceSpy.removeLike.and.returnValue(of());
+      postServiceSpy.removeLike.and.returnValue(of(undefined));
       fixture.detectChanges();
     });
 

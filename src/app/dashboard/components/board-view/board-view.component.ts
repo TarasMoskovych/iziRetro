@@ -3,6 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 import { MatIconRegistry } from '@angular/material/icon';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
@@ -29,6 +30,7 @@ export class BoardViewComponent implements OnInit {
   sort$ = new BehaviorSubject<Sort>(dashBoardSorts[1]);
 
   boardId: string;
+  editable = true;
   verticalLayout = false;
   addNewPostToggleMap: { [key: string]: boolean } = {};
   editPostToggleMap: { [key: string]: boolean } = {};
@@ -82,7 +84,21 @@ export class BoardViewComponent implements OnInit {
     this.editPostToggleMap[post.id as string] = false;
     this.postService.editPost(post, remove)
       .pipe(take(1))
-      .subscribe();
+      .subscribe(() => this.editable = true);
+  }
+
+  onDrop(event: CdkDragDrop<Post & Column>): void {
+    const previousPosition = event.previousContainer.data.position;
+    const currentPosition = event.container.data.position;
+    const post: Post = event.item.data;
+
+    if (previousPosition !== currentPosition) {
+      post.columnPosition = currentPosition;
+      post.date = Date.now();
+
+      this.editable = false;
+      this.onEditItem(post);
+    }
   }
 
   onSearch(value: string): void {

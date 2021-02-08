@@ -35,8 +35,13 @@
     </div>
 
     <ng-container *ngIf="{columns: columns$ | async, likes: likes$ | async, posts: posts$ | async, search: search$ | async, sort: sort$ | async } as data">
-      <div class="board__columns-wrapper d-flex justify-content-between" [ngClass]="{'flex-column': verticalLayout}">
-        <div *ngFor="let column of data.columns | orderBy:'position'" class="board__column w-100">
+      <div cdkDropListGroup class="board__columns-wrapper d-flex justify-content-between" [ngClass]="{'flex-column': verticalLayout}">
+        <div
+          *ngFor="let column of data.columns | orderBy:'position'"
+          class="board__column w-100"
+          cdkDropList
+          [cdkDropListData]="column"
+          (cdkDropListDropped)="onDrop($event)">
 
           <div class="d-flex flex-column align-items-center">
             <div class="d-flex justify-content-between w-100">
@@ -63,8 +68,11 @@
           <ng-container *ngFor="let item of data.posts | filter:'value':data.search | orderBy:data.sort?.value:!data.sort?.asc">
             <app-board-view-item
               *ngIf="item.columnPosition === column.position"
+              cdkDrag
+              [cdkDragData]="item"
+              [cdkDragDisabled]="!(user.email === item.creator || user.email === board.creator)"
               [edit]="editPostToggleMap[item.id] && (user.email === item.creator || user.email === board.creator)"
-              [editable]="user.email === item.creator || user.email === board.creator"
+              [editable]="editable && (user.email === item.creator || user.email === board.creator)"
               [color]="column.color"
               [likes]="likesMap[item.id]"
               [post]="item"

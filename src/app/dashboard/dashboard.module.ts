@@ -4,6 +4,7 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { OrderModule } from 'ngx-order-pipe';
 
 // Material
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -49,6 +50,7 @@ import { SharedModule } from '../shared/shared.module';
     MatBadgeModule,
     MatSelectModule,
     MatListModule,
+    DragDropModule,
   ],
 })
 export class DashboardModule { }
