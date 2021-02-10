@@ -5,7 +5,7 @@
         <ng-template mat-tab-label>
           <span class="dashboard-panel__tab" [matBadge]="boards.length" matBadgeOverlap="false">My boards</span>
         </ng-template>
-        <div class="dashboard-panel__actions">
+        <div *ngIf="boards.length" class="dashboard-panel__actions">
           <app-dashboard-panel-actions
             [creator]="true"
             [sorts]="sorts"
@@ -15,7 +15,7 @@
           ></app-dashboard-panel-actions>
         </div>
         <app-dashboards-list
-          *ngIf="boards.length"
+          *ngIf="boards.length; else empty"
           [boards]="boards"
           [creator]="true"
           [searchQuery]="searchBoards$ | async"
@@ -33,7 +33,7 @@
         <ng-template mat-tab-label>
           <span class="dashboard-panel__tab" [matBadge]="boards.length" matBadgeOverlap="false">Shared with Me</span>
         </ng-template>
-        <div class="dashboard-panel__actions">
+        <div *ngIf="boards.length" class="dashboard-panel__actions">
           <app-dashboard-panel-actions
             [sorts]="sorts"
             (search)="onBoardsSearch($event)"
@@ -41,7 +41,7 @@
           ></app-dashboard-panel-actions>
         </div>
         <app-dashboards-list
-          *ngIf="boards.length"
+          *ngIf="boards.length; else empty"
           [boards]="boards"
           [searchQuery]="searchSharedWithMe$ | async"
           [sort]="sortSharedWithMe$ | async"
@@ -50,3 +50,9 @@
     </ng-container>
   </mat-tab-group>
 </div>
+
+<ng-template #empty>
+  <div class="text-center mt-5">
+    You don't have any boards
+  </div>
+</ng-template>

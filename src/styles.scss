@@ -110,6 +110,11 @@ main {
 .dashboard-panel {
   mat-tab-body {
     height: 100%;
+
+    &,
+    .mat-tab-body-content {
+      overflow: hidden !important;
+    }
   }
 }
 
