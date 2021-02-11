@@ -1,10 +1,7 @@
 @import 'variables';
 
 .auth {
-  left: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  height: calc(100% - 120px);
 
   &__wrapper {
     backdrop-filter: $blur;

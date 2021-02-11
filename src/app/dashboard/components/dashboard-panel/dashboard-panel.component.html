@@ -5,7 +5,7 @@
         <ng-template mat-tab-label>
           <span class="dashboard-panel__tab" [matBadge]="boards.length" matBadgeOverlap="false">My boards</span>
         </ng-template>
-        <div *ngIf="boards.length" class="dashboard-panel__actions">
+        <div class="dashboard-panel__actions">
           <app-dashboard-panel-actions
             [creator]="true"
             [sorts]="sorts"
