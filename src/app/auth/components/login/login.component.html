@@ -8,7 +8,7 @@
 
       <mat-form-field *ngIf="form.get('email') as email" class="w-100">
         <mat-label>Email</mat-label>
-        <input matInput placeholder="Email" formControlName="email">
+        <input type="email" matInput placeholder="Email" formControlName="email">
         <mat-error *ngIf="email.invalid">
           <ng-container *ngIf="email.errors?.required">
             Please enter Email.
@@ -21,7 +21,7 @@
 
       <mat-form-field *ngIf="form.get('password') as password" class="w-100">
         <mat-label>Password</mat-label>
-        <input matInput placeholder="Password" formControlName="password">
+        <input type="password" matInput placeholder="Password" formControlName="password">
         <mat-error *ngIf="password.invalid">
           Please enter valid Password.
         </mat-error>
