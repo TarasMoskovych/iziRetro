@@ -8,6 +8,7 @@
     background: $glass-background;
     border-radius: 30px;
     max-width: 400px;
+    margin: auto;
     transition: ease all .5s;
 
     @media (max-width: $screen-md-max) {
