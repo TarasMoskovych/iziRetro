@@ -114,7 +114,7 @@ describe('DashboardPanelComponent', () => {
   describe('removeBoard', () => {
     it('should remove the board', () => {
       component.onRemoveBoard(boards[0]);
-      expect(dashboardServiceSpy.removeBoard).toHaveBeenCalledOnceWith(boards[0].id);
+      expect(dashboardServiceSpy.removeBoard).toHaveBeenCalledOnceWith(boards[0].id as string);
     });
   });
 

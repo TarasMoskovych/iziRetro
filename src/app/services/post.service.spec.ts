@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { of } from 'rxjs';
 
 import { columns, FirestoreMock, likes, posts, spyOnCollection, spyOnDoc } from '../mocks';

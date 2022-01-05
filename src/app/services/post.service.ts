@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, DocumentData, DocumentReference } from '@angular/fire/compat/firestore';
 import { from, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
@@ -75,7 +75,7 @@ export class PostService {
           if (!snapshot) return;
           if (remove) {
             const likesSnapshot: FirestoreQuerySnapshot = await this.getLikesRef(postId, 'postId').get().toPromise();
-            likesSnapshot.forEach(doc => doc.ref.delete());
+            likesSnapshot.forEach((doc: DocumentData) => doc.ref.delete());
           }
 
           return this.afs.doc(`posts/${snapshot.docs[0].id}`)[remove ? 'delete': 'update'](post);

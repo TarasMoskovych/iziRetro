@@ -109,7 +109,7 @@ describe('DashboardPanelActionsComponent', () => {
     it('should emit select on selectionChange event', () => {
       select.triggerEventHandler('selectionChange', { value: dashBoardSorts[1].value });
 
-      expect(component.select.emit).toHaveBeenCalledOnceWith(dashBoardSorts[1].value);
+      expect(component.select.emit).toHaveBeenCalledOnceWith(dashBoardSorts[1].value as any);
     });
   });
 });

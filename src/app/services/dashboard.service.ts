@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, DocumentData } from '@angular/fire/compat/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { combineLatest, from, Observable, of } from 'rxjs';
@@ -113,13 +113,13 @@ export class DashboardService {
         switchMap((snapshot: FirestoreQuerySnapshot) => this.afs.doc(`boards/${snapshot.docs[0].id}`).delete()),
         switchMap(async() => {
           const columnsSnapshot: FirestoreQuerySnapshot = await this.postService.getColumnsRef(boardId).get().toPromise();
-          columnsSnapshot.forEach(doc => doc.ref.delete());
+          columnsSnapshot.forEach((doc: DocumentData) => doc.ref.delete());
 
           const postsSnapshot: FirestoreQuerySnapshot = await this.postService.getPostsRef(boardId, 'boardId').get().toPromise();
-          postsSnapshot.forEach(doc => doc.ref.delete());
+          postsSnapshot.forEach((doc: DocumentData) => doc.ref.delete());
 
           const likesSnapshot: FirestoreQuerySnapshot = await this.postService.getLikesRef(boardId, 'boardId').get().toPromise();
-          likesSnapshot.forEach(doc => doc.ref.delete());
+          likesSnapshot.forEach((doc: DocumentData) => doc.ref.delete());
         }),
       );
   }

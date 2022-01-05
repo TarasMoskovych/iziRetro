@@ -29,7 +29,7 @@ class TestHostComponent {
   user: FirebaseUser = firebaseUser;
 
   onAddRemoveLike(post: Post) {}
-  onEditItem(post: Post, remove: boolean) {}
+  onEditItem(post: Post, remove?: boolean) {}
   onToggleItem(e: { post: Post, edit: boolean }, completed: boolean) {}
 }
 
