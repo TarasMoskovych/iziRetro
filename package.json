@@ -4,16 +4,17 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --configuration production",
     "deploy": "firebase login && ng test --configuration production && ng build --configuration production && firebase deploy",
-    "test": "ng test",
+    "test": "ng test --configuration production",
+    "test:ci": "ng test --configuration ci",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "pwa": "ng build --configuration production && http-server -p 8080 -c-1 dist/iziRetro"
   },
   "husky": {
     "hooks": {
-      "pre-push": "ng test --prod"
+      "pre-push": "npm run test"
     }
   },
   "private": true,

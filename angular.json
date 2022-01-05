@@ -109,6 +109,11 @@
             "production": {
               "sourceMap": false,
               "watch": false
+            },
+            "ci": {
+              "browsers": "ChromeHeadlessCI",
+              "sourceMap": false,
+              "watch": false
             }
           },
           "builder": "@angular-devkit/build-angular:karma",
