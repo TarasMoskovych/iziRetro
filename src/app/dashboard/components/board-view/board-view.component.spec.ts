@@ -1,13 +1,12 @@
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DocumentReference } from '@angular/fire/firestore';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrderModule } from 'ngx-order-pipe';
 import { of } from 'rxjs';
 
 import { boards, columns, firebaseUser, likes, posts } from 'src/app/mocks';
-import { boardSorts, Column, Post, Sort } from 'src/app/models';
+import { boardSorts, Column, Like, Post, Sort } from 'src/app/models';
 import { AuthService } from 'src/app/services/auth.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { DataExportService } from 'src/app/services/data-export.service';
@@ -113,7 +112,7 @@ describe('BoardViewComponent', () => {
 
   describe('onSaveNewItem', () => {
     beforeEach(() => {
-      postServiceSpy.addPost.and.returnValue(of({} as DocumentReference));
+      postServiceSpy.addPost.and.returnValue(of({} as any));
       fixture.detectChanges();
     });
 
@@ -131,7 +130,7 @@ describe('BoardViewComponent', () => {
         columnPosition: columns[0].position,
         boardId: component.boardId,
         creator: component.user.email,
-      });
+      } as Post);
     });
   });
 
@@ -232,7 +231,7 @@ describe('BoardViewComponent', () => {
 
   describe('onAddRemoveLike', () => {
     beforeEach(() => {
-      postServiceSpy.addLike.and.returnValue(of({} as DocumentReference));
+      postServiceSpy.addLike.and.returnValue(of({} as any));
       postServiceSpy.removeLike.and.returnValue(of(undefined));
       fixture.detectChanges();
     });
@@ -256,7 +255,7 @@ describe('BoardViewComponent', () => {
             email: component.user.email,
             photoURL: component.user.photoURL,
           },
-        });
+        } as Like);
       });
     });
 

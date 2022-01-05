@@ -1,4 +1,4 @@
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
 import { WhereFilterOp } from '@firebase/firestore-types';
 
 export type AuthUserCredential = firebase.auth.UserCredential;

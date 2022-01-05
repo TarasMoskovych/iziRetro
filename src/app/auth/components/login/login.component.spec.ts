@@ -7,6 +7,7 @@ import { of, throwError } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { LoginComponent } from './login.component';
 import { firebaseUserInfo } from 'src/app/mocks';
+import { UserData } from 'src/app/models';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -84,7 +85,7 @@ describe('LoginComponent', () => {
 
       expect(authServiceSpy.navigateToDashboard).toHaveBeenCalled();
       expect(loading).toBeTrue();
-      expect(authServiceSpy.login).toHaveBeenCalledOnceWith({ ...formData });
+      expect(authServiceSpy.login).toHaveBeenCalledOnceWith({ ...formData as UserData });
     });
 
     it('should unsuccessfully sign in when form is valid', () => {
@@ -95,7 +96,7 @@ describe('LoginComponent', () => {
 
       expect(authServiceSpy.navigateToDashboard).not.toHaveBeenCalled();
       expect(loading).toBeFalsy();
-      expect(authServiceSpy.login).toHaveBeenCalledOnceWith({ ...formData });
+      expect(authServiceSpy.login).toHaveBeenCalledOnceWith({ ...formData as UserData });
     });
   });
 });

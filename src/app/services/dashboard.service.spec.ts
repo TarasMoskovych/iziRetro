@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -163,8 +163,8 @@ describe('DashboardService', () => {
       authServiceSpy.getUserByEmail.and.returnValue(of(user));
 
       service.shareBoard().subscribe(() => {
-        expect(authServiceSpy.getUserByEmail).toHaveBeenCalledOnceWith(firebaseUser.email);
-        expect(authServiceSpy.updateUser).toHaveBeenCalledOnceWith(firebaseUser, { sharedBoards: [boards[0].id] });
+        expect(authServiceSpy.getUserByEmail).toHaveBeenCalledOnceWith(firebaseUser.email as string);
+        expect(authServiceSpy.updateUser).toHaveBeenCalledOnceWith(firebaseUser, { sharedBoards: [boards[0].id] as string[] });
         done();
       });
     });

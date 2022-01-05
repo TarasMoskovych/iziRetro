@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { FirebaseError } from '@firebase/util';
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
 
 import { AuthError, AuthUserCredential, FirebaseUser, FirebaseUserInfo, User } from '../models';
 import { AuthService } from './auth.service';
