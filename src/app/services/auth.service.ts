@@ -47,11 +47,13 @@ export class AuthService {
       );
   }
 
-  signIn(): Observable<FirebaseUserInfo> {
+  signIn(): Observable<FirebaseUserInfo | AuthError> {
     return from(this.afauth.signInWithPopup(googleAuthProvider()))
-      .pipe(switchMap((userCredential: AuthUserCredential) => {
-        return this.updateUser(userCredential.user as FirebaseUser);
-      }));
+      .pipe(
+        switchMap((userCredential: AuthUserCredential) => this.updateUser(userCredential.user as FirebaseUser)),
+        catchError((err: AuthError) => this.notificationService.handleError(err)
+      )
+    );
   }
 
   register({ email, password, displayName }: UserData): Observable<FirebaseUserInfo | AuthError> {

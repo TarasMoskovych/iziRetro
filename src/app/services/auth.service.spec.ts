@@ -13,6 +13,7 @@ import { NotificationService } from './notification.service';
 import { FireAuthMock, FirestoreMock, userCredential, userData, firebaseUser, firebaseUserInfo, user, GoogleAuthProviderMock, spyOnCollection, spyOnDoc } from '../mocks';
 
 describe('AuthService', () => {
+  const error = new FirebaseError('INACTIVE', 'Your Account is inactive. Please, confirm your email.');
   let service: AuthService;
   let fireAuth: AngularFireAuth;
   let firestore: AngularFirestore;
@@ -95,7 +96,6 @@ describe('AuthService', () => {
     });
 
     it('should not login when user is invalid', (done: DoneFn) => {
-      const error = new FirebaseError('INACTIVE', 'Your Account is inactive. Please, confirm your email.');
       const payload = {
         credential: userCredential.credential, user: null,
       };
@@ -114,18 +114,31 @@ describe('AuthService', () => {
   });
 
   describe('sign in', () => {
-    it('should sign in with google provider', (done: DoneFn) => {
+    beforeEach(() => {
       if (!firebase?.auth?.GoogleAuthProvider) {
         firebase.auth = { GoogleAuthProvider: GoogleAuthProviderMock } as any;
       }
+    });
 
+    it('should sign in with google provider', (done: DoneFn) => {
       spyOn(fireAuth, 'signInWithPopup').and.resolveTo(userCredential);
       recreateService();
       spyOn(service, 'updateUser').and.returnValue(of(userCredential.user as FirebaseUser));
 
-      service.signIn().subscribe((fui: FirebaseUserInfo) => {
+      service.signIn().subscribe(fui => {
         expect(fui).toEqual(userCredential.user as FirebaseUserInfo);
         expect(service.updateUser).toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it('should show the message when login is failed', (done: DoneFn) => {
+      spyOn(fireAuth, 'signInWithPopup').and.rejectWith(error);
+      recreateService();
+
+      notificationServiceSpy.handleError.and.returnValue(of(error));
+      service.signIn().subscribe(() => {
+        expect(notificationServiceSpy.handleError).toHaveBeenCalledOnceWith(error);
         done();
       });
     });
