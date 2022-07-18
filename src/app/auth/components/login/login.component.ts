@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
@@ -13,7 +13,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class LoginComponent implements OnInit, OnDestroy {
   private loading = new Subject<boolean>();
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   loading$ = this.loading.asObservable();
 
   constructor(
@@ -48,9 +48,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   private buildForm(): void {
     const { email, password } = this.authService.userData || {};
 
-    this.form = new FormGroup({
-      email: new FormControl(email, [Validators.required, Validators.email]),
-      password: new FormControl(password, [Validators.required, Validators.minLength(6)])
+    this.form = new UntypedFormGroup({
+      email: new UntypedFormControl(email, [Validators.required, Validators.email]),
+      password: new UntypedFormControl(password, [Validators.required, Validators.minLength(6)])
     });
   }
 }
