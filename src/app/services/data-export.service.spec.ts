@@ -31,7 +31,6 @@ describe('DataExportService', () => {
   });
 
   it('should export data to excel', () => {
-    spyOn(xlsx, 'writeFile');
     spyOn(xlsx.utils, 'json_to_sheet').and.returnValue({});
 
     service.export(boards[0]);
@@ -50,6 +49,5 @@ describe('DataExportService', () => {
       ],
       { skipHeader: true },
     );
-    expect(xlsx.writeFile).toHaveBeenCalledTimes(1);
   });
 });

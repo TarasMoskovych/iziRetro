@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -14,7 +14,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class RegisterComponent implements OnInit {
   private loading = new Subject<boolean>();
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   loading$ = this.loading.asObservable();
 
   constructor(
@@ -38,10 +38,10 @@ export class RegisterComponent implements OnInit {
   }
 
   private buildForm(): void {
-    this.form = new FormGroup({
-      displayName: new FormControl(null, [Validators.required]),
-      email: new FormControl(null, [Validators.required, Validators.email]),
-      password: new FormControl(null, [Validators.required, Validators.minLength(6)])
+    this.form = new UntypedFormGroup({
+      displayName: new UntypedFormControl(null, [Validators.required]),
+      email: new UntypedFormControl(null, [Validators.required, Validators.email]),
+      password: new UntypedFormControl(null, [Validators.required, Validators.minLength(6)])
     });
   }
 
