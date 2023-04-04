@@ -161,6 +161,7 @@ app-dashboard-panel-actions {
 @keyframes glassAnimation {
   0% {
     backdrop-filter: unset;
+    border: 0;
   }
   100% {
     backdrop-filter: $blur;
